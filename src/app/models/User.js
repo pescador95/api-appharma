@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt'
 class User extends Model {
    static init(sequelize) {
       super.init({
+         cpf:Sequelize.STRING,
          name: Sequelize.STRING,
          email: Sequelize.STRING,
          password: Sequelize.VIRTUAL,

@@ -10,14 +10,18 @@ module.exports = {
             autoIncrement: true,
             primaryKey: true,
           },
+          cpf: {
+            type: Sequelize.STRING,
+            unique:true,
+            allowNull: false
+         },
           name: {
             type: Sequelize.STRING, 
             allowNull: false
           },
           email: {
-            type: Sequelize.STRING, 
-            unique:true,
-            allowNull: false
+            type: Sequelize.STRING,
+            allowNull: true
           },
           password_hash: {
             type: Sequelize.STRING, 
@@ -27,6 +31,14 @@ module.exports = {
             type: Sequelize.BOOLEAN,
             allowNull: false,
             defaultValue: false
+          },
+          img_id:
+          {
+             type:Sequelize.INTEGER,
+             allowNull:true,
+             references:{model:'files', key:'id'},
+             onUpdate:'CASCADE',
+             onDelete:'SET NULL'
           },
           created_at: {
             type: Sequelize.DATE, 

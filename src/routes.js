@@ -2,21 +2,38 @@ import {Router} from 'express'
 
 import UserController from './app/controllers/UserController'
 import SessionController from './app/controllers/SessionCrontroller'
+import ProdutoController from './app/controllers/ProdutoController'
 import FileController from './app/controllers/FileController'
+import SessaoController from './app/controllers/SessaoController'
+
+import validateUserStore from './app/validators/UserStore'
+import validateUserUpdate from './app/validators/UserUpdate'
+import validateProdutoStore from './app/validators/ProdutoStore'
+import validateSessaoStore from './app/validators/SessaoStore'
 
 import Auth from './app/middlewares/Auth'
+import multerConfig from './config/multer'
+import multer from 'multer'
 
-const routes = new Router();
+const routes = new Router()
+const upload = multer(multerConfig)
 
 routes.get('/api/ping', (req, res)=>res.json({ping:"pong"}))
 routes.post('/api/sessions', SessionController.create)
-routes.post('/api/usuarios', UserController.store)
+routes.post('/api/usuarios', validateUserStore, UserController.store)
+routes.get('/api/produtos', ProdutoController.show)
 
 routes.use(Auth)
 
-routes.put('/api/usuarios', UserController.update)
+routes.put('/api/usuarios', validateUserUpdate, UserController.update)
 
+routes.post('/api/produtos', validateProdutoStore, ProdutoController.store)
+routes.put('/api/produtos',  ProdutoController.update)
+routes.delete("/api/produtos", ProdutoController.destroy)
 
+routes.post('/api/files', upload.single('file'), FileController.store)
+
+routes.post('/api/sessao', SessaoController.store)
 
 
 export default routes;

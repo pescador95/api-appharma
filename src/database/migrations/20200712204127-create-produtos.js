@@ -10,6 +10,11 @@ module.exports = {
             autoIncrement: true,
             primaryKey: true,
           },
+          codigo_barras:{
+            type:Sequelize.STRING,
+            allowNull:false,
+            defaultValue:'0'
+          },
           nome: {
             type: Sequelize.STRING, 
             allowNull: false
@@ -33,6 +38,22 @@ module.exports = {
              onUpdate:'CASCADE',
              onDelete:'SET NULL',
              allowNull: true
+          },
+          id_grupo:
+          {
+             type:Sequelize.INTEGER,
+             allowNull:true,
+             references:{model:'grupos', key:'id'},
+             onUpdate:'CASCADE',
+             onDelete:'SET NULL'
+          },
+          id_sessao:
+          {
+             type:Sequelize.INTEGER,
+             allowNull:true,
+             references:{model:'sessao', key:'id'},
+             onUpdate:'CASCADE',
+             onDelete:'SET NULL'
           },
           created_at: {
             type: Sequelize.DATE, 
