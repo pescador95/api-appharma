@@ -6,8 +6,10 @@ import File from '../app/models/File'
 import Produto from '../app/models/Produto'
 import Sessao from '../app/models/Sessao'
 import Grupo from '../app/models/Grupo'
+import Promocao from '../app/models/Promocao'
+import Cliente from '../app/models/Cliente'
 
-const models = [User, File, Produto, Grupo, Sessao];
+const models = [User, File, Produto, Grupo, Sessao, Promocao, Cliente];
 
 class Database {
   constructor() {

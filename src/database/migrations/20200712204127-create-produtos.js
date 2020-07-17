@@ -13,7 +13,7 @@ module.exports = {
           codigo_barras:{
             type:Sequelize.STRING,
             allowNull:false,
-            defaultValue:'0'
+            unique:true,
           },
           nome: {
             type: Sequelize.STRING, 
@@ -21,7 +21,7 @@ module.exports = {
           },
           descricao: {
             type: Sequelize.STRING, 
-            allowNull: false
+            allowNull: true
           },
           valor_custo: {
             type: Sequelize.DECIMAL, 

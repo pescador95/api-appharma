@@ -10,6 +10,8 @@ class Produto extends Model {
             valor_custo: Sequelize.DECIMAL,
             valor_venda: Sequelize.DECIMAL,
             img_id: Sequelize.INTEGER,
+            id_grupo:Sequelize.INTEGER,
+            id_sessao:Sequelize.INTEGER
          },
          {
             sequelize,
