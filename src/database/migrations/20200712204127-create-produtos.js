@@ -5,12 +5,12 @@ module.exports = {
 
       return queryInterface.createTable('produtos', {
           id: {
-            type: Sequelize.INTEGER, 
-            allowNull: false,
+             type: Sequelize.INTEGER, 
+             primaryKey: true,
+             allowNull: false,
             autoIncrement: true,
-            primaryKey: true,
-          },
-          codigo_barras:{
+         },
+         codigo_barras:{
             type:Sequelize.STRING,
             allowNull:false,
             unique:true,

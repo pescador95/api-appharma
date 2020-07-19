@@ -4,7 +4,7 @@ class Produto extends Model {
    static init(sequelize) {
       super.init(
          {
-            codigo_barra:Sequelize.STRING,
+            codigo_barras:Sequelize.STRING,
             nome: Sequelize.STRING,
             descricao: Sequelize.STRING,
             valor_custo: Sequelize.DECIMAL,

@@ -5,9 +5,9 @@ class Session {
 
    async create(req, res){
       
-      const {email, password} = req.body;
+      const {cpf, password} = req.body;
 
-      const user = await User.findOne({where:{email}})
+      const user = await User.findOne({where:{cpf}})
 
       if(!user){
          return res.status(401).json({error:"Usuário/Senha invalidos"})
@@ -20,7 +20,7 @@ class Session {
 
       const token = jwt.sign({id, name, admin}, process.env.SECRET, {expiresIn:'7d'})
 
-      res.json({session:{success:"created",name},token:token})
+      res.json({session:{success:"created", id, name, admin},token:token})
 
    }
 

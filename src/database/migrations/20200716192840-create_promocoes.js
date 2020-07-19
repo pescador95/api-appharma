@@ -10,39 +10,47 @@ module.exports = {
             autoIncrement: true,
             primaryKey: true,
          },
-         codigoPromocao: {
+         codigo: {
             type: Sequelize.INTEGER,
             allowNull: false
          },
-         nomePromocao: {
+         nome: {
             type: Sequelize.STRING,
             allowNull: false
          },
-         descricaoPromo: {
+         descricao: {
             type: Sequelize.STRING,
             allowNull: true,
          },
-         dataInicio: {
+         data_inicio: {
             type: Sequelize.DATE,
             allowNull: false
          },
-         dataFim: {
+         data_fim: {
             type: Sequelize.DATE,
             allowNull: true
          },
-         precoPromocao: {
+         preco_promocao: {
             type: Sequelize.DECIMAL,
             allowNull: false,
          },
-         codigoDeBarra: {
+         codigo_barras: {
             type: Sequelize.STRING,
             allowNull: false,
-         },
-         img_id:
+          },
+         id_img:
          {
             type: Sequelize.INTEGER,
             allowNull: true,
             references: { model: 'files', key: 'id' },
+            onUpdate: 'CASCADE',
+            onDelete: 'SET NULL'
+         },
+         id_produto:
+         {
+            type: Sequelize.INTEGER,
+            allowNull: true,
+            references: { model: 'produtos', key: 'id' },
             onUpdate: 'CASCADE',
             onDelete: 'SET NULL'
          },

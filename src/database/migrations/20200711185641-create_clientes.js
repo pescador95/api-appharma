@@ -9,6 +9,11 @@ module.exports = {
             autoIncrement: true,
             primaryKey: true,
          },
+         codigoErp:{
+            type:Sequelize.INTEGER,
+            allowNull:false,
+            unique:true,
+         },
          cpf: {
             type: Sequelize.STRING,
             allowNull: false,
@@ -18,7 +23,7 @@ module.exports = {
             type: Sequelize.STRING,
             allowNull: false
          },
-         DataNascimento: {
+         nascimento: {
             type: Sequelize.DATE,
             allowNull: true
          },

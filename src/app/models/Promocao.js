@@ -4,18 +4,20 @@ class Promocao extends Model {
    static init(sequelize) {
       super.init(
          {
-            codigoPromocao:Sequelize.INTEGER,
-            nomePromocao: Sequelize.STRING,
-            descricaoPromo: Sequelize.STRING,
-            dataInicio:Sequelize.DATE,
-            dataFim:Sequelize.DATE,
-            precoPromocao: Sequelize.DECIMAL,
-            codigoDeBarra:Sequelize.STRING,
-            img_id: Sequelize.INTEGER
-         },
+            codigo:Sequelize.INTEGER,
+            nome: Sequelize.STRING,
+            descricao: Sequelize.STRING,
+            data_inicio:Sequelize.DATE,
+            data_fim:Sequelize.DATE,
+            preco_promocao: Sequelize.DECIMAL,
+            codigo_barras:Sequelize.STRING,
+            id_img: Sequelize.INTEGER,
+            id_produto: Sequelize.INTEGER
+         }, 
          {
             sequelize,
-            tableName: 'promocoes'
+            tableName: 'promocoes',
+
          }
       )
 
@@ -24,7 +26,9 @@ class Promocao extends Model {
    }
 
    static associate(models) {
-      this.belongsTo(models.File, {foreignKey:'img_id', as:'image'})
+      this.belongsTo(models.File, {foreignKey:'id_img', as:'image'})
+      this.belongsTo(models.Produto, {foreignKey:'id_produto', as:'produto'})
+
      }
 
 }
