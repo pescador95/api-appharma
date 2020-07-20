@@ -15,7 +15,6 @@ class PromocaoController {
          return res.status(400).json({error:"Data invalida"})
       }
 
-     console.log(startOfWeek(parsedDate)+' .... '+ endOfWeek(parsedDate))
 
       const promocao = await Promocao.findAll({
          where: {
