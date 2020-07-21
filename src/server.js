@@ -16,8 +16,8 @@ https.createServer(options, app)
         console.log(`estamos online na porta  ${port}`)
     })
 
-http.createServer(app)
-    .listen(port, () => {
-        console.log(`enviroment: ${process.env.APP_ENV}`)
-        console.log(`estamos online na porta  ${port}`)
-    })
+// http.createServer(app)
+//     .listen(port, () => {
+//         console.log(`enviroment: ${process.env.APP_ENV}`)
+//         console.log(`estamos online na porta  ${port}`)
+//     })
