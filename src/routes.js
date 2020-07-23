@@ -16,7 +16,6 @@ import validadeSessions from './app/validators/SessionStore'
 import Auth from './app/middlewares/Auth'
 import multerConfig from './config/multer'
 import multer from 'multer'
-
 const routes = new Router()
 const upload = multer(multerConfig)
 
@@ -40,4 +39,4 @@ routes.post('/api/files', upload.single('file'), FileController.store)
 routes.post('/api/sessao', validateSessaoStore, SessaoController.store)
 
 
-export default routes;
+export default routes
