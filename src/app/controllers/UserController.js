@@ -31,7 +31,6 @@ class UserController {
          id,
          cpf,
          name,
-         email,
          msg:"success"
       } )
 
