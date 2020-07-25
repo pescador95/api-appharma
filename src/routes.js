@@ -6,6 +6,7 @@ import ProdutoController from './app/controllers/ProdutoController'
 import FileController from './app/controllers/FileController'
 import SessaoController from './app/controllers/SessaoController'
 import PromocaoController from './app/controllers/PromocaoController'
+import ClienteController from './app/controllers/ClienteController'
 
 import validateUserStore from './app/validators/UserStore'
 import validateUserUpdate from './app/validators/UserUpdate'
@@ -26,6 +27,9 @@ routes.post('/api/usuarios', validateUserStore, UserController.store)
 routes.get('/api/produtos', ProdutoController.show)
 routes.get('/api/produtos/:barra', ProdutoController.index)
 routes.get('/api/promocoes',  PromocaoController.show)
+
+routes.get('/api/usuarios/:cpf', UserController.index)
+routes.get('/api/clientes/:cpf', ClienteController.index)
 
 routes.use(Auth)
 

@@ -3,11 +3,23 @@ import * as Yup from 'yup'
 
 class UserController {
 
+   async index(req, res){
+      const { cpf } = req.params;
+
+      const exists = await User.findOne({where:{cpf}})
+      if (!exists){
+         return res.status(40).json({error:"Usuario não existe"})
+      }
+
+      return res.status(200).json(exists)
+
+   }
+
    async store(req, res){
 
-      const { email } = req.body 
+      const { cpf } = req.body 
 
-      const exists = await User.findOne({where:{email}})
+      const exists = await User.findOne({where:{cpf}})
       
       if (exists){
          return res.status(401).json({error:"Usuario já existe"})
@@ -17,6 +29,7 @@ class UserController {
 
       return res.status(201).json({
          id,
+         cpf,
          name,
          email,
          msg:"success"
