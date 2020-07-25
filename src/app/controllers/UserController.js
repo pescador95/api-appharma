@@ -11,7 +11,7 @@ class UserController {
          return res.status(200).json({error:"Usuario não existe"})
       }
 
-      return res.status(200).json({sucess:"Existe um usuario", user:{id:user.id, nome:user.nome}})
+      return res.status(200).json({sucess:"Existe um usuario", user:{id:user.id, nome:user.name}})
 
    }
 
