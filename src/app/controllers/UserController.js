@@ -6,12 +6,12 @@ class UserController {
    async index(req, res){
       const { cpf } = req.params;
 
-      const exists = await User.findOne({where:{cpf}})
-      if (!exists){
+      const user = await User.findOne({where:{cpf}})
+      if (!user){
          return res.status(200).json({error:"Usuario não existe"})
       }
 
-      return res.status(200).json(exists)
+      return res.status(200).json({sucess:"Existe um usuario", user:{id:user.id, nome:user.nome}})
 
    }
 
