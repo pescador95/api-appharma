@@ -8,7 +8,7 @@ class UserController {
 
       const exists = await User.findOne({where:{cpf}})
       if (!exists){
-         return res.status(40).json({error:"Usuario não existe"})
+         return res.status(200).json({error:"Usuario não existe"})
       }
 
       return res.status(200).json(exists)

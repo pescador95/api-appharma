@@ -8,10 +8,10 @@ class ClienteController {
 
       const exists = await Cliente.findOne({where:{cpf}})
       if (!exists){
-         return res.status(400).json({error:false})
+         return res.status(200).json({error:"Cliente não existe"})
       }
 
-      return res.status(200).json({success:true})
+      return res.status(200).json({success:"Cliente existe", id:exists.id})
 
    }
 
