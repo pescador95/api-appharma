@@ -25,9 +25,10 @@ class UserController {
          return res.status(401).json({error:"Usuario já existe"})
       }
 
-      const { id, name } = await User.create(req.body)
+      const {cpf, name, password, confirmPassword } = req.body
+      const { id, name, admin } = await User.create({cpf, name, password, confirmPassword})
 
-      const token =  jwt.sign({id, name}, process.env.SECRET, {expiresIn:'7d'})
+      const token =  jwt.sign({id, name, admin}, process.env.SECRET, {expiresIn:'7d'})
 
       return res.status(201).json({
          id,
