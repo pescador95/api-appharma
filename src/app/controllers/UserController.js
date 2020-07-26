@@ -1,5 +1,5 @@
 import User from '../models/User'
-import * as Yup from 'yup'
+import jwt from 'jsonwebtoken'
 
 class UserController {
 
@@ -27,10 +27,13 @@ class UserController {
 
       const { id, name } = await User.create(req.body)
 
+      const token =  jwt.sign({id, name, admin}, process.env.SECRET, {expiresIn:'7d'})
+
       return res.status(201).json({
          id,
          cpf,
          name,
+         token,
          msg:"success"
       } )
 
