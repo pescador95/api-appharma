@@ -27,7 +27,7 @@ class UserController {
 
       const { id, name } = await User.create(req.body)
 
-      const token =  jwt.sign({id, name, admin}, process.env.SECRET, {expiresIn:'7d'})
+      const token =  jwt.sign({id, name}, process.env.SECRET, {expiresIn:'7d'})
 
       return res.status(201).json({
          id,
