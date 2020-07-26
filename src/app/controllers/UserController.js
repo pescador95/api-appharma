@@ -17,7 +17,7 @@ class UserController {
 
    async store(req, res){
 
-      const { cpf } = req.body 
+      const {cpf, name, password, confirmPassword } = req.body
 
       const exists = await User.findOne({where:{cpf}})
       
@@ -25,8 +25,8 @@ class UserController {
          return res.status(401).json({error:"Usuario já existe"})
       }
 
-      const {cpf, name, password, confirmPassword } = req.body
-      const { id, name, admin } = await User.create({cpf, name, password, confirmPassword})
+      
+      const { id, admin } = await User.create({cpf, name, password, confirmPassword})
 
       const token =  jwt.sign({id, name, admin}, process.env.SECRET, {expiresIn:'7d'})
 
