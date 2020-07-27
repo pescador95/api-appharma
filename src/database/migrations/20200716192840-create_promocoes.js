@@ -38,6 +38,22 @@ module.exports = {
             type: Sequelize.STRING,
             allowNull: false,
           },
+          avista: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+          },
+          prazo: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+          },
+          cheque: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+          },
+          cartao: {
+            type: Sequelize.INTEGER,
+            allowNull: false,
+          },
          id_img:
          {
             type: Sequelize.INTEGER,

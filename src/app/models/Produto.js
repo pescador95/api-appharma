@@ -11,7 +11,11 @@ class Produto extends Model {
             valor_venda: Sequelize.DECIMAL,
             img_id: Sequelize.INTEGER,
             id_grupo:Sequelize.INTEGER,
-            id_sessao:Sequelize.INTEGER
+            id_sessao:Sequelize.INTEGER,
+            avista:Sequelize.INTEGER,
+            prazo:Sequelize.INTEGER,
+            cheque:Sequelize.INTEGER, 
+            cartao:Sequelize.INTEGER,
          },
          {
             sequelize,
