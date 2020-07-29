@@ -8,8 +8,10 @@ import Sessao from '../app/models/Sessao'
 import Grupo from '../app/models/Grupo'
 import Promocao from '../app/models/Promocao'
 import Cliente from '../app/models/Cliente'
+import Venda from '../app/models/Venda'
+import Estoque from '../app/models/Estoque'
 
-const models = [User, File, Produto, Grupo, Sessao, Promocao, Cliente];
+const models = [User, File, Produto, Grupo, Sessao, Promocao, Cliente, Venda, Estoque];
 
 class Database {
   constructor() {
