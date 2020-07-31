@@ -20,7 +20,10 @@ import multer from 'multer'
 const routes = new Router()
 const upload = multer(multerConfig)
 
-routes.get('/api/ping', (req, res)=>res.json({ping:"pong"}))
+routes.get('/api/ping', async (req, res)=>{
+
+   res.json({ping:"pong"})
+})
 
 routes.post('/api/sessions', validadeSessions, SessionController.create)
 routes.post('/api/usuarios', validateUserStore, UserController.store)
