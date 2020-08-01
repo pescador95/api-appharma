@@ -15,7 +15,7 @@ export default {
    }),
    fileFilter: function (req, file, callback) {
       if(file.mimetype !== 'image/png' && file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/svg' && file.mimetype !== 'image/png' && file.mimetype !== 'image/webp') {
-          return callback(new Error('Only images are allowed'))
+          return callback(new Error('Permitido apenas imagens'))
       }
       callback(null, true)
   },
