@@ -59,7 +59,7 @@ class PromocaoController {
 
       const result = await db.query(qry, params)
 
-      res.send({"Result":result.rows})
+      res.send(result.rows)
 
    }
 
