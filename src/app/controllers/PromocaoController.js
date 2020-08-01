@@ -9,7 +9,7 @@ import { Op } from 'sequelize'
 class PromocaoController {
    async directSell(req, res) {  
       
-      const { cpf } = req.body;
+      const { cpf } = req.query;
       const randomItem = Math.floor(Math.random() * 6) + 2;
       const params =  ['2020-01-01', '2020-03-30', '2020-04-01', cpf ]
 
