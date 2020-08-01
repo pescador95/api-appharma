@@ -36,11 +36,8 @@ class PromocaoController {
    async bestSellers(req, res) {   
 
       const topItem = Math.floor(Math.random() * 20) + 1;
-
-      const dataVendaInicio =  '2020-01-01';
-      const dataVendaFim = '2020-03-30';
-      const dataPromoIni ='2020-04-01' ;
       
+      const params =  ['2020-01-01', '2020-03-30', '2020-04-01' ]
 
       const qry = `
                SELECT p1.id, p1.nome, p1.valor_venda, p.preco_promocao, e.qtdestoque, (1 - p.preco_promocao/p1.valor_venda) * 100 AS percent FROM promocoes p
@@ -50,17 +47,17 @@ class PromocaoController {
                   SELECT id FROM (
                      SELECT p.id, p.nome, COUNT(*) total  FROM vendas v
                         INNER JOIN produtos p ON v.id_produto = p.id
-                        WHERE v.data_venda BETWEEN '2020-01-01' AND '2020-03-30'
+                        WHERE v.data_venda BETWEEN $1 AND $2
                         GROUP BY p.id, p.nome
                      HAVING COUNT(*) > ${topItem}     
                      )tmp
                   )
-                  AND p.data_inicio <= '2020-04-01' AND p.data_fim > '2020-04-01' AND e.qtdestoque > 0
+                  AND p.data_inicio <= $3 AND p.data_fim > $3 AND e.qtdestoque > 0
                ORDER BY percent desc
                LIMIT 20
       `
 
-      const result = await db.query(qry)
+      const result = await db.query(qry, params)
 
       res.send({"Result":result.rows})
 
