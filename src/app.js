@@ -2,42 +2,42 @@ import 'dotenv/config'
 
 import Youch from 'youch'
 import express from 'express'
-import {resolve} from 'path'
+import { resolve } from 'path'
 
 import routes from './routes'
 
- import './database'
+import './database'
 
 class App {
-  constructor() {
-    this.server = express()
+   constructor() {
+      this.server = express()
 
-    this.middlewares()
-    this.routes()
-    this.exceptionHandler()
-  }
+      this.middlewares()
+      this.routes()
+      this.exceptionHandler()
+   }
 
-  middlewares() {
+   middlewares() {
 
-    this.server.use(express.json());
-    this.server.use('/files', express.static(resolve(__dirname, '..', 'tmp','uploads')))
-  }
+      this.server.use(express.json());
+      this.server.use('/files', express.static(resolve(__dirname, '..', 'tmp', 'uploads')))
+   }
 
-  routes() {
-    this.server.use(routes)
-  }
+   routes() {
+      this.server.use(routes)
+   }
 
-  exceptionHandler() {
-    this.server.use(async (err, req, res, next) => {
-      if (process.env.APP_ENV === 'development') {
-        const errors = await new Youch(err, req).toJSON()
+   exceptionHandler() {
+      this.server.use(async (err, req, res, next) => {
+         let errors;
+         if (process.env.APP_ENV === 'development') {
+            errors = await new Youch(err, req).toJSON()
+            return res.status(500).json({msg: errors.message})
+         }
 
-        return res.status(500).json(errors)
-      }
-
-      return res.status(500).json({ error: 'Internal server error' })
-    })
-  }
+         return res.status(500).json({ error: 'Internal server error', msg: errors.message })
+      })
+   }
 }
 
 export default new App().server
