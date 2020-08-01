@@ -35,20 +35,27 @@ class PromocaoController {
 
    async bestSellers(req, res) {   
 
+      const topItem = Math.floor(Math.random() * 20) + 1;
+
+      const dataVendaInicio =  '2020-01-01';
+      const dataVendaFim = '2020-03-30';
+      const dataPromoIni ='2020-04-01' ;
+      
+
       const qry = `
-      SELECT p1.nome, p1.valor_venda, p.preco_promocao, e.qtdestoque, (1 - p.preco_promocao/p1.valor_venda) * 100 AS percent FROM promocoes p
-               INNER JOIN estoque e ON p.id_produto = e.id_produto
-               INNER JOIN produtos p1 ON e.id_produto = p1.id
+               SELECT p1.id, p1.nome, p1.valor_venda, p.preco_promocao, e.qtdestoque, (1 - p.preco_promocao/p1.valor_venda) * 100 AS percent FROM promocoes p
+                  INNER JOIN estoque e ON p.id_produto = e.id_produto
+                  INNER JOIN produtos p1 ON e.id_produto = p1.id
                WHERE p.id_produto IN (
                   SELECT id FROM (
-                     SELECT p.id, p.nome, COUNT(*) total, SUM(p.valor_venda) AS valor  FROM vendas v
-                     INNER JOIN produtos p ON v.id_produto = p.id
-                     WHERE v.data_venda BETWEEN '2020-01-01' AND '2020-03-30'
-                     GROUP BY p.id, p.nome
-                     ORDER BY total desc
+                     SELECT p.id, p.nome, COUNT(*) total  FROM vendas v
+                        INNER JOIN produtos p ON v.id_produto = p.id
+                        WHERE v.data_venda BETWEEN ${dataVendaInicio} AND ${dataVendaFim}
+                        GROUP BY p.id, p.nome
+                     HAVING COUNT(*) > ${topItem}     
                      )tmp
                   )
-               AND p.data_inicio <= '2020-04-01' AND p.data_fim > '2020-04-01' AND e.qtdestoque > 0
+                  AND p.data_inicio <= ${dataPromoIni} AND p.data_fim > ${dataPromoIni} AND e.qtdestoque > 0
                ORDER BY percent desc
                LIMIT 20
       `
