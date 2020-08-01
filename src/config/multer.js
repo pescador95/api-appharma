@@ -1,7 +1,7 @@
 import multer from 'multer'
 import crypto from 'crypto'
 
-import { extname, resolve} from 'path'
+import { extname, resolve } from 'path'
 
 export default {
    storage: multer.diskStorage({
@@ -14,8 +14,7 @@ export default {
       }
    }),
    fileFilter: function (req, file, callback) {
-      var ext = path.extname(file.originalname);
-      if(ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
+      if(file.mimetype !== 'image/png' && file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/svg' && file.mimetype !== 'image/png') {
           return callback(new Error('Only images are allowed'))
       }
       callback(null, true)
