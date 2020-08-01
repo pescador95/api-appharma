@@ -7,27 +7,50 @@ import { startOfWeek, endOfWeek, parseISO, isValid } from 'date-fns'
 import { Op } from 'sequelize'
 
 class PromocaoController {
-   async shameSellers(req, res) {   
+   async directSell(req, res) {  
+      
+      const { cpf } = req.body;
+      const randomItem = Math.floor(Math.random() * 6) + 2;
+      const params =  ['2020-01-01', '2020-03-30', '2020-04-01', cpf ]
 
       const qry = `
-      SELECT p1.nome, p1.valor_venda, p.preco_promocao, e.qtdestoque, (1 - p.preco_promocao/p1.valor_venda) * 100 AS percent FROM promocoes p
-               INNER JOIN estoque e ON p.id_produto = e.id_produto
-               INNER JOIN produtos p1 ON e.id_produto = p1.id
+                  SELECT p1.id, p1.nome, p1.valor_venda, p.preco_promocao, e.qtdestoque, (1 - p.preco_promocao/p1.valor_venda) * 100 AS percent, f.path AS image  FROM promocoes p
+                  INNER JOIN estoque e ON p.id_produto = e.id_produto
+                  INNER JOIN produtos p1 ON e.id_produto = p1.id
+                  LEFT JOIN files f ON p1.img_id = f.id
                WHERE p.id_produto IN (
-                  SELECT id FROM (
-                     SELECT p.id, p.nome, COUNT(*) total, SUM(p.valor_venda) AS valor  FROM vendas v
-                     INNER JOIN produtos p ON v.id_produto = p.id
-                     WHERE v.data_venda BETWEEN '2020-01-01' AND '2020-03-30'
-                     GROUP BY p.id, p.nome
-                     ORDER BY total ASC
+                     SELECT id from (
+                        SELECT p.id, p.nome, COUNT(*) total  FROM vendas v
+                        INNER JOIN produtos p ON v.id_produto = p.id
+                        WHERE v.data_venda BETWEEN $1 AND $2 AND v.cpf = $4
+                        GROUP BY p.id, p.nome
+                     HAVING COUNT(*) > 0
+                           
                      )tmp
                   )
-               AND p.data_inicio <= '2020-04-01' AND p.data_fim > '2020-04-01' AND e.qtdestoque > 0
-               ORDER BY percent desc
+                  AND p.data_inicio <= $3 AND p.data_fim >$3 AND e.qtdestoque > 0
+               
+               UNION all
+                  
+                  SELECT p1.id, p1.nome, p1.valor_venda, p.preco_promocao, e.qtdestoque, (1 - p.preco_promocao/p1.valor_venda) * 100 AS percent, f.path AS image  FROM promocoes p
+                           INNER JOIN estoque e ON p.id_produto = e.id_produto
+                           INNER JOIN produtos p1 ON e.id_produto = p1.id
+                           LEFT JOIN files f ON p1.img_id = f.id
+                        WHERE p.id_produto IN (
+                           SELECT id FROM (
+                              SELECT p.id, p.nome, COUNT(*) total  FROM vendas v
+                                 INNER JOIN produtos p ON v.id_produto = p.id
+                                 WHERE v.data_venda BETWEEN $1 AND $2
+                                 GROUP BY p.id, p.nome
+                              HAVING COUNT(*) < ${randomItem}    
+                              )tmp
+                           )
+                  AND p.data_inicio <= $3 AND p.data_fim > $3 AND e.qtdestoque > 0
+               
                LIMIT 20
       `
 
-      const result = await db.query(qry)
+      const result = await db.query(qry, params)
 
       res.send({"Result":result.rows})
 

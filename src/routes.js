@@ -30,13 +30,14 @@ routes.post('/api/usuarios', validateUserStore, UserController.store)
 routes.get('/api/produtos', ProdutoController.show)
 routes.get('/api/produtos/:barra', ProdutoController.index)
 routes.get('/api/promocoes',  PromocaoController.show)
-routes.get('/api/promocoes/shame',  PromocaoController.shameSellers)
 routes.get('/api/promocoes/best',  PromocaoController.bestSellers)
 
 routes.get('/api/usuarios/:cpf', UserController.index)
 routes.get('/api/clientes/:cpf', ClienteController.index)
 
 routes.use(Auth)
+
+routes.get('/api/promocoes/direct',  PromocaoController.directSell)
 
 routes.put('/api/usuarios', validateUserUpdate, UserController.update)
 

@@ -30,12 +30,13 @@ class App {
    exceptionHandler() {
       this.server.use(async (err, req, res, next) => {
          let errors;
-         if (process.env.APP_ENV === 'development') {
-            errors = await new Youch(err, req).toJSON()
-            return res.status(500).json({error:'Internal server error',msg:errors.error.message})
-         }
+         errors = await new Youch(err, req).toJSON()
 
+         if (process.env.APP_ENV === 'development') {
+            return res.status(500).json(errors)
+         }
          return res.status(500).json({ error: 'Internal server error', msg:errors.error.message })
+         
       })
    }
 }
