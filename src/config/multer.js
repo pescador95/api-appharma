@@ -8,6 +8,7 @@ export default {
       destination: resolve(__dirname, '..', '..',  'tmp', 'uploads'),
       fileFilter: function (req, file, callback) {
          var ext = path.extname(file.originalname);
+         console.log("estou testeando essa ext: "+ext);
          if(ext !== '.png' && ext !== '.jpg' && ext !== '.gif' && ext !== '.jpeg') {
              return callback(new Error('Only images are allowed'))
          }
