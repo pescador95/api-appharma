@@ -32,7 +32,7 @@ class App {
          let errors;
          if (process.env.APP_ENV === 'development') {
             errors = await new Youch(err, req).toJSON()
-            return res.status(500).json({msg: errors.message})
+            return res.status(500).json(errors)
          }
 
          return res.status(500).json({ error: 'Internal server error', msg: errors.message })
