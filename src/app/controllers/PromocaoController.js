@@ -50,12 +50,12 @@ class PromocaoController {
                   SELECT id FROM (
                      SELECT p.id, p.nome, COUNT(*) total  FROM vendas v
                         INNER JOIN produtos p ON v.id_produto = p.id
-                        WHERE v.data_venda BETWEEN ${dataVendaInicio} AND ${dataVendaFim}
+                        WHERE v.data_venda BETWEEN '2020-01-01' AND '2020-03-30'
                         GROUP BY p.id, p.nome
                      HAVING COUNT(*) > ${topItem}     
                      )tmp
                   )
-                  AND p.data_inicio <= ${dataPromoIni} AND p.data_fim > ${dataPromoIni} AND e.qtdestoque > 0
+                  AND p.data_inicio <= '2020-04-01' AND p.data_fim > '2020-04-01' AND e.qtdestoque > 0
                ORDER BY percent desc
                LIMIT 20
       `
