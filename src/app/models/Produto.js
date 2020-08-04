@@ -31,6 +31,12 @@ class Produto extends Model {
       this.belongsTo(models.File, {foreignKey:'img_id', as:'image'})
       this.belongsTo(models.Grupo, {foreignKey:'id_grupo', as:'grupo'})
       this.belongsTo(models.Sessao, {foreignKey:'id_sessao', as:'sessao'})
+      this.belongsTo(models.Tipo, {foreignKey:'id_tipo', as:'tipo'})
+      this.belongsToMany(models.SubCategoria, {
+         through: 'produto_categorias',
+         as: 'subcategorias',
+         foreignKey:'id_produto'
+      })
    }
 
 }

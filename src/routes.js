@@ -7,12 +7,17 @@ import FileController from './app/controllers/FileController'
 import SessaoController from './app/controllers/SessaoController'
 import PromocaoController from './app/controllers/PromocaoController'
 import ClienteController from './app/controllers/ClienteController'
+import CategoriaController from './app/controllers/CategoriaController'
+import SubCategorias from './app/controllers/SubCategoriaController'
+import TipoController from './app/controllers/TipoController'
 
 import validateUserStore from './app/validators/UserStore'
 import validateUserUpdate from './app/validators/UserUpdate'
 import validateProdutoStore from './app/validators/ProdutoStore'
 import validateSessaoStore from './app/validators/SessaoStore'
 import validadeSessions from './app/validators/SessionStore'
+import validateSubcategoriasStore from './app/validators/SubcategoriaStore'
+import validateCategorias from './app/validators/CategoriasStore'
 
 import Auth from './app/middlewares/Auth'
 import multerConfig from './config/multer'
@@ -36,6 +41,10 @@ routes.get('/api/usuarios/:cpf', UserController.index)
 routes.get('/api/clientes/:cpf', ClienteController.index)
 
 routes.use(Auth)
+
+routes.post('/api/categorias', validateCategorias, CategoriaController.store)
+routes.post('/api/subcategorias', validateSubcategoriasStore, SubCategorias.store)
+routes.post('/api/tipo-produto', validateCategorias, TipoController.store)
 
 routes.get('/api/promocoes/direct',  PromocaoController.directSell)
 
