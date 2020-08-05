@@ -39,6 +39,7 @@ routes.get('/api/promocoes/best',  PromocaoController.bestSellers)
 
 routes.get('/api/usuarios/:cpf', UserController.index)
 routes.get('/api/clientes/:cpf', ClienteController.index)
+routes.get('/api/categorias', CategoriaController.show)
 
 routes.use(Auth)
 

@@ -1,5 +1,6 @@
 import Categoria from '../models/Categoria'
 import Service from '../services/CategoriaService'
+import File from '../models/File'
 
 class CategoriaController {
    async store(req, res) {
@@ -25,11 +26,32 @@ class CategoriaController {
          const categoria = await Service.CategoriaExiste({ idCategoria: req.query.id })
 
          categoria.update(req.body)
-         
+
          res.json(categoria)
       } catch (e) {
          res.status(400).json({ error: e.message })
       }
+   }
+
+   async show(req, res){
+
+      const categorias = await Categoria.findAll({
+         include: [
+            {
+               model: File,
+               as: "image",
+               attributes: ['name', 'path', 'url']
+            }
+         ],
+         attributes:['id', 'descricao']
+      })
+
+      if (!categorias){
+         res.status(400).json({error:"não existem categorias"})
+      }
+
+      res.json(categorias)
+
    }
 }
 
