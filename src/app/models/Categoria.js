@@ -5,6 +5,7 @@ class Categoria extends Model {
       super.init(
          {
             descricao: Sequelize.STRING,
+            id_img:Sequelize.INTEGER,
          },
          {
             sequelize,
@@ -14,6 +15,10 @@ class Categoria extends Model {
 
       return this
 
+   }
+
+   static associate(models) {
+      this.belongsTo(models.File, {foreignKey:'img_id', as:'image'})
    }
 
 
