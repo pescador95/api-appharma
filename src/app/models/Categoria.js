@@ -18,7 +18,7 @@ class Categoria extends Model {
    }
 
    static associate(models) {
-      this.belongsTo(models.File, {foreignKey:'img_id', as:'image'})
+      this.belongsTo(models.File, {foreignKey:'id_img', as:'image'})
    }
 
 
