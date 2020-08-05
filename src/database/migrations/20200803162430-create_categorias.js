@@ -13,6 +13,13 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
      },
+     id_img:{
+         type: Sequelize.INTEGER,
+         allowNull: true,
+         references: { model: 'files', key: 'id' },
+         onUpdate: 'CASCADE',
+         onDelete: 'SET NULL'
+      },  
       created_at: {
         type: Sequelize.DATE, 
         allowNull: false
