@@ -1,4 +1,5 @@
 import Categoria from '../models/Categoria'
+import Service from '../services/CategoriaService'
 
 class CategoriaController {
    async store (req, res) {
@@ -14,6 +15,17 @@ class CategoriaController {
       const {id} = categoria
 
       return res.json({id, descricao})
+   }
+
+   async update(req, res) {
+      if (!req.userAdmin) {
+         return res.status(401).json({ error: "permitido apenas para administradores" })
+      }
+
+      const categoria = await Service.CategoriaExiste({ idCategoria: req.query.id })
+
+      res.json(categoria)
+
    }
 }
 

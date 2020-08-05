@@ -43,6 +43,8 @@ routes.get('/api/clientes/:cpf', ClienteController.index)
 routes.use(Auth)
 
 routes.post('/api/categorias', validateCategorias, CategoriaController.store)
+routes.put('/api/categorias', CategoriaController.update)
+
 routes.post('/api/subcategorias', validateSubcategoriasStore, SubCategorias.store)
 routes.post('/api/tipo-produto', validateCategorias, TipoController.store)
 
