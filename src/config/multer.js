@@ -14,7 +14,8 @@ export default {
       }
    }),
    fileFilter: function (req, file, callback) {
-      if(file.mimetype !== 'image/png' && file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/svg' && file.mimetype !== 'image/png' && file.mimetype !== 'image/webp') {
+      if(file.mimetype !== 'image/png' && file.mimetype !== 'image/jpeg' && file.mimetype !== 'image/svg' && file.mimetype !=='image/svg+xml' && file.mimetype !== 'image/png' && file.mimetype !== 'image/webp') {
+         console.log(file.mimetype)
           return callback(new Error('Permitido apenas imagens'))
       }
       callback(null, true)
