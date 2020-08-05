@@ -8,6 +8,7 @@ class CategoriaService {
       if (!categoria) {
          throw new Error("Categoria não existe")
       }
+      
       return categoria
    }
 

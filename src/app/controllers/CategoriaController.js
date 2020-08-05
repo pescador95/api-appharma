@@ -23,6 +23,9 @@ class CategoriaController {
       }
       try {
          const categoria = await Service.CategoriaExiste({ idCategoria: req.query.id })
+
+         categoria.update(req.body)
+         
          res.json(categoria)
       } catch (e) {
          res.status(400).json({ error: e.message })
