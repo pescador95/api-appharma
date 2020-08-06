@@ -15,7 +15,7 @@ class ProdutoController {
                         "  FROM produtos p                                                                                                                         " +
                         "  inner JOIN promocoes p1 ON p.id = p1.id_produto                                                                                         " +
                         "  LEFT JOIN files f ON p.img_id = f.id                                                                                                    " +
-                        "WHERE id = $1 AND p1.data_inicio <= $2 AND p1.data_fim > $2                                                                               ";
+                        "WHERE p.id = $1 AND p1.data_inicio <= $2 AND p1.data_fim > $2                                                                               ";
 
       const produto = await db.query(sql, params)
 
