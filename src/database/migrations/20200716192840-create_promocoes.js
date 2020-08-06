@@ -36,7 +36,7 @@ module.exports = {
          },
          codigo_barras: {
             type: Sequelize.STRING,
-            allowNull: false,
+            allowNull: true,
           },
           avista: {
             type: Sequelize.INTEGER,
