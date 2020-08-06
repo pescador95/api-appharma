@@ -7,7 +7,9 @@ class ProdutoController {
    async selectProduct(req, res) {
       const { id } = req.query
 
-      const params = [id, '2020-04-30T00:00:00-03']
+      const params = [id]
+
+      console.log(`Id passado: ${id}`)
 
       const sql = "SELECT p.codigo_barras, p.nome, p.descricao,                                                                                              " +
                         "       COALESCE(p1.preco_promocao, p.valor_venda) AS preco, p1.preco_promocao, p1.data_inicio, p1.data_fim, f.path AS image, p.principio, " +
