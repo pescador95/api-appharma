@@ -23,7 +23,7 @@ class ProdutoController {
          return res.status(400).json({error:"Produto não encontrado"})
       }
 
-      return res.json(produto)
+      return res.json(produto.rows)
 
    }
 
