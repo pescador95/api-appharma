@@ -7,7 +7,7 @@ class ProdutoController {
    async selectProduct(req, res) {
       const { id } = req.query
 
-      const params = [id, '2020-04-30T00:00:00-03']
+      const params = [id, '2020-04-28T00:00:00-03']
 
       console.log(`Id passado: ${id}`)
 
