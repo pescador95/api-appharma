@@ -7,7 +7,7 @@ class ProdutoController {
    async selectProduct(req, res) {
       const { id } = req.query
 
-      const params = [id]
+      const params = [id, '2020-04-30T00:00:00-03']
 
       console.log(`Id passado: ${id}`)
 
@@ -17,7 +17,7 @@ class ProdutoController {
                         "  FROM produtos p                                                                                                                         " +
                         "  left JOIN promocoes p1 ON p.id = p1.id_produto                                                                                         " +
                         "  LEFT JOIN files f ON p.img_id = f.id                                                                                                    " +
-                        "WHERE p.id = $1                                                                         ";
+                        "WHERE p.id = $1   and p1.data_inicio < $2    and p1.data_fim > $2                                                             ";
 
       const produto = await db.query(sql, params)
 
