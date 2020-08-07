@@ -12,7 +12,11 @@ class Promocao extends Model {
             preco_promocao: Sequelize.DECIMAL,
             codigo_barras:Sequelize.STRING,
             id_img: Sequelize.INTEGER,
-            id_produto: Sequelize.INTEGER
+            id_produto: Sequelize.INTEGER,
+            avista:Sequelize.INTEGER,
+            prazo:Sequelize.INTEGER,
+            cheque:Sequelize.INTEGER, 
+            cartao:Sequelize.INTEGER,
          }, 
          {
             sequelize,

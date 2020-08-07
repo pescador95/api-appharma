@@ -12,10 +12,8 @@ class Produto extends Model {
             img_id: Sequelize.INTEGER,
             id_grupo:Sequelize.INTEGER,
             id_sessao:Sequelize.INTEGER,
-            avista:Sequelize.INTEGER,
-            prazo:Sequelize.INTEGER,
-            cheque:Sequelize.INTEGER, 
-            cartao:Sequelize.INTEGER,
+            id_tipo:Sequelize.INTEGER,
+            principio:Sequelize.STRING,
          },
          {
             sequelize,
@@ -32,11 +30,6 @@ class Produto extends Model {
       this.belongsTo(models.Grupo, {foreignKey:'id_grupo', as:'grupo'})
       this.belongsTo(models.Sessao, {foreignKey:'id_sessao', as:'sessao'})
       this.belongsTo(models.Tipo, {foreignKey:'id_tipo', as:'tipo'})
-      this.belongsToMany(models.SubCategoria, {
-         through: 'produto_categorias',
-         as: 'subcategorias',
-         foreignKey:'id_produto'
-      })
    }
 
 }

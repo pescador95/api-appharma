@@ -59,7 +59,6 @@ class ProdutoController {
    async store(req, res) {
 
       if (!req.userAdmin) {
-         c
          return res.status(401).json({ error: "Cadastro permitido apenas para administradores" })
       }
 
