@@ -33,9 +33,9 @@ class ProdutoController {
       
       console.log(`vou consultar no banco pelos top 15`)
       const params = ['2020-04-28T00:00:00-03', '2020-01-01T00:00:00-03', '2020-04-30T00:00:00-03']
-      const sql = " SELECT tmp.codigo_barras, tmp.nome, tmp.descricao, tmp.preco_vigente, tmp.preco_original, tmp.preco_promocao, tmp.principio, image, COUNT(*) AS total FROM ( " +
+      const sql = " SELECT tmp.id, tmp.nome, tmp.preco_vigente, tmp.preco_original, tmp.preco_promocao, image, COUNT(*) AS total FROM ( " +
       "                                                                                                                                                              " +
-      " SELECT p.id, p.codigo_barras, p.nome, p.descricao,                                                                                                           " +
+      " SELECT p.id , p.codigo_barras, p.nome, p.descricao,                                                                                                           " +
       "        COALESCE(p1.preco_promocao, p.valor_venda) AS preco_vigente, p.valor_venda as preco_original, p1.preco_promocao, f.path AS image, p.principio,        " +
       "        COALESCE(p1.preco_promocao / p.valor_venda*100, 0) AS discount                                                                                        " +
       "     FROM produtos p                                                                                                                                          " +
@@ -46,7 +46,7 @@ class ProdutoController {
       "   WHERE v.data_venda BETWEEN $2 AND $3 AND p1.codigo_barras <> '12345679'                                                                " +
       "   ) tmp                                                                                                                                                      " +
       "                                                                                                                                                              " +
-      "   GROUP BY tmp.codigo_barras, tmp.nome, tmp.descricao, tmp.preco_vigente, tmp.preco_original, tmp.preco_promocao, tmp.principio, image                       " +
+      "   GROUP BY  tmp.id, tmp.nome, tmp.preco_vigente, tmp.preco_original, tmp.preco_promocao,  image                       " +
       "   ORDER BY total desc                                                                                                                                        " +
       "                                                                                                                                                              " +
       "   LIMIT 15                                                                                                                                                   ";
