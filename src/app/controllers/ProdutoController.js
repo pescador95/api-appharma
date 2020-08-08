@@ -31,7 +31,6 @@ class ProdutoController {
    
    async topSellers(req, res) {
       
-      console.log(`vou consultar no banco pelos top 15`)
       const params = ['2020-04-28T00:00:00-03', '2020-01-01T00:00:00-03', '2020-04-30T00:00:00-03']
       const sql = " SELECT tmp.id, tmp.nome, tmp.preco_vigente, tmp.preco_original, tmp.preco_promocao, image, discount, COUNT(*) AS total FROM ( " +
       "                                                                                                                                                              " +
@@ -63,6 +62,34 @@ class ProdutoController {
          return res.status(400).json({error:e.message})
       }
    
+}
+
+async similars(req, res) {
+
+   const {tipo} = req.query;
+      
+   const params = ['2020-04-28T00:00:00-03', tipo]
+   const sql = " SELECT p.id , p.codigo_barras, p.nome, p.descricao,                                                                                                        "+ 
+   "              COALESCE(p1.preco_promocao, p.valor_venda) AS preco_vigente, p.valor_venda as preco_original, p1.preco_promocao, f.path AS image, p.principio,"+ 
+   "               COALESCE((1 - p1.preco_promocao / p.valor_venda)*100, 0) AS discount                                                                         "+
+   "                                                                                                                                                            "+
+   "   FROM produtos p                                                                                                                                          "+
+   "   left JOIN promocoes p1 ON p.id = p1.id_produto and p1.data_inicio < $1 and p1.data_fim > $1                                                              "+
+   "   LEFT JOIN files f ON p.img_id = f.id                                                                                                                     "+
+   "   WHERE p.id_tipo = $2                                                                                                                                     ";
+   
+
+   try{
+      const lista = await db.query(sql, params)
+      if(!lista){
+         return res.status(400).json({error:'Impossivel pegar produtos'})
+      }
+      
+      return res.json(lista.rows)
+   }catch(e) {
+      return res.status(400).json({error:e.message})
+   }
+
 }
 
 

@@ -34,10 +34,12 @@ routes.post('/api/sessions', validadeSessions, SessionController.create)
 routes.post('/api/usuarios', validateUserStore, UserController.store)
 routes.get('/api/produtos/consulta', ProdutoController.selectProduct);
 routes.get('/api/produtos/best-sellers', ProdutoController.topSellers)
+routes.get('/api/produtos/similars', ProdutoController.similars)
 
 routes.get('/api/produtos/:barra', ProdutoController.index)
 routes.get('/api/promocoes',  PromocaoController.show)
 routes.get('/api/promocoes/best',  PromocaoController.bestSellers)
+
 
 routes.get('/api/usuarios/:cpf', UserController.index)
 routes.get('/api/clientes/:cpf', ClienteController.index)
