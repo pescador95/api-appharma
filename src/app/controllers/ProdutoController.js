@@ -12,73 +12,104 @@ class ProdutoController {
       console.log(`Id passado: ${id}`)
 
       const sql = "SELECT p.codigo_barras, p.nome, p.descricao,                                                                                              " +
-                        "       COALESCE(p1.preco_promocao, p.valor_venda) AS preco_vigente, p.valor_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim, f.path AS image, p.principio, " +
-                        "       COALESCE(p1.preco_promocao / p.valor_venda*100, 0) AS discount                                                                     " +
-                        "  FROM produtos p                                                                                                                         " +
-                        "  left JOIN promocoes p1 ON p.id = p1.id_produto   and p1.data_inicio < $2  and p1.data_fim > $2     " +
-                        "  LEFT JOIN files f ON p.img_id = f.id                                                                                                    " +
-                        "WHERE p.id = $1                             ";
+         "       COALESCE(p1.preco_promocao, p.valor_venda) AS preco_vigente, p.valor_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim, f.path AS image, p.principio, " +
+         "       COALESCE(p1.preco_promocao / p.valor_venda*100, 0) AS discount                                                                     " +
+         "  FROM produtos p                                                                                                                         " +
+         "  left JOIN promocoes p1 ON p.id = p1.id_produto   and p1.data_inicio < $2  and p1.data_fim > $2     " +
+         "  LEFT JOIN files f ON p.img_id = f.id                                                                                                    " +
+         "WHERE p.id = $1                             ";
 
       const produto = await db.query(sql, params)
 
-      if (!produto){
-         return res.status(400).json({error:"Produto não encontrado"})
+      if (!produto) {
+         return res.status(400).json({ error: "Produto não encontrado" })
       }
 
       return res.json(produto.rows)
 
    }
 
-   async index(req, res) {
-      const { barra } = req.params
+   async topSellers(req, res) {
+      const sql = " SELECT tmp.codigo_barras, tmp.nome, tmp.descricao, tmp.preco_vigente, tmp.preco_original, tmp.preco_promocao, tmp.principio, image, COUNT(*) AS total FROM ( " +
+         "                                                                                                                                                              " +
+         " SELECT p.id, p.codigo_barras, p.nome, p.descricao,                                                                                                           " +
+         "        COALESCE(p1.preco_promocao, p.valor_venda) AS preco_vigente, p.valor_venda as preco_original, p1.preco_promocao, f.path AS image, p.principio,        " +
+         "        COALESCE(p1.preco_promocao / p.valor_venda*100, 0) AS discount                                                                                        " +
+         "     FROM produtos p                                                                                                                                          " +
+         "   left JOIN promocoes p1 ON p.id = p1.id_produto -- and p1.data_inicio < $3  and p1.data_fim > $3                                                            " +
+         "   LEFT JOIN files f ON p.img_id = f.id                                                                                                                       " +
+         "   INNER JOIN vendas v ON p.id = v.id_produto                                                                                                                 " +
+         "   LEFT JOIN tipo_produto tp ON p.id_tipo = tp.id                                                                                                             " +
+         "   WHERE v.data_venda BETWEEN $1 AND $2 AND p1.codigo_barras <> '12345679'                                                                " +
+         "   ) tmp                                                                                                                                                      " +
+         "                                                                                                                                                              " +
+         "   GROUP BY tmp.codigo_barras, tmp.nome, tmp.descricao, tmp.preco_vigente, tmp.preco_original, tmp.preco_promocao, tmp.principio, image                       " +
+         "   ORDER BY total desc                                                                                                                                        " +
+         "                                                                                                                                                              " +
+         "   LIMIT 15                                                                                                                                                   ";
 
-      const produto = await ProdutoService.ProdutoExiste({ codigoBarras: barra })
+      const params = ['2020-01-01T00:00:00-03', '2020-04-30T00:00:00-03', '2020-04-30T00:00:00-03']
+      const lista = await db.query(sql, params)
 
-      if (!produto) {
-         return res.status(400).json({ error: "Poduto não encontrado" })
+      if(!lista){
+         return res.status(400).json({error:'Impossivel pegar produtos'})
       }
 
-      return res.status(200).json(produto)
+      return res.json(lista.rows)
+   
+}
 
+
+async index(req, res) {
+   const { barra } = req.params
+
+   const produto = await ProdutoService.ProdutoExiste({ codigoBarras: barra })
+
+   if (!produto) {
+      return res.status(400).json({ error: "Poduto não encontrado" })
    }
 
-   async show(req, res) {
+   return res.status(200).json(produto)
 
-      const { page = 1 } = req.query
+}
 
-      const produto = await Produto.findAll({
-         order: ['nome'],
-         attributes: ['codigo_barras', 'nome', 'valor_venda'],
-         limit: 20,
-         offset: (page - 1) * 20,
-      })
+async show(req, res) {
 
-      res.json(produto)
+   const { page = 1 } = req.query
+
+   const produto = await Produto.findAll({
+      order: ['nome'],
+      attributes: ['codigo_barras', 'nome', 'valor_venda'],
+      limit: 20,
+      offset: (page - 1) * 20,
+   })
+
+   res.json(produto)
+}
+
+async store(req, res) {
+
+   if (!req.userAdmin) {
+      return res.status(401).json({ error: "Cadastro permitido apenas para administradores" })
    }
 
-   async store(req, res) {
+   const produto = await Produto.create(req.body)
 
-      if (!req.userAdmin) {
-         return res.status(401).json({ error: "Cadastro permitido apenas para administradores" })
-      }
-
-      const produto = await Produto.create(req.body)
-
-      if (!produto) {
-         return res.status(400).json({ error: "Não foi possivel criar o produto" })
-      }
-
-      return res.status(201).json(produto)
+   if (!produto) {
+      return res.status(400).json({ error: "Não foi possivel criar o produto" })
    }
 
-   async update(req, res) {
-      if (!req.userAdmin) {
-         return res.status(401).json({ error: "permitido apenas para administradores" })
-      }
-      const produto = await ProdutoService.ProdutoExiste({ idProduto: req.query.id })
-      const produtoAtt = await produto.update(req.body)
-      return res.status(201).json(produtoAtt)
+   return res.status(201).json(produto)
+}
+
+async update(req, res) {
+   if (!req.userAdmin) {
+      return res.status(401).json({ error: "permitido apenas para administradores" })
    }
+   const produto = await ProdutoService.ProdutoExiste({ idProduto: req.query.id })
+   const produtoAtt = await produto.update(req.body)
+   return res.status(201).json(produtoAtt)
+}
 
 }
 export default new ProdutoController()
