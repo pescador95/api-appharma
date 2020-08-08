@@ -36,11 +36,11 @@ class ProdutoController {
          "        COALESCE(p1.preco_promocao, p.valor_venda) AS preco_vigente, p.valor_venda as preco_original, p1.preco_promocao, f.path AS image, p.principio,        " +
          "        COALESCE(p1.preco_promocao / p.valor_venda*100, 0) AS discount                                                                                        " +
          "     FROM produtos p                                                                                                                                          " +
-         "   left JOIN promocoes p1 ON p.id = p1.id_produto -- and p1.data_inicio < $3  and p1.data_fim > $3                                                            " +
+         "   left JOIN promocoes p1 ON p.id = p1.id_produto  and p1.data_inicio < $1 and p1.data_fim > $1                                                            " +
          "   LEFT JOIN files f ON p.img_id = f.id                                                                                                                       " +
          "   INNER JOIN vendas v ON p.id = v.id_produto                                                                                                                 " +
          "   LEFT JOIN tipo_produto tp ON p.id_tipo = tp.id                                                                                                             " +
-         "   WHERE v.data_venda BETWEEN $1 AND $2 AND p1.codigo_barras <> '12345679'                                                                " +
+         "   WHERE v.data_venda BETWEEN $2 AND $3 AND p1.codigo_barras <> '12345679'                                                                " +
          "   ) tmp                                                                                                                                                      " +
          "                                                                                                                                                              " +
          "   GROUP BY tmp.codigo_barras, tmp.nome, tmp.descricao, tmp.preco_vigente, tmp.preco_original, tmp.preco_promocao, tmp.principio, image                       " +
@@ -48,7 +48,7 @@ class ProdutoController {
          "                                                                                                                                                              " +
          "   LIMIT 15                                                                                                                                                   ";
 
-      const params = ['2020-01-01T00:00:00-03', '2020-04-30T00:00:00-03', '2020-04-30T00:00:00-03']
+      const params = ['2020-04-28T00:00:00-03', '2020-01-01T00:00:00-03', '2020-04-30T00:00:00-03']
       const lista = await db.query(sql, params)
 
       if(!lista){
