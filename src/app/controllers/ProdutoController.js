@@ -50,9 +50,11 @@ class ProdutoController {
       "                                                                                                                                                              " +
       "   LIMIT 15                                                                                                                                                   ";
       
+      console.log(`vou consultar no banco pelos top 15`)
+
       const lista = await db.query(sql, params)
 
-      console.log(lista)
+      console.log(`fuck listei a bagaça ${lista}`)
       
       if(!lista){
          return res.status(400).json({error:'Impossivel pegar produtos'})
