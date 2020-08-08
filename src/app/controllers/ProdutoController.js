@@ -24,13 +24,14 @@ class ProdutoController {
       if (!produto) {
          return res.status(400).json({ error: "Produto não encontrado" })
       }
-
+      
       return res.json(produto.rows)
-
+      
    }
    
    async topSellers(req, res) {
-
+      
+      console.log(`vou consultar no banco pelos top 15`)
       const params = ['2020-04-28T00:00:00-03', '2020-01-01T00:00:00-03', '2020-04-30T00:00:00-03']
       const sql = " SELECT tmp.codigo_barras, tmp.nome, tmp.descricao, tmp.preco_vigente, tmp.preco_original, tmp.preco_promocao, tmp.principio, image, COUNT(*) AS total FROM ( " +
       "                                                                                                                                                              " +
@@ -50,11 +51,13 @@ class ProdutoController {
       "                                                                                                                                                              " +
       "   LIMIT 15                                                                                                                                                   ";
       
-      console.log(`vou consultar no banco pelos top 15`)
 
-      const lista = await db.query(sql, params)
-
-      console.log(`fuck listei a bagaça ${lista}`)
+      try{
+         const lista = await db.query(sql, params)
+         console.log(`fuck listei a bagaça ${lista}`)
+      }catch(e) {
+         console.log(e.message)
+      }
       
       if(!lista){
          return res.status(400).json({error:'Impossivel pegar produtos'})
