@@ -54,16 +54,14 @@ class ProdutoController {
 
       try{
          const lista = await db.query(sql, params)
-         console.log(`fuck listei a bagaça ${lista}`)
+         if(!lista){
+            return res.status(400).json({error:'Impossivel pegar produtos'})
+         }
+         
+         return res.json(lista.rows)
       }catch(e) {
-         console.log(e.message)
+         return res.status(400).json({error:e.message})
       }
-      
-      if(!lista){
-         return res.status(400).json({error:'Impossivel pegar produtos'})
-      }
-      
-      return res.json(lista.rows)
    
 }
 
