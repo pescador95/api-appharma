@@ -66,19 +66,19 @@ class ProdutoController {
 
    async similars(req, res) {
 
-      const { tipo } = req.query;
+      const { id, tipo } = req.query;
 
-      const params = ['2020-04-28T00:00:00-03', tipo]
+      const params = ['2020-04-28T00:00:00-03', tipo, id]
       const sql =
-         "SELECT p.id , p.codigo_barras, p.nome, p.descricao,                                                                                                             " +
+         "SELECT p.id , p.codigo_barras, p.nome, p.descricao, " +
          "                 COALESCE(p1.preco_promocao, p.valor_venda) AS preco_vigente, p.valor_venda as preco_original, p1.preco_promocao, f.path AS image, p.principio, " +
-         "                  COALESCE((1 - p1.preco_promocao / p.valor_venda)*100, 0) AS discount                                                                          " +
-         "      FROM produtos p                                                                                                                                           " +
-         "      left JOIN promocoes p1 ON p.id = p1.id_produto and p1.data_inicio < $1 and p1.data_fim > $1                                                               " +
-         "      LEFT JOIN files f ON p.img_id = f.id                                                                                                                      " +
-         "      INNER JOIN estoque e ON p.id = e.id_produto                                                                                                               " +
-         "      WHERE p.id_tipo = $2 AND e.qtdestoque > 0                                                                                                                 " +
-         "  ORDER BY discount DESC, preco_vigente asc                                                                                                                     ";
+         "                  COALESCE((1 - p1.preco_promocao / p.valor_venda)*100, 0) AS discount " +
+         "      FROM produtos p  " +
+         "      left JOIN promocoes p1 ON p.id = p1.id_produto and p1.data_inicio < $1 and p1.data_fim > $1" +
+         "      LEFT JOIN files f ON p.img_id = f.id           " +
+         "      INNER JOIN estoque e ON p.id = e.id_produto      " +
+         "      WHERE p.id_tipo = $2 AND e.qtdestoque > 0 and p.id <> $3    " +
+         "  ORDER BY discount DESC, preco_vigente asc        ";
 
 
       try {
