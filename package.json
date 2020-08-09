@@ -10,7 +10,8 @@
     "build": "sucrase ./src -d ./dist --transforms imports",
     "pretest": "sequelize db:migrate sequelize db:seeds",
     "test": "jest",
-    "posttest": "sequelize db:migrate:undo:all"
+    "posttest": "sequelize db:migrate:undo:all",
+    "start":"node dist/server.js"
   },
   "dependencies": {
     "@sucrase/jest-plugin": "^2.0.0",
