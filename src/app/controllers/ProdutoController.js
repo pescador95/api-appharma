@@ -11,7 +11,7 @@ class ProdutoController {
 
       console.log(`Id passado: ${id}`)
 
-      const sql = "SELECT p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, " +
+      const sql = "SELECT p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, " +
          "       COALESCE(p1.preco_promocao, p.valor_venda) AS preco_vigente, p.valor_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim, f.path AS image, p.principio, " +
          "       COALESCE((1-p1.preco_promocao / p.valor_venda)*100, 0) AS discount " +
          "  FROM produtos p  " +
