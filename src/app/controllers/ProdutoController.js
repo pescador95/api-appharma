@@ -1,26 +1,39 @@
-import {Op} from 'sequelize'
+import { Op } from 'sequelize'
 import Produto from '../models/Produto'
 import ProdutoService from '../services/ProdutoService'
 import db from '../../config/postgres'
 
 class ProdutoController {
 
-   async likeThis(req, res){
-      const {name, page} = req.query;
-      const produto = Produto.findAll({
-                                                            where:{
-                                                               [Op.like]:`%${name}%` ,
-                                                            },
-                                                            limit: 20,
-                                                            offset: (page - 1) * 20,})
-      if (!produto){
-         console.log("entrei aqui.. não axei produto")
-         return res.status(400).json({error:"produto não existe"});
-      }
-      
-      return res.json(produto)
-   }
+   async search(req, res) {
+      const { name, page = 1 } = req.query
+      try {
+         const total = await Produto.count({
+            where:{
+               nome:{
+                  [Op.like]:`%${name}%`
+               }
+            }
+         })
+         const paginas = Math.round(total/20)
+         const produto = await Produto.findAll({
+            where: {
+               nome:{
+                  [Op.like]: `%${name}%`,
+               }
+            },
+            limit: 20,
+            offset: (page - 1) * 20,
+         })
+         if (!produto) {
+            return res.status(400).json({ error: "produto não existe" });
+         }
 
+         return res.json({produto, paginas})
+      } catch (e) {
+         console.log(e.message)
+      }
+   }
    async selectProduct(req, res) {
       const { id } = req.query
 
@@ -110,7 +123,6 @@ class ProdutoController {
       }
 
    }
-
 
    async index(req, res) {
       const { barra } = req.params

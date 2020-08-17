@@ -35,6 +35,7 @@ routes.post('/api/usuarios', validateUserStore, UserController.store)
 routes.get('/api/produtos/consulta', ProdutoController.selectProduct);
 routes.get('/api/produtos/best-sellers', ProdutoController.topSellers)
 routes.get('/api/produtos/similars', ProdutoController.similars)
+routes.get('/api/produtos/search', ProdutoController.search)
 
 routes.get('/api/produtos/:barra', ProdutoController.index)
 routes.get('/api/promocoes',  PromocaoController.show)
@@ -45,7 +46,6 @@ routes.get('/api/usuarios/:cpf', UserController.index)
 routes.get('/api/clientes/:cpf', ClienteController.index)
 routes.get('/api/categorias', CategoriaController.show)
 
-routes.get('/api/produtos/search', ProdutoController.likeThis)
 
 routes.use(Auth)
 
