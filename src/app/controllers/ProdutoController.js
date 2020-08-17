@@ -9,11 +9,12 @@ class ProdutoController {
       const {name, page} = req.query;
       const produto = Produto.findAll({
                                                             where:{
-                                                               [Op.like]:name,
+                                                               [Op.like]:`%${name}%` ,
                                                             },
                                                             limit: 20,
                                                             offset: (page - 1) * 20,})
       if (!produto){
+         console.log("entrei aqui.. não axei produto")
          return res.status(400).json({error:"produto não existe"});
       }
       
