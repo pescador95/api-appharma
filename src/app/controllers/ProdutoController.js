@@ -1,8 +1,24 @@
+import {Op} from 'sequelize'
 import Produto from '../models/Produto'
 import ProdutoService from '../services/ProdutoService'
 import db from '../../config/postgres'
 
 class ProdutoController {
+
+   async likeThis(req, res){
+      const {name, page} = req.query;
+      const produto = Produto.findAll({
+                                                            where:{
+                                                               [Op.like]:name,
+                                                            },
+                                                            limit: 20,
+                                                            offset: (page - 1) * 20,})
+      if (!produto){
+         return res.status(400).json({error:"produto não existe"});
+      }
+      
+      return res.json(produto)
+   }
 
    async selectProduct(req, res) {
       const { id } = req.query

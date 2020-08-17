@@ -45,6 +45,8 @@ routes.get('/api/usuarios/:cpf', UserController.index)
 routes.get('/api/clientes/:cpf', ClienteController.index)
 routes.get('/api/categorias', CategoriaController.show)
 
+routes.get('/api/produtos/search', ProdutoController.likeThis)
+
 routes.use(Auth)
 
 routes.post('/api/categorias', validateCategorias, CategoriaController.store)
