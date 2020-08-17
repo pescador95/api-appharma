@@ -11,10 +11,10 @@ class PromocaoController {
       
       const { cpf } = req.query;
       const randomItem = Math.floor(Math.random() * 6) + 2;
-      const params =  ['2020-01-01', '2020-03-30', '2020-04-01', cpf ]
+      const params =  ['2020-01-01', '2020-03-30', '2020-08-01', cpf ]
 
       const qry = `
-                  SELECT p1.id, p1.nome, p1.valor_venda, p.preco_promocao, e.qtdestoque, (1 - p.preco_promocao/p1.valor_venda) * 100 AS percent, f.path AS image  FROM promocoes p
+                  SELECT p1.id, p1.nome, p1.valor_venda, p.preco_promocao, e.qtdestoque, (1 - p.preco_promocao/p1.valor_venda) * 100 AS percent, f.path AS image, p1.id_tipo as tipo  FROM promocoes p
                   INNER JOIN estoque e ON p.id_produto = e.id_produto
                   INNER JOIN produtos p1 ON e.id_produto = p1.id
                   LEFT JOIN files f ON p1.img_id = f.id
