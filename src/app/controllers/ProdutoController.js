@@ -10,7 +10,7 @@ class ProdutoController {
 
       const sql = `SELECT p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, 
       COALESCE(p1.preco_promocao, p.valor_venda) AS preco_vigente, p.valor_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim, f.path AS image, p.principio, 
-      COALESCE((1-p1.preco_promocao / p.valor_venda)*100, 0) AS discount 
+      COALESCE((1-p1.preco_promocao / p.valor_venda)*100, 0) AS discount, 0 as qtd
    FROM produtos p  
     left JOIN promocoes p1 ON p.id = p1.id_produto   and p1.data_inicio < :data  and p1.data_fim > :data     
      LEFT JOIN files f ON p.img_id = f.id                                                                                                    
