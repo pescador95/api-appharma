@@ -1,4 +1,4 @@
-import { Op } from 'sequelize'
+import { Op, QueryTypes } from 'sequelize'
 import Produto from '../models/Produto'
 import ProdutoService from '../services/ProdutoService'
 import db from '../../config/postgres'
@@ -6,33 +6,56 @@ import db from '../../config/postgres'
 class ProdutoController {
 
    async search(req, res) {
-      const { name, page = 1 } = req.query
+      const { name, data, page = 1 } = req.query
+
+      const sql = `SELECT p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, 
+      COALESCE(p1.preco_promocao, p.valor_venda) AS preco_vigente, p.valor_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim, f.path AS image, p.principio, 
+      COALESCE((1-p1.preco_promocao / p.valor_venda)*100, 0) AS discount 
+   FROM produtos p  
+    left JOIN promocoes p1 ON p.id = p1.id_produto   and p1.data_inicio < :data  and p1.data_fim > :data     
+     LEFT JOIN files f ON p.img_id = f.id                                                                                                    
+   WHERE p.nome LIKE :search_name 
+   order by discount desc
+   limit 10 offset :offset`;
+
+      const sql_count = ` select count(*) as total
+   FROM produtos p  
+    left JOIN promocoes p1 ON p.id = p1.id_produto   and p1.data_inicio < :data  and p1.data_fim > :data     
+     LEFT JOIN files f ON p.img_id = f.id                                                                                                    
+   WHERE p.nome LIKE :search_name`;
+
+      let searchName = `%${name}%`
+
       try {
-         const total = await Produto.count({
-            where:{
-               nome:{
-                  [Op.like]:`%${name}%`
-               }
+
+         const count = await Produto.sequelize.query(sql_count, {
+            type: QueryTypes.SELECT,
+            replacements: {
+               search_name: searchName,
+               data,
             }
          })
-         const paginas = Math.round(total/20)
-         const produto = await Produto.findAll({
-            where: {
-               nome:{
-                  [Op.like]: `%${name}%`,
-               }
-            },
-            limit: 20,
-            offset: (page - 1) * 20,
-         })
-         if (!produto) {
-            return res.status(400).json({ error: "produto não existe" });
-         }
 
-         return res.json({produto, paginas})
+         const paginas = Math.round(count[0].total / 10)
+
+         const offset = (page - 1) * 10
+
+         const listaProdutos = await Produto.sequelize.query(sql, {
+            type: QueryTypes.SELECT,
+            replacements: {
+               search_name: searchName,
+               data,
+               offset
+            }
+         });
+         if (!listaProdutos) {
+            return res.status(400).json({ error: "não encontrei produtos" })
+         }
+         return res.json({produtos:listaProdutos, paginas})
       } catch (e) {
          console.log(e.message)
       }
+
    }
    async selectProduct(req, res) {
       const { id } = req.query
