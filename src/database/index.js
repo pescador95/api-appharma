@@ -13,9 +13,10 @@ import Estoque from '../app/models/Estoque'
 import Tipo from '../app/models/Tipo'
 import Categoria from '../app/models/Categoria'
 import SubCategoria from '../app/models/SubCategoria'
+import UserAddress from '../app/models/UserAddress'
 
 
-const models = [User, File, Produto, Grupo, Sessao, Promocao, Cliente, Venda, Estoque, Tipo, Categoria, SubCategoria];
+const models = [User, File, Produto, Grupo, Sessao, Promocao, Cliente, Venda, Estoque, Tipo, Categoria, SubCategoria, UserAddress];
 
 class Database {
   constructor() {

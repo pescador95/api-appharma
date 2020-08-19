@@ -1,17 +1,23 @@
 import User from '../models/User'
 import jwt from 'jsonwebtoken'
+import Address from '../models/UserAddress'
 
 class UserController {
 
    async index(req, res){
       const { cpf } = req.params;
 
-      const user = await User.findOne({where:{cpf}})
+      const user = await User.findOne({
+         where:{cpf},
+         // include:{
+         //    model: Address
+         // }
+      })
       if (!user){
          return res.status(400).json({error:"Usuario não existe"})
       }
 
-      return res.status(200).json({sucess:"Existe um usuario", user:{id:user.id, nome:user.name}})
+      return res.status(200).json({sucess:"Existe um usuario", user:{id:user.id, nome:user.name, enderecos: user.UserAddresses}})
 
    }
 

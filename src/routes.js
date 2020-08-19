@@ -10,6 +10,7 @@ import ClienteController from './app/controllers/ClienteController'
 import CategoriaController from './app/controllers/CategoriaController'
 import SubCategorias from './app/controllers/SubCategoriaController'
 import TipoController from './app/controllers/TipoController'
+import AddressController from './app/controllers/AddressController'
 
 import validateUserStore from './app/validators/UserStore'
 import validateUserUpdate from './app/validators/UserUpdate'
@@ -18,6 +19,7 @@ import validateSessaoStore from './app/validators/SessaoStore'
 import validadeSessions from './app/validators/SessionStore'
 import validateSubcategoriasStore from './app/validators/SubcategoriaStore'
 import validateCategorias from './app/validators/CategoriasStore'
+import {update as addressValidatorUpdate, store as addressValidatorStore} from './app/validators/AddressUpdate'
 
 import Auth from './app/middlewares/Auth'
 import multerConfig from './config/multer'
@@ -65,6 +67,11 @@ routes.put('/api/produtos',  ProdutoController.update)
 routes.post('/api/files', upload.single('file'), FileController.store)
 
 routes.post('/api/sessao', validateSessaoStore, SessaoController.store)
+
+routes.post('/api/endereco', addressValidatorStore, AddressController.store)
+routes.put('/api/endereco/:id', addressValidatorUpdate,  AddressController.update)
+routes.delete('/api/endereco/:id', AddressController.delete)
+routes.get('/api/endereco/', AddressController.show)
 
 
 export default routes

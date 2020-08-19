@@ -10,6 +10,7 @@ class User extends Model {
          password: Sequelize.VIRTUAL,
          password_hash: Sequelize.STRING,
          admin: Sequelize.BOOLEAN,
+         img_id:Sequelize.INTEGER
       },
       {
          sequelize
@@ -25,6 +26,7 @@ class User extends Model {
 
    static associate(models){
       this.belongsTo(models.File, { foreignKey: 'img_id', as: 'image'})
+      this.hasMany(models.UserAddress, {foreignKey: 'id_user'})
    }
 
    checkPassword(password){
