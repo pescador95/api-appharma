@@ -28,4 +28,4 @@ class UserAddress extends Model {
    }
 
 }
-export default UserAddress
+export default UserAddress 
