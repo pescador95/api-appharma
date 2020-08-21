@@ -35,9 +35,10 @@ class AddressController {
 
    async update(req, res){
       const {id} = req.params;
+      const id_user = req.userId;
       const {rua, bairro, numero, cidade, uf, cep, complemento} = req.body
       try{
-         const address = await Address.findOne({where: {id, id_user:req.userId}})
+         const address = await Address.findOne({where: {id, id_user}})
          if(!address){
             return res.status(400).json({error:"Não encontrei o endereço!"})
          }
@@ -50,8 +51,9 @@ class AddressController {
 
    async delete(req, res){
       const {id} = req.params;
+      const id_user = req.userId;
       try{
-         const address = await Address.findByPk(id)
+         const address = await Address.findOne({where: {id, id_user}})
          if(!address){
             return res.status(400).json({error:"Não encontrei o endereço!"})
          }
