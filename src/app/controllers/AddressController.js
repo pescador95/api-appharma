@@ -37,7 +37,7 @@ class AddressController {
       const {id} = req.params;
       const {rua, bairro, numero, cidade, uf, cep, complemento} = req.body
       try{
-         const address = await Address.findByPk(id)
+         const address = await Address.findOne({where: {id, id_user:req.userId}})
          if(!address){
             return res.status(400).json({error:"Não encontrei o endereço!"})
          }
