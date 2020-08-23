@@ -27,7 +27,7 @@ class AddressController {
             return res.status(400).json({error:"Não pude criar esse endereco"})
          }
          const {id} = address;
-         return res.status(201).json({success:"endereco inserido com sucesso", id}) 
+         return res.status(201).json({success:"endereco inserido com sucesso", address:{id, rua, numero, complemento, bairro, cidade, uf, cep}}) 
       }catch (e){
          console.log(e.message)
       }
