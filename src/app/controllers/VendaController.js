@@ -7,7 +7,7 @@ class VendaController {
 
       const cart = req.body;
 
-      map.cart((i,k) =>{
+      cart.map((i,k) =>{
                console.log(`uudi da venda: ${uuid} produto: ${i.nome} quantidade no carrinho: ${i.qtd}`)
              })
 
