@@ -11,7 +11,7 @@
     "pretest": "sequelize db:migrate sequelize db:seeds",
     "test": "jest",
     "posttest": "sequelize db:migrate:undo:all",
-    "start":"node dist/server.js"
+    "start": "node dist/server.js"
   },
   "dependencies": {
     "@sucrase/jest-plugin": "^2.0.0",
@@ -31,6 +31,7 @@
     "pg-hstore": "^2.3.3",
     "sequelize": "^5.9.4",
     "sqlite3": "^5.0.0",
+    "uuid": "^8.3.0",
     "youch": "^2.0.10",
     "yup": "^0.29.1"
   },

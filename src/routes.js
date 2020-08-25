@@ -11,6 +11,7 @@ import CategoriaController from './app/controllers/CategoriaController'
 import SubCategorias from './app/controllers/SubCategoriaController'
 import TipoController from './app/controllers/TipoController'
 import AddressController from './app/controllers/AddressController'
+import VendaController from './app/controllers/VendaController'
 
 import validateUserStore from './app/validators/UserStore'
 import validateUserUpdate from './app/validators/UserUpdate'
@@ -72,6 +73,8 @@ routes.post('/api/endereco', addressValidatorStore, AddressController.store)
 routes.put('/api/endereco/:id', addressValidatorUpdate,  AddressController.update)
 routes.delete('/api/endereco/:id', AddressController.delete)
 routes.get('/api/endereco/', AddressController.show)
+
+routes.post('/api/venda/', VendaController.store )
 
 
 export default routes

@@ -8,8 +8,12 @@ class Venda extends Model {
             cpf:Sequelize.STRING,
             codigo_barras:Sequelize.STRING,
             id_produto: Sequelize.INTEGER,
+            id_user: Sequelize.INTEGER,
             data_venda:Sequelize.DATE,
-            valor_liquido:Sequelize.DECIMAL
+            valor_liquido:Sequelize.DECIMAL,
+            troco_para:Sequelize.DECIMAL,
+            levar_pimpad:Sequelize.BOOLEAN,
+            tipo_venda:Sequelize.STRING
          },
          {
             sequelize,
@@ -23,6 +27,7 @@ class Venda extends Model {
 
    static associate(models) {
       this.belongsTo(models.Produto, {foreignKey:'id_produto', as:'produto'})
+      this.belongsTo(models.User, {foreignKey:'id_user', as:'vendas'})
    }
 
 }
