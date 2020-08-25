@@ -6,6 +6,7 @@ class VendaController {
    async store(req, res){
 
       const cart = req.body;
+      const uuid = uuidv4();
 
       cart.map((i,k) =>{
                console.log(`uudi da venda: ${uuid} produto: ${i.nome} quantidade no carrinho: ${i.qtd}`)
