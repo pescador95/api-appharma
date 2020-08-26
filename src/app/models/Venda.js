@@ -12,7 +12,7 @@ class Venda extends Model {
             data_venda:Sequelize.DATE,
             valor_liquido:Sequelize.DECIMAL,
             troco_para:Sequelize.DECIMAL,
-            levar_pimpad:Sequelize.BOOLEAN,
+            levar_pinpad:Sequelize.BOOLEAN,
             tipo_venda:Sequelize.STRING
          },
          {
