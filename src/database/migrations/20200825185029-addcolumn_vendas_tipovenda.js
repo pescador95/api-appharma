@@ -39,7 +39,16 @@ module.exports = {
                onUpdate: 'CASCADE',
                onDelete: 'SET NULL'
             }
+         ),
+         queryInterface.addColumn(
+            'vendas',
+            'status',
+            {
+               type: Sequelize.STRING,
+               comment: 'Pendente, Confirmado, Cancelado'
+            }
          )
+
 
       ])
 
