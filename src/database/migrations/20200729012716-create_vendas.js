@@ -11,7 +11,7 @@ module.exports = {
             autoIncrement: true,
          },
          codigo_venda:{
-            type:Sequelize.INTEGER,
+            type:Sequelize.STRING,
             allowNull:false,
          },
          cpf: {
