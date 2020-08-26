@@ -15,7 +15,7 @@ module.exports = {
          ),
          queryInterface.addColumn(
             'vendas',
-            'levar_pimpad',
+            'levar_pinpad',
             {
                type: Sequelize.BOOLEAN,
                allowNull: true

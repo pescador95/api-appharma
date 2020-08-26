@@ -18,7 +18,7 @@ class VendaController {
             const { codigo_barras, nome, preco_vigente, id } = i
             console.log(`vou inserir a venda do item: codigo de barra: ${codigo_barras}  nome: ${nome} valor: ${preco_vigente} id: ${id}`)
             for (let j = 0; j < i.qtd; j++) {
-               Venda.create({ codigo_venda: uuid, user_id: userId, id_produto: id, codigo_barras, nome, valor_liquido: preco_vigente, cpf, created_at: now, updated_at: now, data_venda: now, tipo_venda, levar_pinpad, troco_para })
+               Venda.create({ codigo_venda: uuid, id_user: userId, id_produto: id, codigo_barras, nome, valor_liquido: preco_vigente, cpf, created_at: now, updated_at: now, data_venda: now, tipo_venda, levar_pinpad, troco_para })
             }
          })
 
