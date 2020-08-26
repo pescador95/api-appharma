@@ -57,10 +57,11 @@ module.exports = {
    down: (queryInterface) => {
 
       return Promise.all([
-         queryInterface.removeColumn('vendas', 'id_users'),
+         queryInterface.removeColumn('vendas', 'id_user'),
          queryInterface.removeColumn('vendas', 'tipo_venda'),
          queryInterface.removeColumn('vendas', 'levar_pimpad'),
-         queryInterface.removeColumn('vendas', 'troco_para')
+         queryInterface.removeColumn('vendas', 'troco_para'),
+         queryInterface.removeColumn('vendas', 'status')
       ])
 
    }
