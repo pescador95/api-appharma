@@ -13,7 +13,8 @@ class Venda extends Model {
             valor_liquido:Sequelize.DECIMAL,
             troco_para:Sequelize.DECIMAL,
             levar_pinpad:Sequelize.BOOLEAN,
-            tipo_venda:Sequelize.STRING
+            tipo_venda:Sequelize.STRING,
+            status:Sequelize.STRING
          },
          {
             sequelize,
