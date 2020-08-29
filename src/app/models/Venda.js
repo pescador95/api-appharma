@@ -14,7 +14,8 @@ class Venda extends Model {
             troco_para:Sequelize.DECIMAL,
             levar_pinpad:Sequelize.BOOLEAN,
             tipo_venda:Sequelize.STRING,
-            status:Sequelize.STRING
+            status:Sequelize.STRING,
+            tipo_entrega:Sequelize.STRING
          },
          {
             sequelize,
