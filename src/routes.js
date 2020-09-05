@@ -12,6 +12,7 @@ import SubCategorias from './app/controllers/SubCategoriaController'
 import TipoController from './app/controllers/TipoController'
 import AddressController from './app/controllers/AddressController'
 import VendaController from './app/controllers/VendaController'
+import FcmController from './app/controllers/FcmController'
 
 import validateUserStore from './app/validators/UserStore'
 import validateUserUpdate from './app/validators/UserUpdate'
@@ -21,6 +22,8 @@ import validadeSessions from './app/validators/SessionStore'
 import validateSubcategoriasStore from './app/validators/SubcategoriaStore'
 import validateCategorias from './app/validators/CategoriasStore'
 import {update as addressValidatorUpdate, store as addressValidatorStore} from './app/validators/AddressUpdate'
+
+import fcm from './app/services/FCM'
 
 import Auth from './app/middlewares/Auth'
 import multerConfig from './config/multer'
@@ -32,6 +35,9 @@ routes.get('/api/ping', async (req, res)=>{
 
    res.json({ping:"pong"})
 })
+
+
+routes.post('/api/fcm', FcmController.store)
 
 routes.post('/api/sessions', validadeSessions, SessionController.create)
 routes.post('/api/usuarios', validateUserStore, UserController.store)
@@ -51,6 +57,8 @@ routes.get('/api/categorias', CategoriaController.show)
 
 
 routes.use(Auth)
+
+routes.put('/api/fcm', FcmController.update)
 
 routes.post('/api/categorias', validateCategorias, CategoriaController.store)
 routes.put('/api/categorias', CategoriaController.update)
