@@ -4,6 +4,10 @@ class FcmController {
 
    async store(req, res){
       const { token } = req.body;
+      const existe = await Fcm.findOne({token})
+      if (existe){
+         return res.status(400).json({error:'token já cadastrado'})
+      }
       const fcm  = await Fcm.create({token})
       return res.json({fcm})
    }
