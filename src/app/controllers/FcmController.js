@@ -15,12 +15,12 @@ class FcmController {
    async update(req, res){
       const {token} = req.body;
       const userId = req.userId;
-      const fcm = Fcm.findOne({where:{token}})
-      if(!fcm){
+      const celularToken = Fcm.findOne({where:{token}})
+      if(!celularToken){
          return res.status(400).json({error:"não encontrei o token"})
       }
-      await fcm.update({id_user:userId})
-      return res.json({sucess:'atualizado com o id do usuario'})
+      const atualizedCelularToken = (await celularToken).update({id_user:userId})
+      return res.json({sucess:'atualizado com o id do usuario', atualizedCelularToken})
    }
 
    async show(req, res){
