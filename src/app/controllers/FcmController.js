@@ -1,4 +1,5 @@
 import Fcm from '../models/Fcm'
+import {SendMessage, GetTokens} from '../services/FCM'
 
 class FcmController {
 
@@ -31,6 +32,36 @@ class FcmController {
       });
 
    }
+
+
+   async sendMessage(req, res){
+      
+      if (!req.userAdmin){
+         return res.json({error:"Você não tem permissão."})
+      }
+      const userId = req.userId
+
+      const tokensAux = await GetTokens()
+
+      const registrationTokens = [ ];
+
+      tokensAux.map((i,k)=> {
+         registrationTokens.push(i.token)
+      })
+
+      const message = {
+         data: { id: '24', time: '2:45' },
+         tokens: registrationTokens,
+         notification: {
+            body: "Teste de Broadcast",
+            title: "Appharma - Testes",
+         }
+      
+      }
+      SendMessage(message, registrationTokens);
+      return res.json({mgm:"Enviei?"})
+   }
+
 
 }
 export default new FcmController();

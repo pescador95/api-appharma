@@ -4,8 +4,8 @@ class Fcm extends Model {
    static init(sequelize) {
       super.init(
          {
-            token: Sequelize.STRING,
             id_user:Sequelize.INTEGER,
+            token: Sequelize.STRING,
          },
          {
             sequelize,

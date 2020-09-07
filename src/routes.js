@@ -23,8 +23,6 @@ import validateSubcategoriasStore from './app/validators/SubcategoriaStore'
 import validateCategorias from './app/validators/CategoriasStore'
 import {update as addressValidatorUpdate, store as addressValidatorStore} from './app/validators/AddressUpdate'
 
-import fcm from './app/services/FCM'
-
 import Auth from './app/middlewares/Auth'
 import multerConfig from './config/multer'
 import multer from 'multer'
@@ -35,7 +33,6 @@ routes.get('/api/ping', async (req, res)=>{
 
    res.json({ping:"pong"})
 })
-
 
 routes.post('/api/fcm', FcmController.store)
 
@@ -58,6 +55,7 @@ routes.get('/api/categorias', CategoriaController.show)
 
 routes.use(Auth)
 
+routes.get('/api/sendmessage', FcmController.sendMessage);
 routes.put('/api/fcm', FcmController.update)
 
 routes.post('/api/categorias', validateCategorias, CategoriaController.store)
