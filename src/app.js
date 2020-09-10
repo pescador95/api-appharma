@@ -20,7 +20,12 @@ class App {
 
    middlewares() {
 
-      this.server.use(cors({origin:'*'}));
+      this.server.use(cors({
+         preflightMaxAge: 5,
+         origins: ['*'],
+         exposeHeaders: ['API-Token-Expiry'],
+         allowHeaders: ['API-Token', 'auth']
+      }));
       this.server.use(express.json());
       this.server.use('/files', express.static(resolve(__dirname, '..', 'tmp', 'uploads')))
    }
@@ -37,8 +42,8 @@ class App {
          if (process.env.APP_ENV === 'development') {
             return res.status(500).json(errors)
          }
-         return res.status(500).json({ error: 'Internal server error', msg:errors.error.message })
-         
+         return res.status(500).json({ error: 'Internal server error', msg: errors.error.message })
+
       })
    }
 }
