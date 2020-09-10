@@ -22,7 +22,7 @@ class App {
 
       this.server.use(cors({
          preflightMaxAge: 5,
-         origins: ['*'],
+         origins: false,
          exposeHeaders: ['API-Token-Expiry', 'Access-Control-Allow-Origin'],
          allowHeaders: ['API-Token', 'auth', 'Access-Control-Allow-Origin'],
       }));
