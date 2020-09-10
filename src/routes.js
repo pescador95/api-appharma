@@ -1,5 +1,6 @@
 import {Router} from 'express'
 
+import cors from 'cors'
 import UserController from './app/controllers/UserController'
 import SessionController from './app/controllers/SessionCrontroller'
 import ProdutoController from './app/controllers/ProdutoController'
@@ -36,7 +37,7 @@ routes.get('/api/ping', async (req, res)=>{
 
 routes.post('/api/fcm', FcmController.store)
 
-routes.post('/api/sessions', validadeSessions, SessionController.create)
+routes.post('/api/sessions', cors(), validadeSessions, SessionController.create)
 routes.post('/api/usuarios', validateUserStore, UserController.store)
 routes.get('/api/produtos/consulta', ProdutoController.selectProduct);
 routes.get('/api/produtos/best-sellers', ProdutoController.topSellers)
