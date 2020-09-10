@@ -21,11 +21,11 @@ class App {
    middlewares() {
 
       this.server.use(cors({
-         preflightMaxAge: 5,
-         origins: false,
-         exposeHeaders: ['API-Token-Expiry', 'Access-Control-Allow-Origin'],
-         allowHeaders: ['API-Token', 'auth', 'Access-Control-Allow-Origin'],
-      }));
+         "origin": "*",
+         "methods": "GET,HEAD,PUT,POST,DELETE",
+         "preflightContinue": false,
+         "optionsSuccessStatus": 204
+       }));
       this.server.use(express.json());
       this.server.use('/files', express.static(resolve(__dirname, '..', 'tmp', 'uploads')))
    }
