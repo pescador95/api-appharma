@@ -1,6 +1,6 @@
 import 'dotenv/config'
 
-// import cors from 'cors'
+import cors from 'cors'
 import Youch from 'youch'
 import express from 'express'
 import { resolve } from 'path'
