@@ -10,7 +10,7 @@ class Session {
       const user = await User.findOne({where:{cpf}})
 
       if(!user){
-         return res.json({error:"Usuário/Senha invalidos"})
+         return res.status(401).json({error:"Usuário/Senha invalidos"})
       }
 
       if(!(await user.checkPassword(password))){
