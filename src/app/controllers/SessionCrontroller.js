@@ -14,7 +14,7 @@ class Session {
       }
 
       if(!(await user.checkPassword(password))){
-         return res.json({error:"Usuário/Senha invalidos"})
+         return res.status(401).json({error:"Usuário/Senha invalidos"})
       }
       const {id, name, admin} = user;
 
