@@ -9,6 +9,7 @@ class Venda extends Model {
             codigo_barras:Sequelize.STRING,
             id_produto: Sequelize.INTEGER,
             id_user: Sequelize.INTEGER,
+            id_endereco: Sequelize.INTEGER,
             data_venda:Sequelize.DATE,
             valor_liquido:Sequelize.DECIMAL,
             troco_para:Sequelize.DECIMAL,
@@ -30,6 +31,7 @@ class Venda extends Model {
    static associate(models) {
       this.belongsTo(models.Produto, {foreignKey:'id_produto', as:'produto'})
       this.belongsTo(models.User, {foreignKey:'id_user', as:'vendas'})
+      this.belongsTo(models.UserAddress, {foreignKey:'id_endereco', as:'endereco'})
    }
 
 }
