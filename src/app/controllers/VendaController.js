@@ -5,20 +5,21 @@ import { v4 as uuidv4 } from 'uuid';
 class VendaController {
 
    async store(req, res) {
-      const { cart, levar_pinpad, troco_para, tipo_venda = A, tipo_entrega, id_endereco, valor_original } = req.body
+      const { cart, levar_pinpad, troco_para, tipo_venda = A, tipo_entrega, id_endereco } = req.body
       const now = new Date()
       const uuid = uuidv4()
       const userId = req.userId
       const usuario = await Usuario.findByPk(userId)
       const { cpf } = usuario;
 
+
       try {
 
          cart.map((i, k) => {
-            const { codigo_barras, nome, preco_vigente, id } = i
+            const { codigo_barras, nome, preco_vigente, preco_original, id } = i
             console.log(`vou inserir a venda do item: codigo de barra: ${codigo_barras}  nome: ${nome} valor: ${preco_vigente} id: ${id} com o id_endereco: ${id_endereco}`)
             for (let j = 0; j < i.qtd; j++) {
-               Venda.create({ status:'Pendente', codigo_venda: uuid, id_user: userId, id_produto: id, codigo_barras, nome, valor_liquido: preco_vigente, cpf, created_at: now, updated_at: now, data_venda: now, tipo_venda, levar_pinpad, troco_para, tipo_entrega, id_endereco, valor_original })
+               Venda.create({ status:'Pendente', codigo_venda: uuid, id_user: userId, id_produto: id, codigo_barras, nome, valor_liquido: preco_vigente, cpf, created_at: now, updated_at: now, data_venda: now, tipo_venda, levar_pinpad, troco_para, tipo_entrega, id_endereco, valor_original:preco_original })
             }
          })
 
