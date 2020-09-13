@@ -25,6 +25,7 @@ class UserAddress extends Model {
 
    static associate(models) {
       this.belongsTo(models.User, {foreignKey:'id_user'} )
+      this.hasMany(models.Venda, {foreignKey: 'id_endereco', as: 'endreco'})
    }
 
 }

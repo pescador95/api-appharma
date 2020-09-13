@@ -31,7 +31,7 @@ class Venda extends Model {
    static associate(models) {
       this.belongsTo(models.Produto, {foreignKey:'id_produto', as:'produto'})
       this.belongsTo(models.User, {foreignKey:'id_user', as:'vendas'})
-      this.belongsTo(models.UserAddress, {foreignKey:'id_endereco', as:'endereco'})
+      this.belongsTo(models.UserAddress, {foreignKey:'id_endereco', as:'end'})
    }
 
 }
