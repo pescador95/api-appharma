@@ -45,7 +45,7 @@ module.exports = {
             'status',
             {
                type: Sequelize.STRING,
-               comment: 'Pendente, Confirmado, Cancelado'
+               comment: 'Pendente, Confirmado, Enviado, Finalizado, Cancelado'
             }
          )
 
