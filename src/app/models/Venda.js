@@ -12,6 +12,7 @@ class Venda extends Model {
             id_endereco: Sequelize.INTEGER,
             data_venda:Sequelize.DATE,
             valor_liquido:Sequelize.DECIMAL,
+            valor_original:Sequelize.DECIMAL,
             troco_para:Sequelize.DECIMAL,
             levar_pinpad:Sequelize.BOOLEAN,
             tipo_venda:Sequelize.STRING,
