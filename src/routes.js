@@ -83,6 +83,7 @@ routes.get('/api/endereco/', AddressController.show)
 routes.post('/api/venda/', VendaController.store )
 
 routes.get('/api/venda/', VendaController.show )
+routes.get('/api/venda/:codvenda', VendaController.showItems)
 
 
 export default routes

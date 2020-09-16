@@ -44,22 +44,46 @@ class VendaController {
 
       try {
 
-         const vendas = await  Venda.sequelize.query(sql, {
+         const vendas = await Venda.sequelize.query(sql, {
             type: QueryTypes.SELECT,
          });
 
-         if (!vendas){
-            return res.json({error:'não achei vendas no aplicativo'})
+         if (!vendas) {
+            return res.json({ error: 'não achei vendas no aplicativo' })
          }
          res.json(vendas)
-      } catch(error) {
+      } catch (error) {
          console.log(`Erro ao puxar vendas ${error.message}`)
-         return res.status(501).json({error:e.message})
+         return res.status(501).json({ error: e.message })
       }
 
 
 
    }
+
+   async showItems(req, res) {
+      const codvenda = req.params.codvenda
+      const sql = `
+              SELECT v.codigo_venda, p.codigo_barras, p.nome,v.valor_original, v.valor_liquido, (1 - ( v.valor_liquido / v.valor_original )) * 100 AS percent, COUNT(*) AS qtdItens, SUM(v.valor_liquido) AS total 
+               FROM vendas v
+               INNER JOIN produtos p ON v.id_produto = p.id
+               WHERE v.codigo_venda = :codvenda
+               GROUP BY v.codigo_venda, p.codigo_barras, p.nome, v.valor_original, v.valor_liquido
+      `
+      try {
+         const items = await Venda.sequelize.query(sql, {
+            type: QueryTypes.SELECT,
+            replacements: {
+               codvenda
+            }
+         })
+         return res.json(items)
+      } catch (error) {
+         return res.status(400).json({ error: e.message })
+      }
+   }
+
+
 }
 
 export default new VendaController;
