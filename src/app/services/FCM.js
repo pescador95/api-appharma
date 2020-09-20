@@ -30,15 +30,17 @@ export const SendMessage = (message, registrationTokens) => {
       });
 }
 
-export const GetTokens = async (idUser, page=1) => {
-   console.log("Entrei pra pegar tokens fcs do usuario " + idUser)
+export const GetTokens = async (idUser,  page=1 ) => {
+   console.log("Entrei em get tokens")
    if (idUser) {
+      console.log("Entrei pra pegar tokens fcs do usuario " + idUser)
       try {
          const userTokens = await Fcm.findAll({ 
             where:{
                id_user:idUser 
             } 
          })
+         console.log(`Eu peguei o token do usuario ${idUser} e eles são: ${userTokens}`)
          return userTokens
       } catch (e) {
          console.log(e.message)

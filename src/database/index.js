@@ -15,9 +15,8 @@ import Categoria from '../app/models/Categoria'
 import SubCategoria from '../app/models/SubCategoria'
 import UserAddress from '../app/models/UserAddress' 
 import Fcm from '../app/models/Fcm'
-
-
-const models = [User, File, Produto, Grupo, Sessao, Promocao, Cliente, Venda, Estoque, Tipo, Categoria, SubCategoria, UserAddress, Fcm];
+import Mensagem from '../app/models/Mensagem'
+const models = [User, File, Produto, Grupo, Sessao, Promocao, Cliente, Venda, Estoque, Tipo, Categoria, SubCategoria, UserAddress, Fcm, Mensagem  ];
 
 class Database {
   constructor() {

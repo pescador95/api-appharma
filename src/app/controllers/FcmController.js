@@ -39,9 +39,11 @@ class FcmController {
       if (!req.userAdmin){
          return res.json({error:"Você não tem permissão."})
       }
-      const userId = req.userId
+      const userId = req.params.iduser
 
-      const tokensAux = await GetTokens()
+      console.log(`peguei o userid da requisiçao: ${userId}`)
+
+      const  tokensAux = await GetTokens(userId, )
 
       const registrationTokens = [ ];
 
@@ -53,8 +55,8 @@ class FcmController {
          data: { id: '24', time: '2:45' },
          tokens: registrationTokens,
          notification: {
-            body: "Teste de Broadcast",
-            title: "Appharma - Testes",
+            body: "Novo teste guiado... ",
+            title: "Appharma - Tst",
          }
       
       }

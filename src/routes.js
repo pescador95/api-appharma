@@ -13,6 +13,7 @@ import TipoController from './app/controllers/TipoController'
 import AddressController from './app/controllers/AddressController'
 import VendaController from './app/controllers/VendaController'
 import FcmController from './app/controllers/FcmController'
+import MensagemController from './app/controllers/MensagemController'
 
 import validateUserStore from './app/validators/UserStore'
 import validateUserUpdate from './app/validators/UserUpdate'
@@ -55,8 +56,15 @@ routes.get('/api/categorias', CategoriaController.show)
 
 routes.use(Auth)
 
+routes.get('/api/sendmessage/:iduser', FcmController.sendMessage);
 routes.get('/api/sendmessage', FcmController.sendMessage);
 routes.put('/api/fcm', FcmController.update)
+
+routes.post('/api/param/mensagens', MensagemController.store)
+routes.put('/api/param/mensagens/:id', MensagemController.update)
+routes.get('/api/param/mensagens/:id', MensagemController.index)
+routes.get('/api/param/mensagens', MensagemController.show)
+
 
 routes.post('/api/categorias', validateCategorias, CategoriaController.store)
 routes.put('/api/categorias', CategoriaController.update)
