@@ -1,4 +1,5 @@
 import Fcm from '../models/Fcm'
+import Mensagem from '../models/Mensagem'
 import {SendMessage, GetTokens} from '../services/FCM'
 
 class FcmController {
@@ -39,11 +40,15 @@ class FcmController {
       if (!req.userAdmin){
          return res.json({error:"Você não tem permissão."})
       }
-      const userId = req.params.iduser
 
-      console.log(`peguei o userid da requisiçao: ${userId}`)
+      const {iduser, idmsg} = req.params
 
-      const  tokensAux = await GetTokens(userId, )
+
+      const  tokensAux = await GetTokens(iduser, )
+
+      if  (!tokensAux) {
+         return res.status(400).json({error:"Não existem tokens para esse usuario"})
+      }
 
       const registrationTokens = [ ];
 
@@ -51,12 +56,22 @@ class FcmController {
          registrationTokens.push(i.token)
       })
 
+
+      const mgm = await Mensagem.findByPk(idmsg)
+
+      if (!mgm){
+         return res.status(400).json({error:'mensagem não existe'})
+      }
+      const {titulo, corpo, tipo_mgm} = mgm;
+
+      const agora = new Date().toLocaleString('pt-br')
+
       const message = {
-         data: { id: '24', time: '2:45' },
+         data: { tipo: toString(tipo_mgm) , time:agora.toString(), corpo},
          tokens: registrationTokens,
          notification: {
-            body: "Novo teste guiado... ",
-            title: "Appharma - Tst",
+            body: corpo,
+            title: `Appharma - ${titulo}` ,
          }
       
       }

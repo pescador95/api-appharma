@@ -56,8 +56,8 @@ routes.get('/api/categorias', CategoriaController.show)
 
 routes.use(Auth)
 
-routes.get('/api/sendmessage/:iduser', FcmController.sendMessage);
-routes.get('/api/sendmessage', FcmController.sendMessage);
+routes.post('/api/sendmessage/:iduser/:idmsg', FcmController.sendMessage);
+//routes.get('/api/sendmessage', FcmController.sendMessage);
 routes.put('/api/fcm', FcmController.update)
 
 routes.post('/api/param/mensagens', MensagemController.store)
