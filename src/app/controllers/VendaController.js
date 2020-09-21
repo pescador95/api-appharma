@@ -35,7 +35,7 @@ class VendaController {
    }
 
    async show(req, res) {
-      const sql = `select v.codigo_venda, v.data_venda, v.cpf, u.name, ua.rua, ua.numero, ua.complemento, ua.bairro, ua.cep, v.tipo_venda, v.tipo_entrega, v.levar_pinpad, v.troco_para, COUNT(*) AS qtdItens, SUM(v.valor_liquido) AS total  FROM vendas v
+      const sql = `select u.id as idcliente, v.codigo_venda, v.data_venda, v.cpf, u.name, ua.rua, ua.numero, ua.complemento, ua.bairro, ua.cep, v.tipo_venda, v.tipo_entrega, v.levar_pinpad, v.troco_para, COUNT(*) AS qtdItens, SUM(v.valor_liquido) AS total  FROM vendas v
                            INNER JOIN users u ON v.id_user = u.id
                            LEFT JOIN user_address ua ON v.id_endereco = ua.id
                            
