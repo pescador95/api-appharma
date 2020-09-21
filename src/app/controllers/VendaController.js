@@ -8,6 +8,7 @@ class VendaController {
    async store(req, res) {
       const { cart, levar_pinpad, troco_para, tipo_venda = A, tipo_entrega, id_endereco } = req.body
       console.log("Este é o troco para: "+troco_para)
+      if(!troco_para){ console.log('entrei no nao tem troco')}
       const now = new Date()
       const uuid = uuidv4()
       const userId = req.userId
