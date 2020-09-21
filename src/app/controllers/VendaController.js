@@ -20,6 +20,7 @@ class VendaController {
             const { codigo_barras, nome, preco_vigente, preco_original, id } = i
             console.log(`vou inserir a venda do item: codigo de barra: ${codigo_barras}  nome: ${nome} valor: ${preco_vigente} id: ${id} com o id_endereco: ${id_endereco}`)
             for (let j = 0; j < i.qtd; j++) {
+               console.log(`status: 'Pendente', codigo_venda: ${uuid}, id_user: ${userId}, id_produto: ${id}, ${codigo_barras}, ${nome}, valor_liquido: ${preco_vigente}, ${cpf}, created_at: ${now}, updated_at: ${now}, data_venda: ${now}, ${tipo_venda}, ${levar_pinpad}, ${troco_para}, ${tipo_entrega}, ${id_endereco}, valor_original: ${preco_original} }`)
                Venda.create({ status: 'Pendente', codigo_venda: uuid, id_user: userId, id_produto: id, codigo_barras, nome, valor_liquido: preco_vigente, cpf, created_at: now, updated_at: now, data_venda: now, tipo_venda, levar_pinpad, troco_para, tipo_entrega, id_endereco, valor_original: preco_original })
             }
          })
