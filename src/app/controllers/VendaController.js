@@ -95,6 +95,7 @@ class VendaController {
 
    //   'Pendente, Confirmado, Enviado, Finalizado, Cancelado'
 
+      console.log('Vou atualizar o status da venda '+ codigo_venda)
       try{
          const vendas = await Venda.findAll({where:{codigo_venda}})
          if (!vendas){
@@ -105,7 +106,7 @@ class VendaController {
             i.update({usuario_alteracao, status})
          })
          
-
+         console.log(`Atualizei o status para ${status} o usuario que alterou foi ${usuario_alteracao}`)
          return res.json(vendas)
       }catch (e){
          return res.status(400).json({ error: `não foi possivel atualizar: ${e.message}`})
