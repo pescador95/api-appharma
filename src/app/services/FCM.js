@@ -15,15 +15,16 @@ export const SendMessage = (message, registrationTokens) => {
          console.log(JSON.stringify(response))
          if (response.failureCount > 0) {
             const failedTokens = [];
-
-
             response.responses.forEach((resp, idx) => {
                if (!resp.success) {
                   failedTokens.push(registrationTokens[idx]);
+                  console.log(`${registrationTokens[idx]} - falhou`)
+               } else {
+                  console.log(`${registrationTokens[idx]} - enviou`)
                }
                console.log(resp)
             });
-            console.log('List of tokens that caused failures: ' + failedTokens);
+            console.log('Lista de itens que falaram: ' + failedTokens);
          }
 
 
