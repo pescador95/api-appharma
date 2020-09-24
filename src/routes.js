@@ -92,7 +92,7 @@ routes.put('/api/endereco/:id', addressValidatorUpdate,  AddressController.updat
 routes.delete('/api/endereco/:id', AddressController.delete)
 routes.get('/api/endereco/', AddressController.show)
 
-routes.post('/api/venda/', vendaValidatorStore , VendaController.store )
+routes.post('/api/venda/', VendaController.store )
 routes.put('/api/venda/', vendaValidatorUpdate, VendaController.update )
 routes.get('/api/venda/', VendaController.show )
 routes.get('/api/venda/:codvenda', VendaController.showItems)
