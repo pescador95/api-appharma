@@ -89,6 +89,10 @@ class VendaController {
    async update(req, res){
       const {codigo_venda, usuario_alteracao, status} = req.body;
 
+      if(!req.userAdmin){
+         return res.status(400).json({error:"Permitido apenas para administradores"})
+      }
+
    //   'Pendente, Confirmado, Enviado, Finalizado, Cancelado'
 
       try{
