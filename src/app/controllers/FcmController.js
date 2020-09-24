@@ -79,6 +79,18 @@ class FcmController {
       return res.json({mgm:"Enviei?"})
    }
 
+   async utlimoAcesso(req, res) {
+      const { fcmToken } = req.body;
+      const agora = new Date();
+      try {
+         const fcm = await Fcm.findOne({ where: { token: fcmToken } })
+         await fcm.update({ ultimo_acesso: agora })
+         return res.json(fcm)
+      } catch (e) {
+         return res.status(400).json({ error: e.message })
+      }
+   }
+
 
 }
 export default new FcmController();

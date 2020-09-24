@@ -6,6 +6,7 @@ class Fcm extends Model {
          {
             id_user:Sequelize.INTEGER,
             token: Sequelize.STRING,
+            ultimo_acesso:Sequelize.DATE,
          },
          {
             sequelize,

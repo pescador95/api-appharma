@@ -22,6 +22,7 @@ import validateSessaoStore from './app/validators/SessaoStore'
 import validadeSessions from './app/validators/SessionStore'
 import validateSubcategoriasStore from './app/validators/SubcategoriaStore'
 import validateCategorias from './app/validators/CategoriasStore'
+import {store as vendaValidatorStore, update as vendaValidatorUpdate} from './app/validators/VendaValidator'
 import {update as addressValidatorUpdate, store as addressValidatorStore} from './app/validators/AddressUpdate'
 
 import Auth from './app/middlewares/Auth'
@@ -39,6 +40,8 @@ routes.post('/api/fcm', FcmController.store)
 
 routes.post('/api/sessions', validadeSessions, SessionController.create)
 routes.post('/api/usuarios', validateUserStore, UserController.store)
+
+
 routes.get('/api/produtos/consulta', ProdutoController.selectProduct);
 routes.get('/api/produtos/best-sellers', ProdutoController.topSellers)
 routes.get('/api/produtos/similars', ProdutoController.similars)
@@ -53,11 +56,12 @@ routes.get('/api/usuarios/:cpf', UserController.index)
 routes.get('/api/clientes/:cpf', ClienteController.index)
 routes.get('/api/categorias', CategoriaController.show)
 
+//grava no FCM_TOKEN quando aquele token entrou pela ultima vez
+routes.post('/api/lastacess', FcmController.utlimoAcesso)
 
 routes.use(Auth)
 
 routes.post('/api/sendmessage/:iduser/:idmsg', FcmController.sendMessage);
-//routes.get('/api/sendmessage', FcmController.sendMessage);
 routes.put('/api/fcm', FcmController.update)
 
 routes.post('/api/param/mensagens', MensagemController.store)
@@ -88,8 +92,8 @@ routes.put('/api/endereco/:id', addressValidatorUpdate,  AddressController.updat
 routes.delete('/api/endereco/:id', AddressController.delete)
 routes.get('/api/endereco/', AddressController.show)
 
-routes.post('/api/venda/', VendaController.store )
-
+routes.post('/api/venda/', vendaValidatorStore , VendaController.store )
+routes.put('/api/venda/', vendaValidatorUpdate, VendaController.update )
 routes.get('/api/venda/', VendaController.show )
 routes.get('/api/venda/:codvenda', VendaController.showItems)
 

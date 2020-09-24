@@ -35,13 +35,13 @@ class VendaController {
    }
 
    async show(req, res) {
-      const sql = `select u.id as idcliente, v.codigo_venda, v.data_venda, v.cpf, u.name, ua.rua, ua.numero, ua.complemento, ua.bairro, ua.cep, v.tipo_venda, v.tipo_entrega, v.levar_pinpad, v.troco_para, COUNT(*) AS qtdItens, SUM(v.valor_liquido) AS total  FROM vendas v
+      const sql = `select u.id as idcliente, v.codigo_venda, v.data_venda, v.cpf, u.name, ua.rua, ua.numero, ua.complemento, ua.bairro, ua.cep, v.tipo_venda, v.tipo_entrega, v.levar_pinpad, v.troco_para, v.status, COUNT(*) AS qtdItens, SUM(v.valor_liquido) AS total  FROM vendas v
                            INNER JOIN users u ON v.id_user = u.id
                            LEFT JOIN user_address ua ON v.id_endereco = ua.id
                            
                            WHERE v.status IN ('Pendente', 'Confirmado', 'Enviado')
                         
-                           GROUP BY u.id, v.codigo_venda, v.data_venda, v.cpf, u.name, ua.rua, ua.numero, ua.complemento, ua.bairro, ua.cep, v.tipo_venda, v.tipo_entrega, v.levar_pinpad, v.troco_para
+                           GROUP BY u.id, v.codigo_venda, v.data_venda, v.cpf, u.name, ua.rua, ua.numero, ua.complemento, ua.bairro, ua.cep, v.tipo_venda, v.tipo_entrega, v.levar_pinpad, v.troco_para, v.status
                            
                            ORDER BY v.data_venda`
 
@@ -83,6 +83,28 @@ class VendaController {
          return res.json(items)
       } catch (error) {
          return res.status(400).json({ error: e.message })
+      }
+   }
+
+   async update(req, res){
+      const {codigo_venda, usuario_alteracao, status} = req.body;
+
+   //   'Pendente, Confirmado, Enviado, Finalizado, Cancelado'
+
+      try{
+         const vendas = await Venda.findAll({where:{codigo_venda}})
+         if (!vendas){
+            return res.status(400).json({error:"Venda não encontrada"});
+         }
+
+         vendas.map( (i, k) => {
+            i.update({usuario_alteracao, status})
+         })
+         
+
+         return res.json(vendas)
+      }catch (e){
+         return res.status(400).json({ error: `não foi possivel atualizar: ${e.message}`})
       }
    }
 

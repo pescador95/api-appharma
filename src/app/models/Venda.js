@@ -17,7 +17,8 @@ class Venda extends Model {
             levar_pinpad:Sequelize.BOOLEAN,
             tipo_venda:Sequelize.STRING,
             status:Sequelize.STRING,
-            tipo_entrega:Sequelize.STRING
+            tipo_entrega:Sequelize.STRING,
+            usuario_alteracao:Sequelize.STRING
          },
          {
             sequelize,
