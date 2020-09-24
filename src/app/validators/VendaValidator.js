@@ -27,7 +27,6 @@ export const update = async (req, res, next) => {
 export const store = async (req, res, next) => {
    try {
       const schema = Yup.object().shape({
-         cart: Yup.object().required(),
          levar_pinpad: Yup.boolean().required(),
          troco_para: Yup.number(),
          tipo_venda: Yup.string().required(),
