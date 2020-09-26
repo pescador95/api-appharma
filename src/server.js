@@ -23,8 +23,13 @@ if (existe) {
 
    const socket = io(server)
 
-   socket.on('connection', (socket) => {
+   socket.on('connection', (sock) => {
       console.log("Recebendo conexão do cliente...")
+
+      sock.on('venda-recebida', (codigo_venda) => {
+         console.log(`Venda recebida, codigo: ${codigo_venda}`)
+      })
+
    })
 
 
