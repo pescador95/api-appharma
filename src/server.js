@@ -30,6 +30,8 @@ if (existe) {
          console.log(`Venda recebida, codigo: ${codigo_venda}`)
          sock.codigo_venda = codigo_venda
 
+         console.log('isso é o codigo no sock: '+sock.codigo_venda)
+
          console.log(`enviando uma mensagem para o retaguarda... `)
          socket.emit('tem-venda', sock.codigo_venda)
       })
