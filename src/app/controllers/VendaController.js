@@ -35,11 +35,22 @@ class VendaController {
    }
 
    async show(req, res) {
+      const {cpf} = req.query;
+
+      let auxCpf ;
+      if (!cpf){
+         auxCpf = '0'
+      } else {
+         auxCpf = cpf
+      }
+
+      
+
       const sql = `select u.id as idcliente, v.codigo_venda, v.data_venda, v.cpf, u.name, ua.rua, ua.numero, ua.complemento, ua.bairro, ua.cep, v.tipo_venda, v.tipo_entrega, v.levar_pinpad, v.troco_para, v.status, COUNT(*) AS qtdItens, SUM(v.valor_liquido) AS total  FROM vendas v
                            INNER JOIN users u ON v.id_user = u.id
                            LEFT JOIN user_address ua ON v.id_endereco = ua.id
                            
-                           WHERE v.status IN ('Pendente', 'Confirmado', 'Enviado')
+                           WHERE v.status IN ('Pendente', 'Confirmado', 'Enviado') and (u.cpf = :cpf  or :cpf = '0') 
                         
                            GROUP BY u.id, v.codigo_venda, v.data_venda, v.cpf, u.name, ua.rua, ua.numero, ua.complemento, ua.bairro, ua.cep, v.tipo_venda, v.tipo_entrega, v.levar_pinpad, v.troco_para, v.status
                            
@@ -49,6 +60,7 @@ class VendaController {
 
          const vendas = await Venda.sequelize.query(sql, {
             type: QueryTypes.SELECT,
+            replacements: {cpf:auxCpf}
          });
 
          if (!vendas) {
