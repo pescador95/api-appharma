@@ -36,6 +36,10 @@ if (existe) {
          socket.emit('tem-venda', sock.codigo_venda)
       })
 
+      sock.on('atualizar-estoque', (tabela) =>{
+         console.log("Atualizar tabela de estoque...")
+      })
+
    })
 
 
@@ -52,6 +56,7 @@ if (existe) {
    socket.on('connection', (socket) => {
       console.log("Recebendo conexão do cliente...")
    })
+
 
 
 
