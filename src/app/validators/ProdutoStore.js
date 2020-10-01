@@ -9,7 +9,8 @@ export default async (req, res, next) => {
          valor_venda:Yup.number()
          .required(),
          id_grupo:Yup.number(),
-         id_sessao:Yup.number()
+         id_sessao:Yup.number(),
+         fabricante: Yup.string()
       })
 
       if (!(await schema.isValid(req.body))){

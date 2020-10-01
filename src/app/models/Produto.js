@@ -14,6 +14,7 @@ class Produto extends Model {
             id_sessao:Sequelize.INTEGER,
             id_tipo:Sequelize.INTEGER,
             principio:Sequelize.STRING,
+            fabricante:Sequelize.STRING,
          },
          {
             sequelize,
