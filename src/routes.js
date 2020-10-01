@@ -14,7 +14,6 @@ import AddressController from './app/controllers/AddressController'
 import VendaController from './app/controllers/VendaController'
 import FcmController from './app/controllers/FcmController'
 import MensagemController from './app/controllers/MensagemController'
-import AtualizaProdutoController from './app/controllers/AtualizaProdutoController'
 
 import validateUserStore from './app/validators/UserStore'
 import validateUserUpdate from './app/validators/UserUpdate'
@@ -33,8 +32,6 @@ const routes = new Router()
 const upload = multer(multerConfig)
 
 
-
-routes.get('/api/atualizafabricante', AtualizaProdutoController.AtualizaFabricante)
 
 routes.get('/api/ping', async (req, res)=>{
 
