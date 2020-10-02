@@ -1,8 +1,9 @@
-import EstoqueController from '../controllers/EstoqueController'
+import useEstoque from '../controllers/EstoqueController'
 
 const Atualizador = {
    atualizaEstoque: async (tabelaAtualizada) => {
-      const tabelaEstoque = await EstoqueController.show;
+      const estoque = useEstoque();
+      const tabelaEstoque = estoque.getTabela
       console.log("Peguei tabela vigente que vou comparar: ")
       console.log(JSON.stringify(tabelaEstoque))
       // const ret = await attDiffItems(tabelaReply, tabelaErp);
