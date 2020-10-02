@@ -7,6 +7,8 @@ class Estoque extends Model {
             codigo_barras:Sequelize.STRING,
             id_produto: Sequelize.INTEGER,
             qtdestoque:Sequelize.INTEGER,
+            preco_venda:Sequelize.DECIMAL,
+            preco_promocao:Sequelize.DECIMAL,
          },
          {
             sequelize,

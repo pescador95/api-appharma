@@ -1,4 +1,5 @@
 import app from './app'
+import Atualizador from './app/services/Atualizador'
 const { resolve } = require('path');
 const https = require('https')
 const http = require('http')
@@ -37,8 +38,10 @@ if (existe) {
       })
 
       sock.on('atualizar-estoque', (tabela) => {
-         console.log("Atualizar tabela de estoque...")
-         console.log(JSON.stringify(tabela))
+         console.log('vou pegar o hook atualizador e pegar a tabela.. ')
+         const atualizador = Atualizador();
+         atualizador.atualizaEstoque()
+         
       })
 
    })
