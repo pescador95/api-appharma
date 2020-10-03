@@ -39,7 +39,7 @@ if (existe) {
 
       sock.on('atualizar-estoque', (tabela) => {
          console.log('vou pegar o hook atualizador e pegar a tabela.. ')
-         const atualizador = Atualizador();
+         const atualizador = Atualizador(tabela);
          atualizador.atualizaEstoque()
          
       })
