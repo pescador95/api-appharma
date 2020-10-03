@@ -13,8 +13,10 @@ const Atualizador = {
       if(tabelaAtualizada){
          console.log("--------------- TENHO A TABELA QUE RECEBI ATUALIZADA ---------------")
       }
-      await diff.verificaEstoque(tabelaAtualizada, tabelaEstoque);
+      const fizAtt = await diff.verificaEstoque(tabelaAtualizada, tabelaEstoque);
+      return fizAtt
       console.log('socket finalizado')
+      
    }
 
 

@@ -45,6 +45,7 @@ const UseDiff = {
 
       await Promise.all(promise)
       console.log("Atualizei tabela de estoque...")
+      return true
    }
 
 }
