@@ -2,6 +2,8 @@ import useEstoque from '../controllers/EstoqueController'
 
 const UseDiff = {
    verificaEstoque : async (tabelaAtualizada, tabelaAntiga) =>{
+      console.log("Dentro do hook -------------------------------------------------------- ")
+      console.log(JSON.stringify(tabelaAtualizada))
       const estoque = useEstoque()
      const fuckingPromise = tabelaAntiga.map( async (i,k) =>{
          const itemNovo = tabelaAtualizada.filter(novo_item => novo_item.codigo_barras == i.codigo_barras);
