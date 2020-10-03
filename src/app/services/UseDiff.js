@@ -12,6 +12,10 @@ const UseDiff = {
             return
          }
 
+         if (!itemNovo[0].qtd_estoque){
+            console.log(`esse é o camarada que não tem o estoque e ta fodendo tudo ${JSON.stringify(itemNovo)}`)
+         }
+
 
          if (parseFloat(i.qtd_estoque) != parseFloat(itemNovo[0].qtd_estoque)) {
             await estoque.update({ codigo_barras: itemNovo[0].codigo_barras, preco_venda: itemNovo[0].preco_venda, preco_promocao: itemNovo[0].preco_promocao, qtd_estoque: itemNovo[0].qtd_estoque })
