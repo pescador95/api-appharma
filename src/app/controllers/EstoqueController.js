@@ -6,11 +6,11 @@ const useEst = {
 
       const { codigo_barras, preco_venda, preco_promocao, qtd_estoque } = req;
       console.log(`Recebi isso na req: ${JSON.stringify(req)}`)
-      console.log(`esse é o tal do qtd_estoque ${qtd_estoque}`)
+      console.log(`esses são os parametros que vou pssar: ${codigo_barras}, ${preco_venda}, ${preco_promocao}, ${qtd_estoque}` )
       const params = [codigo_barras, preco_venda, preco_promocao, qtd_estoque]
-
+      console.log(`esse é o array de paramestro: ${params}`)
       try {
-      const sql = `UPDATE estoque SET qtdestoque = $4, preco_venda = $2, preco_promocao = $3, updated_at = NOW() WHERE codigo_barras = $1`
+      const sql = `UPDATE estoque SET qtdestoque = $4, preco_venda = $2, preco_promocao = $3, updated_at = NOW() WHERE codigo_barras = $1 `
       //console.log(`Vou alterar o produto: ${codigo_barras}`)
       await db.query(sql, params)
       } catch (e) {
