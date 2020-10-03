@@ -7,7 +7,11 @@ const Atualizador = {
       const diff = useDiff()
       const tabelaEstoque = await estoque.getTabela()
       
-      await diff.verificaEstoque(tabelaAtualizada, tabelaEstoque);
+      console.log(`Peguei a tabela do estoque SERVIDOR`)
+      console.log(JSON.stringify(tabelaEstoque))
+      console.log("--------------- TENHO A TABELA QUE RECEBI ATUALIZADA ---------------")
+      console.log(JSON.stringify(tabelaAtualizada))
+     // await diff.verificaEstoque(tabelaAtualizada, tabelaEstoque);
       console.log('socket finalizado')
    }
 

@@ -17,7 +17,7 @@ const useEst = {
 
    },
    getTabela: async () =>{
-      const qry = `SELECT codigo_barras, qtdestoque, preco_venda, preco_promocao FROM estoque
+      const qry = `SELECT codigo_barras, qtdestoque as qtd_estoque, preco_venda, preco_promocao FROM estoque
       ORDER BY codigo_barras `
       const resp = await db.query(qry)
       return resp.rows
