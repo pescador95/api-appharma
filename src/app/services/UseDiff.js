@@ -5,9 +5,9 @@ const UseDiff = {
       console.log("Vou verificar as diferenças entre as 2 tabelas que eu recebi....")
       const estoque = useEstoque()
       let cont;
-      const fuckingPromise = tabelaAntiga.map(async (i, k) => {
+      const promise = tabelaAntiga.map(async (i, k) => {
 
-         const itemNovo = tabelaAtualizada.filter(novo_item => novo_item.codigo_barras == i.codigo_barras);
+         const itemNovo = await tabelaAtualizada.filter(novo_item => novo_item.codigo_barras == i.codigo_barras);
 
          if (!itemNovo) {
             return
@@ -42,7 +42,7 @@ const UseDiff = {
 
       })
 
-      await Promise.all(fuckingPromise)
+      await Promise.all(promise)
       console.log("Atualizei tabela de estoque... e o contador é: "+cont)
    }
 
