@@ -39,6 +39,11 @@ if (existe) {
 
       sock.on('atualizar-estoque', (tabela) => {
          console.log('vou pegar o hook atualizador e pegar a tabela.. ')
+         if(tabela){
+            console.log("Eu tenho uma tabela que recebi do socket")
+         } else {
+            console.log("Não veio tabela no socket!")
+         }
          const atualizador = Atualizador(tabela);
          atualizador.atualizaEstoque()
          

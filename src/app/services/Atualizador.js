@@ -3,7 +3,6 @@ import useDiff from '../services/UseDiff'
 
 const Atualizador = {
    atualizaEstoque: async (tabelaAtualizada) => {
-      console.log("REcebi a tabela: "+JSON.stringify(tabelaAtualizada))
       const estoque = useEstoque();
       const diff = useDiff()
       console.log("--------------------- entrar no get tabela ----------------------")
