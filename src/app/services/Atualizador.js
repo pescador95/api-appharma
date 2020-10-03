@@ -14,8 +14,8 @@ const Atualizador = {
          console.log("--------------- TENHO A TABELA QUE RECEBI ATUALIZADA ---------------")
       }
       const fizAtt = await diff.verificaEstoque(tabelaAtualizada, tabelaEstoque);
+      console.log('retornei: '+fizAtt)
       return fizAtt
-      console.log('socket finalizado')
       
    }
 
