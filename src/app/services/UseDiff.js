@@ -13,8 +13,12 @@ const UseDiff = {
             return
          }
 
+         if (typeof itemNovo === 'undefined') {
+            return
+          }
 
-         let estoqueAtt = 0 // itemNovo[0].qtd_estoque
+
+         let estoqueAtt =  itemNovo[0].qtd_estoque
          let precoVendaAtt = itemNovo[0].preco_venda
          let precoPromoAtt = itemNovo[0].preco_promocao
          console.log(`Esses são os valores quee u preciso att: ${estoqueAtt} ${precoVendaAtt} e ${precoPromoAtt} é isso.. fuck!`)
