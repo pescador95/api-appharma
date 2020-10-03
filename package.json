@@ -33,6 +33,7 @@
     "mysql2": "^2.1.0",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
+    "pg-query-stream": "^3.2.3",
     "sequelize": "^5.9.4",
     "socket.io": "^2.3.0",
     "sqlite3": "^5.0.0",
