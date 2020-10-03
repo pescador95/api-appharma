@@ -2,12 +2,12 @@ import useEstoque from '../controllers/EstoqueController'
 import useDiff from '../services/UseDiff'
 
 const Atualizador = {
-   atualizaEstoque: async (tabelaAtualizada) => {
+   atualizaEstoque: async (tabela) => {
       const estoque = useEstoque();
       const diff = useDiff()
       console.log("--------------------- entrar no get tabela ----------------------")
       const tabelaEstoque = await estoque.getTabela()
-      if(tabelaAtualizada){
+      if(tabela){
          console.log("Tenho tabela atualizada")
       }
       if(tabelaEstoque){
