@@ -1,17 +1,13 @@
 import useEstoque from '../controllers/EstoqueController'
+import useDiff from '../services/UseDiff'
 
 const Atualizador = {
    atualizaEstoque: async (tabelaAtualizada) => {
       const estoque = useEstoque();
+      const diff = useDiff()
       const tabelaEstoque = await estoque.getTabela()
-      console.log("Peguei tabela vigente que vou comparar: ")
-      console.log(JSON.stringify(tabelaEstoque))
-      // const ret = await attDiffItems(tabelaReply, tabelaErp);
-      // console.log(`Devo mandar emit no socket?  ${ret}`)
-      // if (ret){
-      //    const novaTabela = await estoque.getTabela();
-      //    socket.emit('atualizar-estoque', novaTabela)
-      // }
+      await diff.verificaEstoque(tabelaAtualizada, tabelaEstoque);
+      console.log('socket finalizado')
    }
 
 
