@@ -4,7 +4,7 @@ import db from '../../config/postgres'
 const useEst = {
    update: async (req) => {
 
-      const { codigo_barras, preco_venda, preco_promocao, qtd_estoque } = req;
+      const { codigo_barras, preco_venda=0, preco_promocao=0, qtd_estoque=0 } = req;
       const params = [codigo_barras, preco_venda, preco_promocao, qtd_estoque]
 
       try {
