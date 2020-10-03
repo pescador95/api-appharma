@@ -9,7 +9,7 @@ const useEst = {
 
       try {
       const sql = `UPDATE estoque SET qtdestoque = $4, preco_venda = $2, preco_promocao=$3, updated_at=NOW() WHERE codigo_barras = $1`
-      console.log(`Vou alterar o produto: ${codigo_barras}`)
+      //console.log(`Vou alterar o produto: ${codigo_barras}`)
       await db.query(sql, params)
       } catch (e) {
          console.log(e.message)
