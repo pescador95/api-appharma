@@ -43,7 +43,9 @@ if (existe) {
          const atualizador =  Atualizador();
          const resp = atualizador.atualizaEstoque(tabela)
          
+         console.log(`sera que vou dar um emit? ${JSON.stringify(resp)}`)
          if (resp){
+            console.log('Vou dar um emit')
             socket.emit('atualizado');
          }
          
