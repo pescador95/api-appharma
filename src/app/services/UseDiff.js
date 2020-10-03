@@ -13,7 +13,7 @@ const UseDiff = {
          }
 
          if (!itemNovo[0].qtd_estoque){
-            console.log(`esse é o camarada que não tem o estoque e ta fodendo tudo ${JSON.stringify(itemNovo)} vamos tentar exibir sem o zero ${itemNovo.qtd_estoque}`)
+            console.log(`esse é o camarada que não tem o estoque e ta fodendo tudo ${JSON.stringify(itemNovo)} vamos tentar exibir o que ta testando ${itemNovo[0].qtd_estoque}`)
          }
 
 
