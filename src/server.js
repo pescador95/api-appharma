@@ -9,65 +9,59 @@ const io = require('socket.io')
 
 let existe = fs.existsSync(resolve(__dirname, 'config', 'privkey.pem'));
 
-const server = http.createServer(app)
+if (existe) {
+   console.log("Existe chave...")
+   const options = {
+      key: fs.readFileSync(resolve(__dirname, 'config', 'local-key.pem'), 'utf-8'),
+      cert: fs.readFileSync(resolve(__dirname, 'config', 'local-cert.pem'), 'utf-8')
+   }
+   
+   const server = https.createServer(options, app)
       .listen(port, () => {
          console.log(`enviroment: ${process.env.APP_ENV}`)
          console.log(`estamos online na porta  ${port}`)
       })
 
-// if (existe) {
-//    console.log("Existe chave...")
-//    const options = {
-//       key: fs.readFileSync(resolve(__dirname, 'config', 'privkey.pem'), 'utf-8'),
-//       cert: fs.readFileSync(resolve(__dirname, 'config', 'fullchain.pem'), 'utf-8')
-//    }
+   const socket = io(server)
 
-//    const server = https.createServer(options, app)
-//       .listen(port, () => {
-//          console.log(`enviroment: ${process.env.APP_ENV}`)
-//          console.log(`estamos online na porta  ${port}`)
-//       })
+   socket.on('connection', (sock) => {
+      console.log("Recebendo conexão do cliente...")
 
-//    const socket = io(server)
+      sock.on('venda-recebida', (codigo_venda) => {
+         console.log(`Venda recebida, codigo: ${codigo_venda}`)
+         sock.codigo_venda = codigo_venda
 
-//    socket.on('connection', (sock) => {
-//       console.log("Recebendo conexão do cliente...")
+         console.log('isso é o codigo no sock: ' + sock.codigo_venda)
 
-//       sock.on('venda-recebida', (codigo_venda) => {
-//          console.log(`Venda recebida, codigo: ${codigo_venda}`)
-//          sock.codigo_venda = codigo_venda
+         console.log(`enviando uma mensagem para o retaguarda... `)
+         socket.emit('tem-venda', sock.codigo_venda)
+      })
 
-//          console.log('isso é o codigo no sock: ' + sock.codigo_venda)
-
-//          console.log(`enviando uma mensagem para o retaguarda... `)
-//          socket.emit('tem-venda', sock.codigo_venda)
-//       })
-
-//       sock.on('atualizar-estoque', (tabela) => {
-//          console.log('vou pegar o hook atualizador e pegar a tabela.. ')
+      sock.on('atualizar-estoque', (tabela) => {
+         console.log('vou pegar o hook atualizador e pegar a tabela.. ')
       
-//          const atualizador =  Atualizador();
-//          const resp = atualizador.atualizaEstoque(tabela)
+         const atualizador =  Atualizador();
+         const resp = atualizador.atualizaEstoque(tabela)
 
-//          if (resp){
-//             console.log('Vou dar um emit')
-//             socket.emit('atualizado', new Date().toLocaleDateString("pt-br"));
-//          }
+         if (resp){
+            console.log('Vou dar um emit')
+            socket.emit('atualizado', new Date().toLocaleDateString("pt-br"));
+         }
          
-//       })
+      })
 
-//    })
+   })
 
 
 
-// } else {
+} else {
 
-//    console.log("Não existe chave...")
-//    const server = http.createServer(app)
-//       .listen(port, () => {
-//          console.log(`enviroment: ${process.env.APP_ENV}`)
-//          console.log(`estamos online na porta  ${port}`)
-//       })
+   console.log("Não existe chave...")
+   const server = http.createServer(app)
+      .listen(port, () => {
+         console.log(`enviroment: ${process.env.APP_ENV}`)
+         console.log(`estamos online na porta  ${port}`)
+      })
     
 
-// }
+}
