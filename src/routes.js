@@ -78,7 +78,7 @@ routes.put('/api/categorias', CategoriaController.update)
 routes.post('/api/subcategorias', validateSubcategoriasStore, SubCategorias.store)
 routes.post('/api/tipo-produto', validateCategorias, TipoController.store)
 
-routes.get('/api/promocoes/direct',  PromocaoController.directSell)
+routes.get('/api/promocoes/direct',  PromocaoController.bestSellers)
 
 routes.put('/api/usuarios', validateUserUpdate, UserController.update)
 

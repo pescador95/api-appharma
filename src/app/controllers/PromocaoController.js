@@ -58,27 +58,20 @@ class PromocaoController {
 
    async bestSellers(req, res) {   
 
-      const topItem = Math.floor(Math.random() * 20) + 1;
+      // const topItem = Math.floor(Math.random() * 20) + 1;
       
-      const params =  ['2020-01-01', '2020-03-30', '2020-04-01' ]
+      const params =  ['2020-05-30' ]
 
       const qry = `
-               SELECT p1.id, p1.nome, p1.valor_venda, p.preco_promocao, e.qtdestoque, (1 - p.preco_promocao/p1.valor_venda) * 100 AS percent, f.path as image FROM promocoes p
-                  INNER JOIN estoque e ON p.id_produto = e.id_produto
-                  INNER JOIN produtos p1 ON e.id_produto = p1.id
-                  LEFT JOIN files f ON p1.img_id = f.id
-               WHERE p.id_produto IN (
-                  SELECT id FROM (
-                     SELECT p.id, p.nome, COUNT(*) total  FROM vendas v
-                        INNER JOIN produtos p ON v.id_produto = p.id
-                        WHERE v.data_venda BETWEEN $1 AND $2
-                        GROUP BY p.id, p.nome
-                     HAVING COUNT(*) > ${topItem}     
-                     )tmp
-                  )
-                  AND p.data_inicio <= $3 AND p.data_fim > $3 AND e.qtdestoque > 0
-               ORDER BY percent desc
-               LIMIT 20
+      SELECT p1.id, p1.nome, max(e.preco_venda) as valor_venda, max(p.preco_promocao) as preco_promocao, max(e.qtd_estoque) as qtd_estoque, (1 - max(p.preco_promocao)/max(e.preco_venda)) * 100 AS percent, f.path as image 
+      FROM promocoes p
+          INNER JOIN estoque e ON p.codigo_barras = e.codigo_barras
+          INNER JOIN produtos p1 ON e.id_produto = p1.id
+          LEFT JOIN files f ON p1.img_id = f.id
+      WHERE  p.data_inicio <= $1 AND p.data_fim > $1 AND e.qtd_estoque > 0
+      group by p1.id, p1.nome, f.path
+       ORDER BY percent desc
+       LIMIT 20
       `
 
       const result = await db.query(qry, params)

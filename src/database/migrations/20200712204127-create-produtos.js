@@ -22,15 +22,11 @@ module.exports = {
           descricao: {
             type: Sequelize.STRING, 
             allowNull: true
-          },
-          valor_custo: {
-            type: Sequelize.DECIMAL, 
+          },   
+          principio: {
+            type: Sequelize.STRING, 
             allowNull: true
-          },
-          valor_venda: {
-            type: Sequelize.DECIMAL, 
-            allowNull: false
-          },
+          },   
           img_id:
           {
              type: Sequelize.INTEGER,

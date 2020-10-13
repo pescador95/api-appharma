@@ -5,28 +5,28 @@ module.exports = {
       return Promise.all([
          queryInterface.addColumn(
             'estoque',
-            'preco_venda',
+            'fabricante',
             {
-               type: Sequelize.DECIMAL
+               type: Sequelize.STRING
             }
          ),
          queryInterface.addColumn(
             'estoque',
-            'preco_promocao',
+            'status',
             {
-               type: Sequelize.DECIMAL
+               type: Sequelize.INTEGER
             }
-         ),
+         )
       ])
+
    },
 
    down: (queryInterface) => {
 
       return Promise.all([
-         queryInterface.removeColumn('estoque', 'preco_venda'),
-         queryInterface.removeColumn('estoque', 'preco_promocao')
+         queryInterface.removeColumn('estoque', 'fabricante'),
+         queryInterface.removeColumn('estoque', 'status')
       ])
-      
 
    }
 };

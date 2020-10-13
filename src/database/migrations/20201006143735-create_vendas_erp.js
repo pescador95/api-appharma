@@ -3,20 +3,21 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
 
-      return queryInterface.createTable('estoque', {
+      return queryInterface.createTable('vendas_erp', {
           id: {
              type: Sequelize.INTEGER, 
              primaryKey: true,
              allowNull: false,
             autoIncrement: true,
          },
-         id_loja: {
-            type:Sequelize.INTEGER,
-            references: { model: 'lojas', key: 'id' },
-            onUpdate: 'CASCADE',
-            onDelete: 'SET NULL',
+         codigo_venda:{
+            type:Sequelize.STRING,
             allowNull:false,
          },
+         cpf: {
+            type: Sequelize.STRING,
+            allowNull: false,
+          },
          codigo_barras: {
             type: Sequelize.STRING,
             allowNull: false,
@@ -27,17 +28,13 @@ module.exports = {
             onUpdate: 'CASCADE',
             onDelete: 'SET NULL'
           },
-          qtd_estoque:{
-            type:Sequelize.INTEGER,
+          data_venda:{
+            type:Sequelize.DATE,
             allowNull:false,
           },
-          preco_venda:{
-            type:Sequelize.INTEGER,
-            allowNull:false,
-          },
-          preco_promocao:{
-            type:Sequelize.INTEGER,
-            allowNull:false,
+          valor_liquido:{
+             type:Sequelize.DECIMAL,
+             allowNull:true,
           },
           created_at: {
             type: Sequelize.DATE, 
@@ -52,7 +49,7 @@ module.exports = {
 
   down: (queryInterface) => {
  
-      return queryInterface.dropTable('estoque');
+      return queryInterface.dropTable('vendas_erp');
     
   }
 };
