@@ -12,10 +12,10 @@ let existe = fs.existsSync(resolve(__dirname, 'config', 'privkey.pem'));
 if (existe) {
    console.log("Existe chave...")
    const options = {
-      key: fs.readFileSync(resolve(__dirname, 'config', 'local-key.pem'), 'utf-8'),
-      cert: fs.readFileSync(resolve(__dirname, 'config', 'local-cert.pem'), 'utf-8')
+      key: fs.readFileSync(resolve(__dirname, 'config', 'privkey.pem'), 'utf-8'),
+      cert: fs.readFileSync(resolve(__dirname, 'config', 'fullchain.pem'), 'utf-8')
    }
-   
+
    const server = https.createServer(options, app)
       .listen(port, () => {
          console.log(`enviroment: ${process.env.APP_ENV}`)
