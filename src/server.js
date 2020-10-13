@@ -12,8 +12,8 @@ let existe = fs.existsSync(resolve(__dirname, 'config', 'privkey.pem'));
 if (existe) {
    console.log("Existe chave...")
    const options = {
- //     key: fs.readFileSync(resolve(__dirname, 'config', 'privkey.pem'), 'utf-8'),
-   //:wq   cert: fs.readFileSync(resolve(__dirname, 'config', 'fullchain.pem'), 'utf-8')
+      key: fs.readFileSync(resolve(__dirname, 'config', 'privkey.pem'), 'utf-8'),
+      cert: fs.readFileSync(resolve(__dirname, 'config', 'fullchain.pem'), 'utf-8')
    }
 
    const server = https.createServer(options, app)
@@ -62,14 +62,6 @@ if (existe) {
          console.log(`enviroment: ${process.env.APP_ENV}`)
          console.log(`estamos online na porta  ${port}`)
       })
-   const socket = io(server)
-
-   socket.on('connection', (socket) => {
-      console.log("Recebendo conexão do cliente...")
-   })
-
-
-
-
+    
 
 }
