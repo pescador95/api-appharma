@@ -16,11 +16,17 @@ if (existe) {
       cert: fs.readFileSync(resolve(__dirname, 'config', 'fullchain.pem'), 'utf-8')
    }
 
-   const server = https.createServer(options, app)
-      .listen(port, () => {
-         console.log(`enviroment: ${process.env.APP_ENV}`)
-         console.log(`estamos online na porta  ${port}`)
-      })
+   // const server = https.createServer(options, app)
+   //    .listen(port, () => {
+   //       console.log(`enviroment: ${process.env.APP_ENV}`)
+   //       console.log(`estamos online na porta  ${port}`)
+   //    })
+
+   const server = http.createServer(app)
+   .listen(port, () => {
+      console.log(`enviroment: ${process.env.APP_ENV}`)
+      console.log(`estamos online na porta  ${port}`)
+   })
 
    const socket = io(server)
 
