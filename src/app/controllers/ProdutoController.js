@@ -9,20 +9,25 @@ class ProdutoController {
       const { name, data, page = 1 } = req.query
 
       const sql = `
-      SELECT id, codigo_barras, nome, principio, image, 0 AS qtd, preco_original, MIN(preco_vigente) as preco_vigente, MAX(discount) as discount FROM (
-      SELECT p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, 
-      COALESCE(p1.preco_promocao, p.valor_venda) AS preco_vigente, p.valor_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim, f.path AS image, p.principio, 
-      COALESCE((1-p1.preco_promocao / p.valor_venda)*100, 0) AS discount, 0 as qtd
-   FROM produtos p  
-    left JOIN promocoes p1 ON p.id = p1.id_produto   and p1.data_inicio < :data  and p1.data_fim > :data     
-     LEFT JOIN files f ON p.img_id = f.id                                                                                                    
-   WHERE p.nome LIKE :search_name  ) tmp
-   GROUP BY  id, codigo_barras, nome, principio, image, preco_original
-   order by discount desc
-   limit 10 offset :offset`;
+      SELECT id, codigo_barras, nome, principio, image, max(preco_original) preco_original, max(qtd) as qtd, MIN(preco_vigente) as preco_vigente, MAX(discount) as discount FROM (
+         SELECT p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, 
+         COALESCE(p1.preco_promocao, e.preco_venda) AS preco_vigente, e.preco_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim, f.path AS image, p.principio, 
+         COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount, e.qtd_estoque as qtd
+      FROM produtos p  
+       INNER JOin estoque e on p.id = e.id_produto
+       left JOIN promocoes p1 ON p.id = p1.id_produto   and p1.data_inicio < :data  and p1.data_fim > :data    
+        LEFT JOIN files f ON p.img_id = f.id                                                                                                    
+      WHERE p.nome LIKE :search_name and e.qtd_estoque > 0   
+      
+     ) tmp
+     GROUP BY  id, codigo_barras, nome, principio, image
+     order by discount desc
+    limit 10 offset :offset
+      `;
 
       const sql_count = ` select count(*) as total
    FROM produtos p  
+   INNER JOin estoque e on p.id = e.id_produto
     left JOIN promocoes p1 ON p.id = p1.id_produto   and p1.data_inicio < :data  and p1.data_fim > :data     
      LEFT JOIN files f ON p.img_id = f.id                                                                                                    
    WHERE p.nome LIKE :search_name`;
@@ -67,13 +72,21 @@ class ProdutoController {
 
       console.log(`Id passado: ${id}`)
 
-      const sql = "SELECT p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, " +
-         "       COALESCE(p1.preco_promocao, p.valor_venda) AS preco_vigente, p.valor_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim, f.path AS image, p.principio, " +
-         "       COALESCE((1-p1.preco_promocao / p.valor_venda)*100, 0) AS discount " +
-         "  FROM produtos p  " +
-         "  left JOIN promocoes p1 ON p.id = p1.id_produto   and p1.data_inicio < $2  and p1.data_fim > $2     " +
-         "  LEFT JOIN files f ON p.img_id = f.id                                                                                                    " +
-         "WHERE p.id = $1  ";
+      const sql = `
+      SELECT p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, p1.data_fim, p1.data_inicio, f.path AS image, p.principio,  
+      COALESCE(p1.preco_promocao, e.preco_venda) AS preco_vigente, 
+     e.preco_venda as preco_original, 
+      p1.preco_promocao,  
+      COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount,
+      e.qtd_estoque
+   FROM produtos p  
+   inner join estoque e on p.id = e.id_produto
+   left JOIN promocoes p1 ON p.id = p1.id_produto   and p1.data_inicio < $2  and p1.data_fim > $2
+   LEFT JOIN files f ON p.img_id = f.id 
+ WHERE p.id = $1 and qtd_estoque > 0
+ order by qtd_estoque desc
+ limit 1
+      `
 
       const produto = await db.query(sql, params)
 
