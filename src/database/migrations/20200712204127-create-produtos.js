@@ -13,7 +13,6 @@ module.exports = {
          codigo_barras:{
             type:Sequelize.STRING,
             allowNull:false,
-            unique:true,
           },
           nome: {
             type: Sequelize.STRING, 
