@@ -9,7 +9,7 @@ class ProdutoController {
       const { name, data, page = 1 } = req.query
 
       const sql = `
-      SELECT id, codigo_barras, nome, principio, image, max(preco_original) preco_original, max(qtd) as qtd, MIN(preco_vigente) as preco_vigente, MAX(discount) as discount FROM (
+      SELECT id, codigo_barras, nome, principio, image, max(preco_original) preco_original, max(qtd) as qtd_estoque, 0 as qtd, MIN(preco_vigente) as preco_vigente, MAX(discount) as discount FROM (
          SELECT p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, 
          COALESCE(p1.preco_promocao, e.preco_venda) AS preco_vigente, e.preco_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim, f.path AS image, p.principio, 
          COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount, e.qtd_estoque as qtd
