@@ -10,7 +10,8 @@ class Estoque extends Model {
             qtd_estoque:Sequelize.INTEGER,
             preco_venda:Sequelize.DECIMAL,
             preco_promocao:Sequelize.DECIMAL,
-            fabricante:Sequelize.STRING
+            fabricante:Sequelize.STRING,
+            status:Sequelize.INTEGER
          },
          {
             sequelize,

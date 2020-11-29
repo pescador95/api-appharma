@@ -32,12 +32,20 @@ module.exports = {
             allowNull:false,
           },
           preco_venda:{
-            type:Sequelize.INTEGER,
+            type:Sequelize.DECIMAL,
             allowNull:false,
           },
           preco_promocao:{
-            type:Sequelize.INTEGER,
+            type:Sequelize.DECIMAL,
             allowNull:false,
+          },
+          fabricante: {
+            type: Sequelize.STRING,
+            allowNull: true,
+          },
+          status: {
+            type: Sequelize.INTEGER,
+            allowNull: true,
           },
           created_at: {
             type: Sequelize.DATE, 

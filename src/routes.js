@@ -14,6 +14,7 @@ import AddressController from './app/controllers/AddressController'
 import VendaController from './app/controllers/VendaController'
 import FcmController from './app/controllers/FcmController'
 import MensagemController from './app/controllers/MensagemController'
+import EstoqueController from './app/controllers/EstoqueController'
 
 import validateUserStore from './app/validators/UserStore'
 import validateUserUpdate from './app/validators/UserUpdate'
@@ -61,7 +62,12 @@ routes.get('/api/categorias', CategoriaController.show)
 //grava no FCM_TOKEN quando aquele token entrou pela ultima vez
 routes.post('/api/lastacess', FcmController.utlimoAcesso)
 
+
 routes.use(Auth)
+
+//ATUALIZAÇÃO DE ESTOQUE
+routes.put('/api/estoque/:idloja/:idproduto', EstoqueController.update)
+
 
 routes.post('/api/sendmessage/:iduser/:idmsg', FcmController.sendMessage);
 routes.put('/api/fcm', FcmController.update)

@@ -1,25 +1,67 @@
-import db from '../../config/postgres'
+import Estoque from '../models/Estoque'
+const { Op } = require("sequelize");
 
+class EstoqueController {
 
-const useEst = {
-   update: async (req) => {
-      const { codigo_barras, preco_venda, preco_promocao, qtd_estoque } = req;
-      const params = [codigo_barras, preco_venda, preco_promocao, qtd_estoque]
-      const sql = `UPDATE estoque SET qtdestoque = $4, preco_venda = $2, preco_promocao = $3, updated_at = NOW() WHERE codigo_barras = $1 `
-      try {
-      await db.query(sql, params)
-      } catch (e) {
+   async show(req, res){
+      const {idloja, idproduto} = req.params
+      try{
+         const estoque = await Estoque.findAll({
+            where: {
+                [Op.and]: [
+                  { id_loja: idloja },
+                  { id_produto:idproduto }
+                ]
+              }
+            })
+   
+         if(!address){
+            return res.status(400).json({error:"Não encontrei estoque"})
+         }
+   
+         return res.json(estoque)
+
+      }catch(e){  
          console.log(e.message)
       }
+   }
 
-   },
-   getTabela: async () =>{
-      const qry = `SELECT codigo_barras, qtdestoque as qtd_estoque, preco_venda, preco_promocao FROM estoque
-      ORDER BY codigo_barras `
-      const resp = await db.query(qry)
-      return resp.rows
+   async store(req, res){
+      const {id_loja, id_produto, codigo_barras, qtd_estoque, preco_venda, preco_promocao} = req.body
+      try{
+         const estoque = await Estoque.create({id_loja, id_produto, codigo_barras, qtd_estoque, preco_venda, preco_promocao, ativo:1});
+         if(!estoque){
+            return res.status(400).json({error:"Não pude criar esse estoque"})
+         }
+         const {id} = estoque;
+         return res.status(201).json({success:"Estoque inserido com sucesso", estoque:{id, id_loja, id_produto, codigo_barras, qtd_estoque, preco_venda, preco_promocao}}) 
+      }catch (e){
+         console.log(e.message)
+      }
+   }
+
+   async update(req, res){
+      const {idloja, idproduto} = req.params; 
+      const {id_loja, id_produto, codigo_barras, qtd_estoque, preco_venda, preco_promocao, ativo} = req.body
+      try{
+         const estoque = await Estoque.findOne({
+            where: {
+                [Op.and]: [
+                  { id_loja: idloja },
+                  { id_produto:idproduto }
+                ]
+              }
+         })
+         if(!estoque){
+            return res.status(400).json({error:"Não encontrei o estoque!"})
+         }
+         const id = estoque.update({id_loja, id_produto, codigo_barras, qtd_estoque, preco_venda, preco_promocao, ativo})
+         return res.status(200).json({success:"Atualizado com sucesso", id}) 
+      }catch (e){
+         console.log(e.message)
+      }
    }
 
 }
 
-export default () => useEst;
+export default new EstoqueController()

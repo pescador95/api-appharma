@@ -59,7 +59,7 @@ module.exports = {
       return Promise.all([
          queryInterface.removeColumn('vendas', 'id_user'),
          queryInterface.removeColumn('vendas', 'tipo_venda'),
-         queryInterface.removeColumn('vendas', 'levar_pimpad'),
+         queryInterface.removeColumn('vendas', 'levar_pinpad'),
          queryInterface.removeColumn('vendas', 'troco_para'),
          queryInterface.removeColumn('vendas', 'status')
       ])
