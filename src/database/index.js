@@ -17,7 +17,8 @@ import UserAddress from '../app/models/UserAddress'
 import Fcm from '../app/models/Fcm'
 import Mensagem from '../app/models/Mensagem'
 import Loja from '../app/models/Loja'
-const models = [User, File, Produto, Grupo, Sessao, Promocao, Cliente, Venda, Estoque, Tipo, Categoria, SubCategoria, UserAddress, Fcm, Mensagem, Loja  ];
+import Sync from '../app/models/Sincronizacao'
+const models = [User, File, Produto, Grupo, Sessao, Promocao, Cliente, Venda, Estoque, Tipo, Categoria, SubCategoria, UserAddress, Fcm, Mensagem, Loja, Sync  ];
 
 class Database {
   constructor() {

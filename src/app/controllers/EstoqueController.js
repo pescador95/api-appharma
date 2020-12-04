@@ -15,7 +15,7 @@ class EstoqueController {
               }
             })
    
-         if(!address){
+         if(!estoque){
             return res.status(400).json({error:"Não encontrei estoque"})
          }
    
@@ -27,14 +27,15 @@ class EstoqueController {
    }
 
    async store(req, res){
-      const {id_loja, id_produto, codigo_barras, qtd_estoque, preco_venda, preco_promocao} = req.body
+      const {id_loja, codigo_produto, codigo_barras, qtd_estoque, preco_venda, preco_promocao, fabricante} = req.body
+      console.log(JSON.stringify(req.body))
       try{
-         const estoque = await Estoque.create({id_loja, id_produto, codigo_barras, qtd_estoque, preco_venda, preco_promocao, ativo:1});
+         const estoque = await Estoque.create({id_loja, id_produto:codigo_produto, codigo_barras, qtd_estoque, preco_venda, preco_promocao, ativo:1, fabricante});
          if(!estoque){
             return res.status(400).json({error:"Não pude criar esse estoque"})
          }
          const {id} = estoque;
-         return res.status(201).json({success:"Estoque inserido com sucesso", estoque:{id, id_loja, id_produto, codigo_barras, qtd_estoque, preco_venda, preco_promocao}}) 
+         return res.status(201).json({success:"Estoque inserido com sucesso", estoque:{id, id_loja, codigo_produto, codigo_barras, qtd_estoque, preco_venda, preco_promocao}}) 
       }catch (e){
          console.log(e.message)
       }

@@ -4,13 +4,11 @@ export default async (req, res, next) => {
    try {
       const schema = Yup.object().shape({
          nome:Yup.string().required(),
-         descricao:Yup.string().required(),
-         valor_custo:Yup.number().required(),
-         valor_venda:Yup.number()
-         .required(),
+         descricao:Yup.string(),
          id_grupo:Yup.number(),
          id_sessao:Yup.number(),
-         fabricante: Yup.string()
+         fabricante: Yup.string(),
+         codigo_produto: Yup.number(),
       })
 
       if (!(await schema.isValid(req.body))){

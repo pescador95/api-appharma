@@ -15,6 +15,7 @@ import VendaController from './app/controllers/VendaController'
 import FcmController from './app/controllers/FcmController'
 import MensagemController from './app/controllers/MensagemController'
 import EstoqueController from './app/controllers/EstoqueController'
+import SyncController from './app/controllers/SyncController'
 
 import validateUserStore from './app/validators/UserStore'
 import validateUserUpdate from './app/validators/UserUpdate'
@@ -35,9 +36,12 @@ const upload = multer(multerConfig)
 
 
 routes.get('/api/ping', async (req, res)=>{
-
-   res.json({ping:"pong"})
+    
+    res.json({ping:"pong"})
 })
+
+//Testa ultima sincronização
+routes.get('/api/sync/:id', SyncController.show);
 
 routes.post('/api/fcm', FcmController.store)
 
@@ -62,11 +66,28 @@ routes.get('/api/categorias', CategoriaController.show)
 //grava no FCM_TOKEN quando aquele token entrou pela ultima vez
 routes.post('/api/lastacess', FcmController.utlimoAcesso)
 
-
 routes.use(Auth)
+
+//Criar novo tipo de marcação de sincronização
+routes.post('/api/sync', SyncController.store);
+
+
+//testar token
+routes.get('/api/token/acme/', async (req, res) => {
+    console.log("Testando token..")
+    return res.json({sucesso:"sucesso"})
+})
+
 
 //ATUALIZAÇÃO DE ESTOQUE
 routes.put('/api/estoque/:idloja/:idproduto', EstoqueController.update)
+// INSERINDO ESTOQUE NOVO
+routes.post('/api/estoque', EstoqueController.store)
+
+//ATUALIZANDO SYNCRONIZAÇÃO
+routes.put('/api/sync/:idmark', SyncController.update)
+//MOSTRAR ESTOQUE
+routes.get('/api/estoque/:idloja/:idproduto', EstoqueController.show);
 
 
 routes.post('/api/sendmessage/:iduser/:idmsg', FcmController.sendMessage);
@@ -88,6 +109,7 @@ routes.get('/api/promocoes/direct',  PromocaoController.bestSellers)
 
 routes.put('/api/usuarios', validateUserUpdate, UserController.update)
 
+routes.post('/api/produtos/rep', validateProdutoStore, ProdutoController.addReplicador)
 routes.post('/api/produtos', validateProdutoStore, ProdutoController.store)
 routes.put('/api/produtos',  ProdutoController.update)
 
