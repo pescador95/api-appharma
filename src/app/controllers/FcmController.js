@@ -46,6 +46,8 @@ class FcmController {
 
       const  tokensAux = await GetTokens(iduser, )
 
+      console.log("Tokens depois do gettokens: "+ JSON.stringify(tokensAux))
+
       if  (!tokensAux) {
          return res.status(400).json({error:"Não existem tokens para esse usuario"})
       }
