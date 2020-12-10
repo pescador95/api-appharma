@@ -34,10 +34,9 @@ const routes = new Router()
 const upload = multer(multerConfig)
 
 
-
 routes.get('/api/ping', async (req, res)=>{
     
-    res.json({ping:"pong"})
+    res.json({ping:"Ping pong... Api funcionando"})
 })
 
 //Testa ultima sincronização
