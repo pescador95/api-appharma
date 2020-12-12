@@ -37,19 +37,6 @@ if (existe) {
          socket.emit('tem-venda', sock.codigo_venda)
       })
 
-      sock.on('atualizar-estoque', (tabela) => {
-         console.log('vou pegar o hook atualizador e pegar a tabela.. ')
-      
-         const atualizador =  Atualizador();
-         const resp = atualizador.atualizaEstoque(tabela)
-
-         if (resp){
-            console.log('Vou dar um emit')
-            socket.emit('atualizado', new Date().toLocaleDateString("pt-br"));
-         }
-         
-      })
-
    })
 
 
