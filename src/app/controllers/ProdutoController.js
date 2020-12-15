@@ -54,12 +54,6 @@ class ProdutoController {
         } catch (e) {
             console.log(e.message)
         }
-
-
-
-
-
-
     }
 
     async search(req, res) {
@@ -231,20 +225,6 @@ class ProdutoController {
 
         return res.status(200).json(produto)
 
-    }
-
-    async show(req, res) {
-
-        const { page = 1 } = req.query
-
-        const produto = await Produto.findAll({
-            order: ['nome'],
-            attributes: ['codigo_barras', 'nome', 'valor_venda'],
-            limit: 20,
-            offset: (page - 1) * 20,
-        })
-
-        res.json(produto)
     }
 
     async store(req, res) {
