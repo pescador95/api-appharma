@@ -15,7 +15,7 @@ class ProdutoController {
          COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount, e.qtd_estoque as qtd
       FROM produtos p  
        INNER JOin estoque e on p.id = e.id_produto
-       left JOIN promocoes p1 ON p.id = p1.id_produto   and p1.data_inicio < :data  and p1.data_fim > :data    
+       left JOIN promocoes p1 ON p.id = p1.id_produto  and p1.data_inicio < :data  and p1.data_fim > :data    
         LEFT JOIN files f ON p.img_id = f.id                                                                                                    
       WHERE p.nome LIKE :search_name and e.qtd_estoque > 0   
       
@@ -30,7 +30,7 @@ class ProdutoController {
    INNER JOin estoque e on p.id = e.id_produto
     left JOIN promocoes p1 ON p.id = p1.id_produto   and p1.data_inicio < :data  and p1.data_fim > :data     
      LEFT JOIN files f ON p.img_id = f.id                                                                                                    
-   WHERE p.nome LIKE :search_name`;
+   WHERE p.nome LIKE :search_name  and e.qtd_estoque > 0   `;
 
         let searchName = `%${name}%`
 
