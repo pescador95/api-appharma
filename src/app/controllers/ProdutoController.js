@@ -23,6 +23,7 @@ class ProdutoController {
                     LEFT JOIN promocoes p1 ON p1.id_produto = p.id AND  data_inicio < :data AND data_fim > :data
                     left JOIN files f ON f.id = p.img_id
                     WHERE qtd_estoque > 0 
+                    order BY nome
                     LIMIT 30 OFFSET :page `
         const sql_count = `select COUNT(*) as total
                                 FROM produtos p
