@@ -46,21 +46,22 @@ class ProdutoController {
                 type: QueryTypes.SELECT,
                 replacements: {
                     data,
-                    page:offset
+                    page: offset
                 }
             });
             if (!listaProdutos) {
                 return res.status(400).json({ error: "não encontrei produtos" })
             }
-            return res.json({ produtos: listaProdutos, pagina:page, paginas  })
+            return res.json({ produtos: listaProdutos, pagina: page, paginas })
         } catch (e) {
             console.log(e.message)
         }
     }
 
     async search(req, res) {
-        const { name, data, page = 1 } = req.query
+        const { name, page = 1 } = req.query
 
+        const data = new Date();
         const sql = `
       SELECT id, codigo_barras, nome, principio, image, max(preco_original) preco_original, max(qtd) as qtd_estoque, 0 as qtd, MIN(preco_vigente) as preco_vigente, MAX(discount) as discount FROM (
          SELECT p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, 
@@ -112,7 +113,7 @@ class ProdutoController {
             if (!listaProdutos) {
                 return res.status(400).json({ error: "não encontrei produtos" })
             }
-            return res.json({ produtos: listaProdutos, pagina:page, paginas })
+            return res.json({ produtos: listaProdutos, pagina: page, paginas })
         } catch (e) {
             console.log(e.message)
         }
