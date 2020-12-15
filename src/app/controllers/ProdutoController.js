@@ -7,7 +7,7 @@ class ProdutoController {
 
     async show(req, res) {
 
-        const { page } = req.query
+        const { page =1} = req.query
 
         const data = new Date();
 
