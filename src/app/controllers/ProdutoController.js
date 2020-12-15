@@ -5,6 +5,63 @@ import db from '../../config/postgres'
 
 class ProdutoController {
 
+    async show(req, res) {
+
+        const { page } = req.query
+
+        const data = new Date();
+
+        const sql = `select p.id, 
+                        p.codigo_barras, 
+                        p.nome, 
+                        e.qtd_estoque, 
+                        COALESCE(p1.preco_promocao, e.preco_venda) AS preco,
+                        COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount
+                    FROM produtos p
+                    inner JOIN estoque e ON p.id = e.id_produto
+                    LEFT JOIN promocoes p1 ON p1.id_produto = p.id AND  data_inicio < :dataAND data_fim > :data
+                    WHERE qtd_estoque > 0 
+                    LIMIT 10 OFFSET :page `
+        const sql_count = `select COUNT(*) as total
+                                FROM produtos p
+                                inner JOIN estoque e ON p.id = e.id_produto
+                                LEFT JOIN promocoes p1 ON p1.id_produto = p.id AND  data_inicio < :data AND data_fim > :data
+                            WHERE qtd_estoque > 0 `
+        try {
+
+            const count = await Produto.sequelize.query(sql_count, {
+                type: QueryTypes.SELECT,
+                replacements: {
+                    data,
+                }
+            })
+
+            const paginas = Math.round(count[0].total / 10)
+
+            const offset = (page - 1) * 10
+
+            const listaProdutos = await Produto.sequelize.query(sql, {
+                type: QueryTypes.SELECT,
+                replacements: {
+                    data,
+                    offset
+                }
+            });
+            if (!listaProdutos) {
+                return res.status(400).json({ error: "não encontrei produtos" })
+            }
+            return res.json({ produtos: listaProdutos, paginas })
+        } catch (e) {
+            console.log(e.message)
+        }
+
+
+
+
+
+
+    }
+
     async search(req, res) {
         const { name, data, page = 1 } = req.query
 
@@ -26,11 +83,11 @@ class ProdutoController {
       `;
 
         const sql_count = ` select count(*) as total
-   FROM produtos p  
-   INNER JOin estoque e on p.id = e.id_produto
-    left JOIN promocoes p1 ON p.id = p1.id_produto   and p1.data_inicio < :data  and p1.data_fim > :data     
-     LEFT JOIN files f ON p.img_id = f.id                                                                                                    
-   WHERE p.nome LIKE :search_name  and e.qtd_estoque > 0   `;
+                                    FROM produtos p  
+                                    INNER JOin estoque e on p.id = e.id_produto
+                                        left JOIN promocoes p1 ON p.id = p1.id_produto   and p1.data_inicio < :data  and p1.data_fim > :data     
+                                        LEFT JOIN files f ON p.img_id = f.id                                                                                                    
+                                    WHERE p.nome LIKE :search_name  and e.qtd_estoque > 0   `;
 
         let searchName = `%${name}%`
 
@@ -66,9 +123,9 @@ class ProdutoController {
 
     }
     async selectProduct(req, res) {
-        const { id } = req.query
+        const { id, data } = req.query
 
-        const params = [id, '2020-04-28T00:00:00-03']
+        const params = [id, data]
 
         console.log(`Id passado: ${id}`)
 
@@ -104,8 +161,8 @@ class ProdutoController {
         const sql = " SELECT tmp.id, tmp.nome, tmp.preco_vigente, tmp.preco_original, tmp.preco_promocao, image, discount, COUNT(*) AS total FROM ( " +
             "                                                                                                                                                              " +
             " SELECT p.id , p.codigo_barras, p.nome, p.descricao,                                                                                                           " +
-            "        COALESCE(p1.preco_promocao, p.valor_venda) AS preco_vigente, p.valor_venda as preco_original, p1.preco_promocao, f.path AS image, p.principio,        " +
-            "        COALESCE((1 - p1.preco_promocao / p.valor_venda)*100, 0) AS discount                                                                                        " +
+            "        COALESCE(p1.preco_promocao, e.valor_venda) AS preco_vigente, p.valor_venda as preco_original, e.preco_promocao, f.path AS image, p.principio,        " +
+            "        COALESCE((1 - p1.preco_promocao / e.valor_venda)*100, 0) AS discount                                                                                        " +
             "     FROM produtos p                                                                                                                                          " +
             "   left JOIN promocoes p1 ON p.id = p1.id_produto  and p1.data_inicio < $1 and p1.data_fim > $1                                                            " +
             "   LEFT JOIN files f ON p.img_id = f.id                                                                                                                       " +
@@ -140,8 +197,8 @@ class ProdutoController {
         const params = ['2020-04-28T00:00:00-03', tipo, id]
         const sql =
             "SELECT p.id , p.codigo_barras, p.nome, p.descricao, " +
-            "                 COALESCE(p1.preco_promocao, p.valor_venda) AS preco_vigente, p.valor_venda as preco_original, p1.preco_promocao, f.path AS image, p.principio, " +
-            "                  COALESCE((1 - p1.preco_promocao / p.valor_venda)*100, 0) AS discount " +
+            "                 COALESCE(p1.preco_promocao, e.preco_venda) AS preco_vigente, e.peco_venda as preco_original, p1.preco_promocao, f.path AS image, p.principio, " +
+            "                  COALESCE((1 - p1.preco_promocao / e.preco_venda)*100, 0) AS discount " +
             "      FROM produtos p  " +
             "      left JOIN promocoes p1 ON p.id = p1.id_produto and p1.data_inicio < $1 and p1.data_fim > $1" +
             "      LEFT JOIN files f ON p.img_id = f.id           " +
@@ -220,7 +277,7 @@ class ProdutoController {
             return res.status(401).json({ error: "Cadastro permitido apenas para administradores" })
         }
 
-        let { codigo_produto, codigo_barras, nome, id_grupo, id_sessao, principio} = req.body
+        let { codigo_produto, codigo_barras, nome, id_grupo, id_sessao, principio } = req.body
         let qry = `INSERT INTO appharma.public.produtos(id, codigo_barras, nome, principio, id_grupo, id_sessao, created_at, updated_at) VALUES
                                     (:id, :codigo_barras, :nome, :principio,  :grupo, :sessao, now(), now());`;
 
