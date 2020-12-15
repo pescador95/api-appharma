@@ -15,11 +15,13 @@ class ProdutoController {
                         p.codigo_barras, 
                         p.nome, 
                         e.qtd_estoque, 
+                        f.path,
                         COALESCE(p1.preco_promocao, e.preco_venda) AS preco,
                         COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount
                     FROM produtos p
                     inner JOIN estoque e ON p.id = e.id_produto
                     LEFT JOIN promocoes p1 ON p1.id_produto = p.id AND  data_inicio < :data AND data_fim > :data
+                    left JOIN files f ON f.id = p.img_id
                     WHERE qtd_estoque > 0 
                     LIMIT 10 OFFSET :page `
         const sql_count = `select COUNT(*) as total
