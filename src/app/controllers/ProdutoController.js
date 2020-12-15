@@ -52,7 +52,7 @@ class ProdutoController {
             if (!listaProdutos) {
                 return res.status(400).json({ error: "não encontrei produtos" })
             }
-            return res.json({ produtos: listaProdutos, paginas })
+            return res.json({ produtos: listaProdutos, pagina:page, paginas  })
         } catch (e) {
             console.log(e.message)
         }
@@ -112,7 +112,7 @@ class ProdutoController {
             if (!listaProdutos) {
                 return res.status(400).json({ error: "não encontrei produtos" })
             }
-            return res.json({ produtos: listaProdutos, paginas })
+            return res.json({ produtos: listaProdutos, pagina:page, paginas })
         } catch (e) {
             console.log(e.message)
         }
