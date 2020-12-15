@@ -7,7 +7,7 @@ class ProdutoController {
 
     async show(req, res) {
 
-        const { page =1} = req.query
+        const { page = 1 } = req.query
 
         const data = new Date();
 
@@ -44,7 +44,7 @@ class ProdutoController {
                 type: QueryTypes.SELECT,
                 replacements: {
                     data,
-                    offset
+                    page:offset
                 }
             });
             if (!listaProdutos) {
