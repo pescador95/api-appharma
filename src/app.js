@@ -21,6 +21,7 @@ class App {
    middlewares() {
 
       this.server.use(cors({
+        "allowedHeaders":"*",
          "origin": "*",
          "methods": "GET,HEAD,PUT,POST,DELETE",
          "preflightContinue": false,
