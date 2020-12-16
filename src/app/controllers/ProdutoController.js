@@ -30,6 +30,7 @@ class ProdutoController {
                                 inner JOIN estoque e ON p.id = e.id_produto
                                 LEFT JOIN promocoes p1 ON p1.id_produto = p.id AND  data_inicio < :data AND data_fim > :data
                             WHERE qtd_estoque > 0 `
+
         try {
 
             const count = await Produto.sequelize.query(sql_count, {
@@ -39,9 +40,9 @@ class ProdutoController {
                 }
             })
 
-            const paginas = Math.round(count[0].total / 10)
+            const paginas = Math.round(count[0].total / 30)
 
-            const offset = (page - 1) * 10
+            const offset = (page - 1) * 30
 
             const listaProdutos = await Produto.sequelize.query(sql, {
                 type: QueryTypes.SELECT,
