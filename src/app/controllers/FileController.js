@@ -2,6 +2,7 @@ import File from '../models/File'
 
 class FileController {
     async store(req, res) {
+        res.header("Content-Type", "multipart/form-data");
         const { originalname: name, filename: path } = req.file
 
         const imgId = await File.create({ name, path })
