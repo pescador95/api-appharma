@@ -21,7 +21,7 @@ class App {
     middlewares() {
 
         this.server.use(cors({
-            "origin": ["https://retaguarda.approachmobile.company", "https://approachmobile.company", "http://localhost:3000/"],
+            "origin": "*",
             "allowedHeaders": ["auth", "Content-Type"],
             "exposedHeaders":  "*",
             "methods": "GET,PUT,POST,DELETE",
