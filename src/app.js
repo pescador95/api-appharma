@@ -22,7 +22,7 @@ class App {
 
         this.server.use(cors({
             "origin": ["https://retaguarda.approachmobile.company", "https://approachmobile.company"],
-            "allowedHeaders": "*",
+            "allowedHeaders": ["Access-Control-Allow-Origin", "auth", "Content-Type"],
             "exposedHeaders":  "*",
             "methods": "GET,HEAD,PUT,POST,DELETE",
             "preflightContinue": false,
