@@ -7,7 +7,7 @@ class FileController {
 
         const imgId = await File.create({ name, path })
         res.set('Content-Type', 'multipart/form-data')
-        res.set('Access-Control-Allow-Origin', '*')
+        res.set('Access-Control-Allow-Origin', 'https://approachmobile.company')
         return res.json({ imgId })
     }
 }
