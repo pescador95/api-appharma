@@ -21,10 +21,10 @@ class App {
     middlewares() {
 
         this.server.use(cors({
-            "origin": ["https://retaguarda.approachmobile.company", "https://approachmobile.company"],
-            "allowedHeaders": ["Access-Control-Allow-Origin", "auth", "Content-Type"],
+            "origin": ["https://retaguarda.approachmobile.company", "https://approachmobile.company", "http://localhost:3000/"],
+            "allowedHeaders": ["auth", "Content-Type"],
             "exposedHeaders":  "*",
-            "methods": "GET,HEAD,PUT,POST,DELETE",
+            "methods": "GET,PUT,POST,DELETE",
             "preflightContinue": false,
             "optionsSuccessStatus": 204
         }));
