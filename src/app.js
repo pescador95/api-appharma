@@ -10,44 +10,44 @@ import routes from './routes'
 import './database'
 
 class App {
-   constructor() {
-      this.server = express()
+    constructor() {
+        this.server = express()
 
-      this.middlewares()
-      this.routes()
-      this.exceptionHandler()
-   }
+        this.middlewares()
+        this.routes()
+        this.exceptionHandler()
+    }
 
-   middlewares() {
+    middlewares() {
 
-      this.server.use(cors({
-          "origin": "*",
-          "allowedHeaders":["Content-Type", "auth", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers"],
-          "exposedHeaders":"*",
-         "methods": "GET,HEAD,PUT,POST,DELETE",
-         "preflightContinue": false,
-         "optionsSuccessStatus": 204
-       }));
-      this.server.use(express.json());
-      this.server.use('/files', express.static(resolve(__dirname, '..', 'tmp', 'uploads')))
-   }
+        this.server.use(cors({
+            "origin": "*",
+            "allowedHeaders": ["Content-Type", "auth", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin"],
+            "exposedHeaders": "*",
+            "methods": "GET,HEAD,PUT,POST,DELETE",
+            "preflightContinue": false,
+            "optionsSuccessStatus": 204
+        }));
+        this.server.use(express.json());
+        this.server.use('/files', express.static(resolve(__dirname, '..', 'tmp', 'uploads')))
+    }
 
-   routes() {
-      this.server.use(routes)
-   }
+    routes() {
+        this.server.use(routes)
+    }
 
-   exceptionHandler() {
-      this.server.use(async (err, req, res, next) => {
-         let errors;
-         errors = await new Youch(err, req).toJSON()
+    exceptionHandler() {
+        this.server.use(async (err, req, res, next) => {
+            let errors;
+            errors = await new Youch(err, req).toJSON()
 
-         if (process.env.APP_ENV === 'development') {
-            return res.status(500).json(errors)
-         }
-         return res.status(500).json({ error: 'Internal server error', msg: errors.error.message })
+            if (process.env.APP_ENV === 'development') {
+                return res.status(500).json(errors)
+            }
+            return res.status(500).json({ error: 'Internal server error', msg: errors.error.message })
 
-      })
-   }
+        })
+    }
 }
 
 export default new App().server
