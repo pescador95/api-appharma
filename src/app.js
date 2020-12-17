@@ -22,7 +22,7 @@ class App {
 
       this.server.use(cors({
           "origin": "*",
-          "allowedHeaders":["Origin", "Content-Type", "auth", "Access-Control-Allow-Origin"],
+          "allowedHeaders":["Content-Type", "auth", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers"],
           "exposedHeaders":"*",
          "methods": "GET,HEAD,PUT,POST,DELETE",
          "preflightContinue": false,
