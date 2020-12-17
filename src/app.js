@@ -25,7 +25,7 @@ class App {
             "allowedHeaders":'Content-Type,Authorization,auth',
             "methods": "GET,PUT,POST,DELETE",
             "preflightContinue": false,
-            "optionsSuccessStatus": 204
+            "optionsSuccessStatus": 200
         }));
         this.server.use(express.json());
         this.server.use('/files', express.static(resolve(__dirname, '..', 'tmp', 'uploads')))
