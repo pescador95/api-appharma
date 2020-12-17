@@ -25,7 +25,7 @@ class App {
             "allowedHeaders": ["Content-Type", "auth", "Access-Control-Allow-Headers", "Access-Control-Allow-Origin"],
             "exposedHeaders": "*",
             "methods": "GET,HEAD,PUT,POST,DELETE",
-            "preflightContinue": false,
+            "preflightContinue": true,
             "optionsSuccessStatus": 204
         }));
         this.server.use(express.json());
