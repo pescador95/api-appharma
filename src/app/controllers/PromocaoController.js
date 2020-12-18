@@ -76,7 +76,6 @@ class PromocaoController {
         const listaProdutos = await Produto.sequelize.query(sql, {
             type: QueryTypes.SELECT,
             replacements: {
-                data,
                 page: random
             }
         });
