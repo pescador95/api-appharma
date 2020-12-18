@@ -62,17 +62,20 @@ class PromocaoController {
         const random = Math.floor(Math.random() * 20) + 1;
 
         const sql = `
-                    SELECT p.id, p.nome, p.descricao, e.preco_venda,
-                    COALESCE(pr.preco_promocao, e.preco_promocao) AS preco_promocao, e.qtd_estoque, 
-                    (1 - COALESCE(pr.preco_promocao, e.preco_promocao) /  e.preco_venda) * 100 AS percent,
-                    e.qtd_estoque, f.path AS image
-                    FROM produtos p
-                    INNER JOIN estoque e ON p.id = e.id_produto
-                    left JOIN promocoes pr ON pr.id_produto = p.id AND pr.data_inicio < NOW() AND pr.data_fim > NOW()
-                    LEFT JOIN files f ON f.id = p.img_id
-                    WHERE e.qtd_estoque > 0 
-                    ORDER BY percent desc
-                    LIMIT 20 OFFSET :page`
+        SELECT * FROM (
+            SELECT p.id, p.nome, p.descricao, e.preco_venda,
+              COALESCE(pr.preco_promocao, e.preco_promocao) AS preco_promocao, e.qtd_estoque, 
+              (1 - COALESCE(pr.preco_promocao, e.preco_promocao) /  e.preco_venda) * 100 AS percent,
+              e.qtd_estoque, f.path AS image
+              FROM produtos p
+              INNER JOIN estoque e ON p.id = e.id_produto
+              left JOIN promocoes pr ON pr.id_produto = p.id AND pr.data_inicio < NOW() AND pr.data_fim > NOW()
+              LEFT JOIN files f ON f.id = p.img_id
+            WHERE e.qtd_estoque > 0
+              )tmp 
+              WHERE tmp.preco_promocao > 0  
+              ORDER BY percent desc
+             LIMIT 20 OFFSET :page`
         const listaProdutos = await Produto.sequelize.query(sql, {
             type: QueryTypes.SELECT,
             replacements: {
