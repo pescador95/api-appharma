@@ -7,13 +7,13 @@ import { startOfWeek, endOfWeek, parseISO, isValid } from 'date-fns'
 import { Op } from 'sequelize'
 
 class PromocaoController {
-   async directSell(req, res) {  
-      
-      const { cpf } = req.query;
-      const randomItem = Math.floor(Math.random() * 6) + 2;
-      const params =  ['2020-01-01', '2020-03-30', '2020-08-01', cpf ]
+    async directSell(req, res) {
 
-      const qry = `
+        const { cpf } = req.query;
+        const randomItem = Math.floor(Math.random() * 6) + 2;
+        const params = ['2020-01-01', '2020-03-30', '2020-08-01', cpf]
+
+        const qry = `
                   SELECT p1.id, p1.nome, p1.valor_venda, p.preco_promocao, e.qtdestoque, (1 - p.preco_promocao/p1.valor_venda) * 100 AS percent, f.path AS image, p1.id_tipo as tipo  FROM promocoes p
                   INNER JOIN estoque e ON p.id_produto = e.id_produto
                   INNER JOIN produtos p1 ON e.id_produto = p1.id
@@ -50,81 +50,90 @@ class PromocaoController {
                LIMIT 20
       `
 
-      const result = await db.query(qry, params)
+        const result = await db.query(qry, params)
 
-      res.send(result.rows)
+        res.send(result.rows)
 
-   }
+    }
 
-   async bestSellers(req, res) {   
+    async bestSellers(req, res) {
 
-      // const topItem = Math.floor(Math.random() * 20) + 1;
-      
-      const params =  ['2020-05-30' ]
+        const random = Math.floor(Math.random() * 20) + 1;
 
-      const qry = `
-      SELECT p1.id, p1.nome, max(e.preco_venda) as valor_venda, max(p.preco_promocao) as preco_promocao, max(e.qtd_estoque) as qtd_estoque, (1 - max(p.preco_promocao)/max(e.preco_venda)) * 100 AS percent, f.path as image 
-      FROM promocoes p
-          INNER JOIN estoque e ON p.codigo_barras = e.codigo_barras
-          INNER JOIN produtos p1 ON e.id_produto = p1.id
-          LEFT JOIN files f ON p1.img_id = f.id
-      WHERE  p.data_inicio <= $1 AND p.data_fim > $1 AND e.qtd_estoque > 0
-      group by p1.id, p1.nome, f.path
-       ORDER BY percent desc
-       LIMIT 20
-      `
+        const sql = `
+                    SELECT p.id, p.nome, p.descricao, e.preco_venda,
+                    COALESCE(pr.preco_promocao, e.preco_promocao) AS preco_promocao, e.qtd_estoque, 
+                    (1 - COALESCE(pr.preco_promocao, e.preco_promocao) /  e.preco_venda) * 100 AS percent,
+                    e.qtd_estoque, f.path AS image
+                    FROM produtos p
+                    INNER JOIN estoque e ON p.id = e.id_produto
+                    left JOIN promocoes pr ON pr.id_produto = p.id AND pr.data_inicio < NOW() AND pr.data_fim > NOW()
+                    LEFT JOIN files f ON f.id = p.img_id
+                    WHERE e.qtd_estoque > 0 
+                    ORDER BY percent desc
+                    LIMIT 20 OFFSET :offrandom
+         `
 
-      const result = await db.query(qry, params)
-
-      res.send(result.rows)
-
-   }
-
-
-
-   async show(req, res) {
-      const { date, page = 1 } = req.query
-
-      const parsedDate = parseISO(date)
-
-      if(!isValid(parsedDate)){
-         return res.status(400).json({error:"Data invalida"})
-      }
-
-
-      const promocao = await Promocao.findAll({
-         where: {
-            data_fim: {
-               [Op.between]: [startOfWeek(parsedDate), endOfWeek(parsedDate)]
-            },
-         },
-         attributes: ['id', 'nome', 'descricao', 'preco_promocao','data_fim'],
-         include: [
-            {
-               model: Produto,
-               as: "produto",
-               attributes: ['id','nome', 'valor_venda'],
-               include: [
-                  {
-                     model: File,
-                     as: "image",
-                     attributes: ['id','url','path' ],
-                  }
-               ]
+         const listaProdutos = await Promocao.sequelize.query(sql, {
+            type: QueryTypes.SELECT,
+            replacements: {
+                offrandom:random
             }
-         ],
-         limit:20,
-         offset:(page - 1) * 20,
-         order: [['data_fim', 'desc']]
-      })
+        });
+        if (!listaProdutos) {
+            return res.status(400).json({ error: "não encontrei produtos" })
+        }
+        return res.json({ produtos: listaProdutos, pagina: page, paginas })
 
-      if (!promocao) {
-         return res.status(400).json({ error: "Nenhuma promoção essa semana!" })
-      }
+    
 
-      return res.json(promocao)
+    }
 
-   }
+
+
+    async show(req, res) {
+        const { date, page = 1 } = req.query
+
+        const parsedDate = parseISO(date)
+
+        if (!isValid(parsedDate)) {
+            return res.status(400).json({ error: "Data invalida" })
+        }
+
+
+        const promocao = await Promocao.findAll({
+            where: {
+                data_fim: {
+                    [Op.between]: [startOfWeek(parsedDate), endOfWeek(parsedDate)]
+                },
+            },
+            attributes: ['id', 'nome', 'descricao', 'preco_promocao', 'data_fim'],
+            include: [
+                {
+                    model: Produto,
+                    as: "produto",
+                    attributes: ['id', 'nome', 'valor_venda'],
+                    include: [
+                        {
+                            model: File,
+                            as: "image",
+                            attributes: ['id', 'url', 'path'],
+                        }
+                    ]
+                }
+            ],
+            limit: 20,
+            offset: (page - 1) * 20,
+            order: [['data_fim', 'desc']]
+        })
+
+        if (!promocao) {
+            return res.status(400).json({ error: "Nenhuma promoção essa semana!" })
+        }
+
+        return res.json(promocao)
+
+    }
 
 }
 export default new PromocaoController()
