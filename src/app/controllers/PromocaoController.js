@@ -2,6 +2,7 @@ import Produto from '../models/Produto'
 import Promocao from '../models/Promocao'
 import File from '../models/File'
 import db from '../../config/postgres'
+import { Op, QueryTypes } from 'sequelize'
 
 import { startOfWeek, endOfWeek, parseISO, isValid } from 'date-fns'
 import { Op } from 'sequelize'
