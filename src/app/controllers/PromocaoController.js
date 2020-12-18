@@ -71,21 +71,20 @@ class PromocaoController {
                     LEFT JOIN files f ON f.id = p.img_id
                     WHERE e.qtd_estoque > 0 
                     ORDER BY percent desc
-                    LIMIT 20 OFFSET :offrandom
-         `
-
-         const listaProdutos = await Promocao.sequelize.query(sql, {
+                    LIMIT 20 OFFSET :page`
+        const listaProdutos = await Produto.sequelize.query(sql, {
             type: QueryTypes.SELECT,
             replacements: {
-                offrandom:random
+                data,
+                page: random
             }
         });
         if (!listaProdutos) {
             return res.status(400).json({ error: "não encontrei produtos" })
         }
-        return res.json({ produtos: listaProdutos, pagina: page, paginas })
+        return res.json({ produtos: listaProdutos })
 
-    
+
 
     }
 
