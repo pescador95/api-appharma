@@ -14,6 +14,7 @@ class ProdutoController {
         const sql = `select p.id, 
                         p.codigo_barras, 
                         p.nome, 
+                        p.descricao,
                         e.qtd_estoque, 
                         f.path,
                         COALESCE(p1.preco_promocao, e.preco_venda) AS preco,
@@ -65,7 +66,7 @@ class ProdutoController {
 
         const data = new Date();
         const sql = `
-      SELECT id, codigo_barras, nome, principio, image, max(preco_original) preco_original, max(qtd) as qtd_estoque, 0 as qtd, MIN(preco_vigente) as preco_vigente, MAX(discount) as discount FROM (
+      SELECT id, codigo_barras, nome, principio, image, descricao, max(preco_original) preco_original, max(qtd) as qtd_estoque, 0 as qtd, MIN(preco_vigente) as preco_vigente, MAX(discount) as discount FROM (
          SELECT p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, 
          COALESCE(p1.preco_promocao, e.preco_venda) AS preco_vigente, e.preco_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim, f.path AS image, p.principio, 
          COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount, e.qtd_estoque as qtd
@@ -78,7 +79,7 @@ class ProdutoController {
      ) tmp
      GROUP BY  id, codigo_barras, nome, principio, image
      order by discount desc
-    limit 10 offset :offset
+    limit 30 offset :offset
       `;
 
         const sql_count = ` select count(*) as total
@@ -100,9 +101,9 @@ class ProdutoController {
                 }
             })
 
-            const paginas = Math.round(count[0].total / 10)
+            const paginas = Math.round(count[0].total / 30)
 
-            const offset = (page - 1) * 10
+            const offset = (page - 1) * 30
 
             const listaProdutos = await Produto.sequelize.query(sql, {
                 type: QueryTypes.SELECT,
