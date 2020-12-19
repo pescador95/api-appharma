@@ -66,20 +66,16 @@ class ProdutoController {
 
         const data = new Date();
         const sql = `
-      SELECT id, codigo_barras, nome, principio, image, descricao, max(preco_original) preco_original, max(qtd) as qtd_estoque, 0 as qtd, MIN(preco_vigente) as preco_vigente, MAX(discount) as discount FROM (
-         SELECT p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, 
-         COALESCE(p1.preco_promocao, e.preco_venda) AS preco_vigente, e.preco_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim, f.path AS image, p.principio, 
-         COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount, e.qtd_estoque as qtd
-      FROM produtos p  
-       INNER JOin estoque e on p.id = e.id_produto
-       left JOIN promocoes p1 ON p.id = p1.id_produto  and p1.data_inicio < :data  and p1.data_fim > :data    
-        LEFT JOIN files f ON p.img_id = f.id                                                                                                    
-      WHERE p.nome LIKE :search_name and e.qtd_estoque > 0   
-      
-     ) tmp
-     GROUP BY  id, codigo_barras, nome, principio, image
-     order by discount desc
-    limit 30 offset :offset
+        SELECT p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, 
+        COALESCE(p1.preco_promocao, e.preco_venda) AS preco_vigente, e.preco_venda, e.preco_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim, f.path AS image, p.principio, 
+        COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount, e.qtd_estoque 
+              FROM produtos p  
+               INNER JOin estoque e on p.id = e.id_produto
+               left JOIN promocoes p1 ON p.id = p1.id_produto  and p1.data_inicio < :data  and p1.data_fim > :data    
+                LEFT JOIN files f ON p.img_id = f.id                                                                                                    
+              WHERE p.nome LIKE :search_name and e.qtd_estoque > 0       
+        order by discount desc
+        limit 30 offset :offset
       `;
 
         const sql_count = ` select count(*) as total
