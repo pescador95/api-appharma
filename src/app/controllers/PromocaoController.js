@@ -59,7 +59,7 @@ class PromocaoController {
 
     async bestSellers(req, res) {
 
-        const random = Math.floor(Math.random() * 20) + 1;
+        const random = Math.floor(Math.random() * 5) + 1;
 
         const sql = `
         SELECT * FROM (
