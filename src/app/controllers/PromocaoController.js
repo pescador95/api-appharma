@@ -75,7 +75,7 @@ class PromocaoController {
               )tmp 
               WHERE tmp.preco_promocao > 0  
               ORDER BY percent desc
-             LIMIT 20 OFFSET :page`
+             LIMIT 20 -- OFFSET :page`
         const listaProdutos = await Produto.sequelize.query(sql, {
             type: QueryTypes.SELECT,
             replacements: {
