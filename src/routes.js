@@ -16,6 +16,8 @@ import FcmController from './app/controllers/FcmController'
 import MensagemController from './app/controllers/MensagemController'
 import EstoqueController from './app/controllers/EstoqueController'
 import SyncController from './app/controllers/SyncController'
+import ReservaController from './app/controllers/ReservaController'
+
 
 import validateUserStore from './app/validators/UserStore'
 import validateUserUpdate from './app/validators/UserUpdate'
@@ -24,8 +26,10 @@ import validateSessaoStore from './app/validators/SessaoStore'
 import validadeSessions from './app/validators/SessionStore'
 import validateSubcategoriasStore from './app/validators/SubcategoriaStore'
 import validateCategorias from './app/validators/CategoriasStore'
+import validateReserva from './app/validators/ReservaStore'
 import {store as vendaValidatorStore, update as vendaValidatorUpdate} from './app/validators/VendaValidator'
 import {update as addressValidatorUpdate, store as addressValidatorStore} from './app/validators/AddressUpdate'
+
 
 import Auth from './app/middlewares/Auth'
 import multerConfig from './config/multer'
@@ -66,10 +70,18 @@ routes.get('/api/categorias', CategoriaController.show)
 //grava no FCM_TOKEN quando aquele token entrou pela ultima vez
 routes.post('/api/lastacess', FcmController.utlimoAcesso)
 
+//CONTOLE DE RESERVAS
+routes.get('/api/reserva/:id_produto', ReservaController.show ) 
+routes.post('/api/reserva', validateReserva, ReservaController.store)
+
+
 routes.use(Auth)
 
 //Criar novo tipo de marcação de sincronização
 routes.post('/api/sync', SyncController.store);
+
+//BAIXAR RESERVA
+routes.put('/api/reserva/:chave_venda', ReservaController.baixar)
 
 
 //testar token
@@ -88,6 +100,8 @@ routes.post('/api/estoque', EstoqueController.store)
 routes.put('/api/sync/:idmark', SyncController.update)
 //MOSTRAR ESTOQUE
 routes.get('/api/estoque/:idloja/:idproduto', EstoqueController.show);
+
+
 
 
 routes.post('/api/sendmessage/:iduser/:idmsg', FcmController.sendMessage);
