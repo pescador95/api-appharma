@@ -32,6 +32,8 @@ class ProdutoController {
                                 LEFT JOIN promocoes p1 ON p1.id_produto = p.id AND  data_inicio < :data AND data_fim > :data
                             WHERE qtd_estoque > 0 `
 
+       
+
         try {
 
             const count = await Produto.sequelize.query(sql_count, {
@@ -55,6 +57,11 @@ class ProdutoController {
             if (!listaProdutos) {
                 return res.status(400).json({ error: "não encontrei produtos" })
             }
+
+
+
+
+
             return res.json({ produtos: listaProdutos, pagina: page, paginas })
         } catch (e) {
             console.log(e.message)
@@ -141,6 +148,8 @@ class ProdutoController {
                 order by qtd_estoque desc
                 limit 1
       `
+      const slq_reserva = `select sum(qtd_reserva) as total from reserva_estoque where id_produto = :idproduto`
+
 
         const produto = await db.query(sql, params)
 
@@ -148,7 +157,7 @@ class ProdutoController {
             return res.status(400).json({ error: "Produto não encontrado" })
         }
 
-        return res.json(produto.rows)
+        return res.status(200).json(produto.rows)
 
     }
 

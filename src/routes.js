@@ -71,6 +71,7 @@ routes.get('/api/categorias', CategoriaController.show)
 routes.post('/api/lastacess', FcmController.utlimoAcesso)
 
 //CONTOLE DE RESERVAS
+routes.post('/api/verify/reserva', ReservaController.verifyCart)
 routes.get('/api/reserva/:id_produto', ReservaController.show ) 
 routes.post('/api/reserva', validateReserva, ReservaController.store)
 
