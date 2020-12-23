@@ -124,7 +124,6 @@ routes.get('/api/promocoes/direct',  PromocaoController.bestSellers)
 
 routes.put('/api/usuarios', validateUserUpdate, UserController.update)
 
-routes.post('/api/produtos/rep', validateProdutoStore, ProdutoController.addReplicador)
 routes.post('/api/produtos', validateProdutoStore, ProdutoController.store)
 routes.put('/api/produtos',  ProdutoController.update)
 

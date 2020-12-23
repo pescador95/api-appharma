@@ -18,7 +18,8 @@ class ProdutoController {
                         e.qtd_estoque, 
                         f.path,
                         COALESCE(p1.preco_promocao, e.preco_venda) AS preco,
-                        COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount
+                        COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount,
+                        e.id as id_estoque
                     FROM produtos p
                     inner JOIN estoque e ON p.id = e.id_produto
                     LEFT JOIN promocoes p1 ON p1.id_produto = p.id AND  data_inicio < :data AND data_fim > :data
@@ -76,7 +77,7 @@ class ProdutoController {
         SELECT p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, 
         COALESCE(p1.preco_promocao, e.preco_venda) AS preco_vigente, COALESCE(p1.preco_promocao, e.preco_venda) AS preco,  e.preco_venda, 
         e.preco_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim, f.path AS image, f.path, p.principio, 
-        COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount, e.qtd_estoque, 0 as qtd
+        COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount, e.qtd_estoque, 0 as qtd, e.id as id_estoque
               FROM produtos p  
                INNER JOin estoque e on p.id = e.id_produto
                left JOIN promocoes p1 ON p.id = p1.id_produto  and p1.data_inicio < :data  and p1.data_fim > :data    
@@ -139,7 +140,7 @@ class ProdutoController {
                     e.preco_venda as preco_original, 
                     p1.preco_promocao,  
                     COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount,
-                    e.qtd_estoque
+                    e.qtd_estoque, e.id as id_estoque
                 FROM produtos p  
                 inner join estoque e on p.id = e.id_produto
                 left JOIN promocoes p1 ON p.id = p1.id_produto   and p1.data_inicio < $2  and p1.data_fim > $2
@@ -148,8 +149,6 @@ class ProdutoController {
                 order by qtd_estoque desc
                 limit 1
       `
-      const slq_reserva = `select sum(qtd_reserva) as total from reserva_estoque where id_produto = :idproduto`
-
 
         const produto = await db.query(sql, params)
 
@@ -261,37 +260,6 @@ class ProdutoController {
         const produto = await ProdutoService.ProdutoExiste({ idProduto: req.query.id })
         const produtoAtt = await produto.update(req.body)
         return res.status(201).json(produtoAtt)
-    }
-
-    async addReplicador(req, res) {
-
-        if (!req.userAdmin) {
-            return res.status(401).json({ error: "Cadastro permitido apenas para administradores" })
-        }
-
-        let { codigo_produto, codigo_barras, nome, id_grupo, id_sessao, principio } = req.body
-        let qry = `INSERT INTO appharma.public.produtos(id, codigo_barras, nome, principio, id_grupo, id_sessao, created_at, updated_at) VALUES
-                                    (:id, :codigo_barras, :nome, :principio,  :grupo, :sessao, now(), now());`;
-
-        try {
-            const add = await Produto.sequelize.query(qry,
-                {
-                    replacements: { id: codigo_produto, codigo_barras, nome, principio, grupo: id_grupo, sessao: id_sessao },
-                    type: QueryTypes.INSERT
-                })
-
-            if (!add) {
-                return res.status(400).json({ error: 'não inseri' })
-            }
-            return res.status(201).json(add)
-        } catch (error) {
-            console.log(`Erro ao inserir replicação ${error.message}`)
-            return res.status(501).json({ error: error })
-        }
-
-
-
-
     }
 
 }
