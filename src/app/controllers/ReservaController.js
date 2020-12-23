@@ -71,7 +71,8 @@ class ReservaController {
         const { cart } = req.body;
         let newCart = [];
         try {
-            cart.map(async (item, key) => {
+            console.log("Vou correr array")
+           Promise.all( cart.map(async (item, key) => {
                 const { id, qtd, qtd_estoque } = item
                 const qryTotal = ` select coalesce(SUM(qtd_reserva), 0) AS total_reservado 
                              FROM reserva_estoque
@@ -93,9 +94,14 @@ class ReservaController {
                         disponivel
                     })
                 }   
+
+                console.log("Testei produto"+id+" qtd: "+qtd+" disponivel: "+disponivel);
+                console.log(JSON.stringify(newCart))
+            })).then( (r) => {
+                return res.status(200).json({ success: "OK", estoque:newCart })
             })
+
             
-            return res.status(200).json({ success: "OK", indisponiveis: newCart })
         } catch (e) {
             console.log(e.message)
         }
