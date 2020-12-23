@@ -92,11 +92,10 @@ class ReservaController {
                         id_produto: item.id,
                         disponivel
                     })
-                }
-
-                return res.status(200).json({ success: "OK", indisponiveis: newCart })
-
+                }   
             })
+            
+            return res.status(200).json({ success: "OK", indisponiveis: newCart })
         } catch (e) {
             console.log(e.message)
         }

@@ -18,7 +18,7 @@ class Session {
       }
       const {id, name, admin} = user;
 
-      const token = jwt.sign({id, name, admin}, process.env.SECRET, {expiresIn:'7d'})
+      const token = jwt.sign({id, name, admin}, process.env.SECRET, {})
 
       res.json({session:{success:"created", id, name, admin},token:token})
 
