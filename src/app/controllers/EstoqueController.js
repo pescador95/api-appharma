@@ -67,7 +67,7 @@ class EstoqueController {
             })
 
             console.log(JSON.stringify(estoque))
-            if (!id){
+            if (!estoque.id){
                 return res.status(400).json({error:"Não encontrei estoque para esse produto"})
             }
 
@@ -76,7 +76,7 @@ class EstoqueController {
             const updateEstoque = await Estoque.sequelize.query(sqlUpdate, {
                 type:QueryTypes.UPDATE,
                 replacements:{
-                    id,
+                    id:estoque.id,
                     codigo_barras,
                     qtd_estoque,
                     preco_venda,
