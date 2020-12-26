@@ -45,6 +45,7 @@ class EstoqueController {
    }
 
    async update(req, res){
+       console.log("Entrei no update do estoque")
     if (!req.userAdmin){
         return res.json({error:"Você não é administrador."})
      }
