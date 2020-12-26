@@ -271,7 +271,8 @@ class ProdutoController {
         const {id} = req.params;
         const {codigo_barras, nome, principio, id_grupo, id_sessao, codigo_produto} = req.body;
 
-        const sqlUpdate = `update produtos set codigo_barras = :codigo_barras, nome = :nome, principio = :principio, id_grupo=:id_grupo, id_sessao=:id_sessao where id = :idProduto`
+        const sqlUpdate = `update produtos set codigo_barras = :codigo_barras, nome = :nome, principio = :principio, id_grupo=:id_grupo, 
+                                                 id_sessao=:id_sessao, updated_at=now() where id = :idProduto`
 
         const produto = await Produto.sequelize.query(sqlUpdate, {
             type:QueryTypes.UPDATE,
