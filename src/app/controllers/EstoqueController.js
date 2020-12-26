@@ -33,7 +33,7 @@ class EstoqueController {
         const { id_loja, id_produto, codigo_barras, qtd_estoque, preco_venda, preco_promocao, fabricante } = req.body
         console.log(JSON.stringify(req.body))
         try {
-            const estoque = await Estoque.create({ id_loja, id_produto, codigo_barras, qtd_estoque, preco_venda, preco_promocao, ativo: 1, fabricante });
+            const estoque = await Estoque.create({ id_loja, id_produto, codigo_barras, qtd_estoque, preco_venda, preco_promocao, status: 1, fabricante });
             if (!estoque) {
                 return res.status(400).json({ error: "Não pude criar esse estoque" })
             }
