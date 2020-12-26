@@ -50,7 +50,7 @@ class EstoqueController {
             return res.json({ error: "Você não é administrador." })
         }
         const { idloja, idproduto } = req.params;
-        const { codigo_barras, qtd_estoque, preco_venda, preco_promocao, ativo, fabricante } = req.body
+        const { codigo_barras, qtd_estoque, preco_venda, preco_promocao, status, fabricante } = req.body
 
         try {
             const sql = "select id from estoque where id_loja = :idloja and id_produto = :idproduto";
@@ -77,7 +77,7 @@ class EstoqueController {
                     qtd_estoque,
                     preco_venda,
                     preco_promocao,
-                    status: ativo,
+                    status,
                     fabricante
                 }
             })
