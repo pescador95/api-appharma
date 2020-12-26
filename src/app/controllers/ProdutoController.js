@@ -281,10 +281,17 @@ class ProdutoController {
     }
 
     async update(req, res) {
+        console.log("Vou atualizar produtos")
         if (!req.userAdmin) {
             return res.status(401).json({ error: "permitido apenas para administradores" })
         }
+        console.log("sou admin")
+
         const produto = await ProdutoService.ProdutoExiste({ idProduto: req.query.id })
+
+        if (!produto){
+            return res.status(400).json({error:"Não achei produto"})
+        }
         const produtoAtt = await produto.update(req.body)
         return res.status(201).json(produtoAtt)
     }
