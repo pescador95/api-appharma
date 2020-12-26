@@ -58,7 +58,7 @@ class EstoqueController {
             console.log("id produto: "+ idproduto+" id loja: "+idloja);
             console.log(sql)
 
-            const {id} = await Estoque.sequelize.query(sql, {
+            const estoque = await Estoque.sequelize.query(sql, {
                 type: QueryTypes.SELECT,
                 replacements: {
                     idloja,
@@ -66,6 +66,7 @@ class EstoqueController {
                 }
             })
 
+            console.log(JSON.stringify(estoque))
             if (!id){
                 return res.status(400).json({error:"Não encontrei estoque para esse produto"})
             }
