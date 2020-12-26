@@ -33,7 +33,7 @@ class ProdutoController {
                                 LEFT JOIN promocoes p1 ON p1.id_produto = p.id AND  data_inicio < :data AND data_fim > :data
                             WHERE qtd_estoque > 0 `
 
-       
+
 
         try {
 
@@ -58,10 +58,6 @@ class ProdutoController {
             if (!listaProdutos) {
                 return res.status(400).json({ error: "não encontrei produtos" })
             }
-
-
-
-
 
             return res.json({ produtos: listaProdutos, pagina: page, paginas })
         } catch (e) {
@@ -130,33 +126,20 @@ class ProdutoController {
     async selectProduct(req, res) {
         const { id, data } = req.query
 
-        const params = [id, data]
-
         console.log(`Id passado: ${id}`)
+        return res.json({ success: "end point inativado" })
 
-        const sql = `
-                    SELECT p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, p1.data_fim, p1.data_inicio, f.path AS image, p.principio,  
-                    COALESCE(p1.preco_promocao, e.preco_venda) AS preco_vigente, 
-                    e.preco_venda as preco_original, 
-                    p1.preco_promocao,  
-                    COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount,
-                    e.qtd_estoque, e.id as id_estoque
-                FROM produtos p  
-                inner join estoque e on p.id = e.id_produto
-                left JOIN promocoes p1 ON p.id = p1.id_produto   and p1.data_inicio < $2  and p1.data_fim > $2
-                LEFT JOIN files f ON p.img_id = f.id 
-                WHERE p.id = $1 and qtd_estoque > 0
-                order by qtd_estoque desc
-                limit 1
-      `
+        //     const sql = `
 
-        const produto = await db.query(sql, params)
+        //   `
 
-        if (!produto) {
-            return res.status(400).json({ error: "Produto não encontrado" })
-        }
+        //     const produto = await db.query(sql, params)
 
-        return res.status(200).json(produto.rows)
+        //     if (!produto) {
+        //         return res.status(400).json({ error: "Produto não encontrado" })
+        //     }
+
+        //     return res.status(200).json(produto.rows)
 
     }
 
@@ -253,17 +236,17 @@ class ProdutoController {
         return res.status(201).json(produto)
     }
 
-    async addProdutoSync(req, res){
+    async addProdutoSync(req, res) {
         if (!req.userAdmin) {
             return res.status(401).json({ error: "permitido apenas para administradores" })
         }
-        const {codigo_produto ,codigo_barras , nome , id_grupo , id_sessao , principio } = req.body;
+        const { codigo_produto, codigo_barras, nome, id_grupo, id_sessao, principio } = req.body;
 
         const sql = `insert into produtos (id, codigo_barras, nome, principio, id_grupo, id_sessao, created_at, updated_at) 
                                            values (:idProduto, :codigoBarras, :nome, :principio, :id_grupo, :id_sessao, now(), now()) `;
         const prod = await Produto.sequelize.query(sql, {
             type: QueryTypes.INSERT,
-            replacements:{
+            replacements: {
                 idProduto: codigo_produto,
                 codigoBarras: codigo_barras,
                 nome,
@@ -273,27 +256,39 @@ class ProdutoController {
             }
         })
 
-        if(!prod){
-            return res.status(400).json({error: "Erro ao inserir o produto!"})
+        if (!prod) {
+            return res.status(400).json({ error: "Erro ao inserir o produto!" })
         }
 
         return res.status(200).json(prod)
     }
 
     async update(req, res) {
-        console.log("Vou atualizar produtos")
         if (!req.userAdmin) {
             return res.status(401).json({ error: "permitido apenas para administradores" })
         }
-        console.log("sou admin")
 
-        const produto = await ProdutoService.ProdutoExiste({ idProduto: req.query.id })
+        const {id} = req.params;
+        const {codigo_barras, nome, principio, id_grupo, id_sessao, codigo_produto} = req.body;
 
-        if (!produto){
-            return res.status(400).json({error:"Não achei produto"})
+        const sqlUpdate = `update produtos set codigo_barras = :codigo_barras, nome = :nome, principio = :principio, id_grupo=:id_grupo, id_sessao=:id_sessao where id = :idProduto`
+
+        const produto = await Produto.sequelize.query(sqlUpdate, {
+            type:QueryTypes.UPDATE,
+            replacements:{
+                codigo_barras,
+                nome,
+                principio,
+                id_grupo,
+                id_sessao,
+                idProduto:id
+            }
+        })
+
+        if (!produto) {
+            return res.status(400).json({ error: "Não alterei produto" })
         }
-        const produtoAtt = await produto.update(req.body)
-        return res.status(201).json(produtoAtt)
+        return res.status(200).json(produto)
     }
 
 }
