@@ -152,7 +152,7 @@ class PromocaoController {
             return res.status(400).json({error:"Não consegui inserir"})
         }
 
-        return res.status(201).json(resp)
+        return res.status(200).json(resp)
     }
 
     async update(req, res){
@@ -175,7 +175,7 @@ class PromocaoController {
             return res.status(400).json({error:"Não consegui alterar promo"})
         }
 
-        return res.status(201).json(resp)
+        return res.status(200).json(resp)
     }
     
     
