@@ -51,6 +51,8 @@ class EstoqueController {
      }
       const {idloja, idproduto} = req.params; 
       const {codigo_barras, qtd_estoque, preco_venda, preco_promocao, ativo} = req.body
+
+      console.log("idloja e idproduto: "+idloja+ " "+idproduto)
       try{
          const estoque = await Estoque.findOne({
             where: {
