@@ -55,6 +55,9 @@ class EstoqueController {
         try {
             const sql = "select id from estoque where id_loja = :idloja and id_produto = :idproduto";
 
+            console.log("id produto: "+ idproduto+" id loja: "+idloja);
+            console.log(sql)
+
             const {id} = await Estoque.sequelize.query(sql, {
                 type: QueryTypes.SELECT,
                 replacements: {
