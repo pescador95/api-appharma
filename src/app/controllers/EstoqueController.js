@@ -1,5 +1,5 @@
 import Estoque from '../models/Estoque'
-const { Op } = require("sequelize");
+const { Op, QueryTypes } = require("sequelize");
 
 class EstoqueController {
 
@@ -52,28 +52,22 @@ class EstoqueController {
       const {idloja, idproduto} = req.params; 
       const {codigo_barras, qtd_estoque, preco_venda, preco_promocao, ativo} = req.body
 
-      console.log("idloja e idproduto: "+idloja+ " "+idproduto)
-      try{
-         const estoque = await Estoque.findOne({
-            where: {
-                [Op.and]: [
-                  { id_loja: idloja },
-                  { id_produto:idproduto }
-                ]
-              }
-         })
-         console.log("sera que peguei")
-         if(!estoque){
-            return res.status(400).json({error:"Não encontrei o estoque!"})
+     const sql = "select id from estoque where id_loja = :idloja and id_produto = :idproduto";
+
+     const {id} = await Estoque.sequelize.query(sql, {
+         type:QueryTypes.SELECT,
+         replacements:{
+             idloja,
+             idproduto
          }
-         console.log("peguei: "+ JSON.stringify(estoque))
-         const id = estoque.update({codigo_barras, qtd_estoque, preco_venda, preco_promocao, ativo})
-         return res.status(200).json({success:"Atualizado com sucesso", id}) 
+     }) 
+
+     console.log("Este é o id do esqoeu desse produto: "+ id);
+
+
       }catch (e){
          console.log(e.message)
       }
-   }
-
 }
 
 export default new EstoqueController()
