@@ -253,6 +253,33 @@ class ProdutoController {
         return res.status(201).json(produto)
     }
 
+    async addProdutoSync(req, res){
+        if (!req.userAdmin) {
+            return res.status(401).json({ error: "permitido apenas para administradores" })
+        }
+        const {codigo_produto ,codigo_barras , nome , id_grupo , id_sessao , principio } = req.body;
+
+        const sql = `insert into produtos (id, codigo_barras, nome, principio, id_grupo, id_sessao, created_at, updated_at) 
+                                           values (:idProduto, :codigoBarras, :nome, :principio, :id_grupo, :id_sessao, now(), now()) `;
+        const prod = await Produto.sequelize.query(sql, {
+            type: QueryTypes.INSERT,
+            replacements:{
+                idProduto: codigo_produto,
+                codigoBarras: codigo_barras,
+                nome,
+                principio,
+                id_grupo,
+                id_sessao
+            }
+        })
+
+        if(!prod){
+            return res.status(400).json({error: "Erro ao inserir o produto!"})
+        }
+
+        return res.status(200).json(prod)
+    }
+
     async update(req, res) {
         if (!req.userAdmin) {
             return res.status(401).json({ error: "permitido apenas para administradores" })

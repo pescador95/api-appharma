@@ -1,20 +1,23 @@
 import SubCategoria from '../models/SubCategoria'
 
 class SubCategoriaController {
-   async store (req, res) {
+    async store(req, res) {
+        if (!req.userAdmin) {
+            return res.json({ error: "Você não é administrador." })
+        }
 
-      const {id_categoria, descricao} = req.body
-      
-      const sub = await SubCategoria.create({id_categoria, descricao})
+        const { id_categoria, descricao } = req.body
 
-      if (!sub){
-         return res.status(400).json({error:"Ocorreu um erro ao inserir a subcategoria"})
-      }
+        const sub = await SubCategoria.create({ id_categoria, descricao })
 
-      const {id} = sub
+        if (!sub) {
+            return res.status(400).json({ error: "Ocorreu um erro ao inserir a subcategoria" })
+        }
 
-      return res.json({id, id_categoria, descricao})
-   }
+        const { id } = sub
+
+        return res.json({ id, id_categoria, descricao })
+    }
 }
 
 export default new SubCategoriaController()

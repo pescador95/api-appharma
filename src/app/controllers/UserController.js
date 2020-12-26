@@ -33,7 +33,7 @@ class UserController {
 
       const { id, admin } = await User.create({ cpf, name, password, confirmPassword })
 
-      const token = jwt.sign({ id, name, admin }, process.env.SECRET, { expiresIn: '7d' })
+      const token = jwt.sign({ id, name, admin }, process.env.SECRET, {  })
 
       return res.status(201).json({
          id,

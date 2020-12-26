@@ -27,6 +27,9 @@ class EstoqueController {
    }
 
    async store(req, res){
+    if (!req.userAdmin){
+        return res.json({error:"Você não é administrador."})
+     }
       const {id_loja, codigo_produto, codigo_barras, qtd_estoque, preco_venda, preco_promocao, fabricante} = req.body
       console.log(JSON.stringify(req.body))
       try{
@@ -42,6 +45,9 @@ class EstoqueController {
    }
 
    async update(req, res){
+    if (!req.userAdmin){
+        return res.json({error:"Você não é administrador."})
+     }
       const {idloja, idproduto} = req.params; 
       const {id_loja, id_produto, codigo_barras, qtd_estoque, preco_venda, preco_promocao, ativo} = req.body
       try{

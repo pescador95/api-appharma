@@ -125,6 +125,7 @@ routes.get('/api/promocoes/direct',  PromocaoController.bestSellers)
 routes.put('/api/usuarios', validateUserUpdate, UserController.update)
 
 routes.post('/api/produtos', validateProdutoStore, ProdutoController.store)
+routes.post('/api/produtos/add', ProdutoController.addProdutoSync)
 routes.put('/api/produtos',  ProdutoController.update)
 
 routes.post('/api/files', upload.single('file'), FileController.store)

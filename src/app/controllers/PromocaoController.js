@@ -137,5 +137,46 @@ class PromocaoController {
 
     }
 
+    async store(req, res){
+
+        if (!req.userAdmin){
+            return res.json({error:"Você não é administrador."})
+         }
+
+
+        const {codigo, nome, descricao, data_inicio, data_fim, preco_promocao, codigo_barras, id_produto, avista, prazo, cheque, cartao} = req.body;
+
+        const resp = await Promocao.create({codigo, nome, descricao, data_inicio, data_fim, preco_promocao, codigo_barras, id_produto, avista, prazo, cheque, cartao});
+
+        if (!resp){
+            return res.status(400).json({error:"Não consegui inserir"})
+        }
+
+        return res.status(201).json(resp)
+    }
+
+    async update(req, res){
+        if (!req.userAdmin){
+            return res.json({error:"Você não é administrador."})
+         }
+        const {codigo, nome, descricao, data_inicio, data_fim, preco_promocao, codigo_barras, id_produto, avista, prazo, cheque, cartao} = req.body;
+
+        const promo = await Promocao.findOne({where:{codigo}});
+
+        if (!promo){
+            return res.status(400).json({error:"Não encontrei essa promoçao"})
+        }
+        const resp = await promo.update({nome, descricao, data_inicio, data_fim, preco_promocao, codigo_barras, id_produto, avista, prazo, cheque, cartao});
+
+        if (!resp){
+            return res.status(400).json({error:"Não consegui alterar promo"})
+        }
+
+        return res.status(201).json(resp)
+    }
+    
+    
+    
+
 }
 export default new PromocaoController()

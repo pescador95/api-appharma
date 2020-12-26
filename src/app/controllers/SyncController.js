@@ -21,6 +21,9 @@ class SyncController {
 
     async store(req, res) {
         try {
+            if (!req.userAdmin){
+                return res.json({error:"Você não é administrador."})
+             }
             const { descricao } = req.body
             console.log(JSON.stringify(req.body))
             const agora =  new Date();
@@ -37,6 +40,9 @@ class SyncController {
 
     async update(req, res) {
         try {
+            if (!req.userAdmin){
+                return res.json({error:"Você não é administrador."})
+             }
             const agora = new Date();
             const {idmark} = req.params;
             const sync = await Sync.findByPk(idmark);

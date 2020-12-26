@@ -23,6 +23,9 @@ class Msg {
    }
 
    async store(req, res){ 
+    if (!req.userAdmin){
+        return res.json({error:"Você não é administrador."})
+     }
       try{
          const msg = await Mensagem.create(req.body)
          res.json(msg)
@@ -32,6 +35,9 @@ class Msg {
       }
    }
    async update(req, res){ 
+    if (!req.userAdmin){
+        return res.json({error:"Você não é administrador."})
+     }
       const id = req.params.id;
       try{
          const msg = await Mensagem.findByPk(id)

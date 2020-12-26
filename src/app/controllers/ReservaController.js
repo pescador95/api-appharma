@@ -41,6 +41,9 @@ class ReservaController {
     }
 
     async baixar(req, res) {
+        if (!req.userAdmin){
+            return res.json({error:"Você não é administrador."})
+         }
         const { chave_venda } = req.params;
         try {
             const reserva = await Reserva.findAll({

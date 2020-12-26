@@ -2,7 +2,9 @@ import File from '../models/File'
 
 class FileController {
     async store(req, res) {
-        console.log("Entrei no file controler pelo menos...")
+        if (!req.userAdmin){
+            return res.json({error:"Você não é administrador."})
+         }
         const { originalname: name, filename: path } = req.file
 
         const imgId = await File.create({ name, path })

@@ -5,6 +5,10 @@ import File from '../models/File'
 class CategoriaController {
    async store(req, res) {
 
+    if (!req.userAdmin){
+        return res.json({error:"Você não é administrador."})
+     }
+
       const { descricao } = req.body
 
       const categoria = await Categoria.create({ descricao })
@@ -19,6 +23,7 @@ class CategoriaController {
    }
 
    async update(req, res) {
+       
       if (!req.userAdmin) {
          return res.status(401).json({ error: "permitido apenas para administradores" })
       }
