@@ -50,9 +50,8 @@ class EstoqueController {
         return res.json({error:"Você não é administrador."})
      }
       const {idloja, idproduto} = req.params; 
-      const {id_loja, id_produto, codigo_barras, qtd_estoque, preco_venda, preco_promocao, ativo} = req.body
+      const {codigo_barras, qtd_estoque, preco_venda, preco_promocao, ativo} = req.body
       try{
-        console.log("vou consultar estoque")
          const estoque = await Estoque.findOne({
             where: {
                 [Op.and]: [
@@ -66,7 +65,7 @@ class EstoqueController {
             return res.status(400).json({error:"Não encontrei o estoque!"})
          }
          console.log("peguei: "+ JSON.stringify(estoque))
-         const id = estoque.update({id_loja, id_produto, codigo_barras, qtd_estoque, preco_venda, preco_promocao, ativo})
+         const id = estoque.update({codigo_barras, qtd_estoque, preco_venda, preco_promocao, ativo})
          return res.status(200).json({success:"Atualizado com sucesso", id}) 
       }catch (e){
          console.log(e.message)
