@@ -68,7 +68,7 @@ class EstoqueController {
             }
 
             const sqlUpdate = `update estoque set codigo_barras = :codigo_barras, qtd_estoque = :qtd_estoque, preco_venda = : preco_venda
-                                            , preco_promocao = :preco_promocao, fabricante=:fabricante status = :ativo  where id = :id`
+                                            , preco_promocao = :preco_promocao, fabricante=:fabricante status = :status  where id = :id`
             const updateEstoque = await Estoque.sequelize.query(sqlUpdate, {
                 type:QueryTypes.UPDATE,
                 replacements:{
@@ -77,7 +77,7 @@ class EstoqueController {
                     qtd_estoque,
                     preco_venda,
                     preco_promocao,
-                    ativo,
+                    status: ativo,
                     fabricante
                 }
             })
