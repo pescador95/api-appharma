@@ -29,6 +29,7 @@ import validateCategorias from './app/validators/CategoriasStore'
 import validateReserva from './app/validators/ReservaStore'
 import {store as vendaValidatorStore, update as vendaValidatorUpdate} from './app/validators/VendaValidator'
 import {update as addressValidatorUpdate, store as addressValidatorStore} from './app/validators/AddressUpdate'
+import validatePromo from './app/validators/PromoStoreValidator'
 
 
 import Auth from './app/middlewares/Auth'
@@ -120,7 +121,10 @@ routes.put('/api/categorias', CategoriaController.update)
 routes.post('/api/subcategorias', validateSubcategoriasStore, SubCategorias.store)
 routes.post('/api/tipo-produto', validateCategorias, TipoController.store)
 
+//PROMOÇOES
 routes.get('/api/promocoes/direct',  PromocaoController.bestSellers)
+routes.post('/api/promocoes', validatePromo, PromocaoController.store)
+routes.put('/api/promocoes/:codigo', PromocaoController.update)
 
 routes.put('/api/usuarios', validateUserUpdate, UserController.update)
 

@@ -159,7 +159,10 @@ class PromocaoController {
         if (!req.userAdmin){
             return res.json({error:"Você não é administrador."})
          }
-        const {codigo, nome, descricao, data_inicio, data_fim, preco_promocao, codigo_barras, id_produto, avista, prazo, cheque, cartao} = req.body;
+
+         const { codigo } = req.params;
+
+        const {nome, descricao, data_inicio, data_fim, preco_promocao, codigo_barras, id_produto, avista, prazo, cheque, cartao} = req.body;
 
         const promo = await Promocao.findOne({where:{codigo}});
 
