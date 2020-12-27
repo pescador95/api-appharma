@@ -134,7 +134,7 @@ class ProdutoController {
                     f.path,
                     COALESCE(p1.preco_promocao, e.preco_venda) AS preco,
                     COALESCE(COALESCE((1-p1.preco_promocao / e.preco_venda)*100, (1-e.preco_promocao / e.preco_venda)*100), 0) AS discount,
-                    e.id as id_estoque
+                    e.id as id_estoque, 0 as qtd
                 FROM produtos p
                 inner JOIN estoque e ON p.id = e.id_produto
                 LEFT JOIN promocoes p1 ON p1.id_produto = p.id AND  data_inicio < now() AND data_fim > now()
