@@ -124,17 +124,44 @@ class ProdutoController {
 
     }
     async selectProduct(req, res) {
-        const { id, data } = req.query
+        const { id } = req.query
 
-        console.log(`Id passado: ${id}`)
-        const produto = await Produto.findByPk(id);
-        
-            if (!produto) {
-                    return res.status(400).json({ error: "Produto não encontrado" })
+        const qry = `select p.id, 
+                                    p.codigo_barras, 
+                                    p.nome, 
+                                    p.descricao,
+                                    e.qtd_estoque, 
+                                    f.path,
+                                    COALESCE(p1.preco_promocao, e.preco_venda) AS preco,
+                                    COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount,
+                                    e.id as id_estoque
+                                FROM produtos p
+                                inner JOIN estoque e ON p.id = e.id_produto
+                                LEFT JOIN promocoes p1 ON p1.id_produto = p.id AND  data_inicio < now() AND data_fim > now()
+                                left JOIN files f ON f.id = p.img_id
+                                WHERE qtd_estoque > 0 and p.id = :codigo`
+
+        try {
+
+            const produto = await Produto.sequelize.query(qry, {
+                type:QueryTypes.SELECT,
+                replacements:{
+                    codigo:id
                 }
-            
-                return res.status(200).json(produto.rows)
-            
+            })
+
+            if (!produto) {
+                return res.status(400).json({ error: "Produto não encontrado" })
+            }
+
+            return res.status(200).json(produto.rows)
+
+        } catch (e) {
+            console.log("Erro ao pegar produto: " + e.messae)
+            return res.status(500).json({ error: "Erro fatal" })
+        }
+
+
     }
 
     async topSellers(req, res) {
@@ -262,21 +289,21 @@ class ProdutoController {
             return res.status(401).json({ error: "permitido apenas para administradores" })
         }
 
-        const {id} = req.params;
-        const {codigo_barras, nome, principio, id_grupo, id_sessao, codigo_produto} = req.body;
+        const { id } = req.params;
+        const { codigo_barras, nome, principio, id_grupo, id_sessao, codigo_produto } = req.body;
 
         const sqlUpdate = `update produtos set codigo_barras = :codigo_barras, nome = :nome, principio = :principio, id_grupo=:id_grupo, 
                                                  id_sessao=:id_sessao, updated_at=now() where id = :idProduto`
 
         const produto = await Produto.sequelize.query(sqlUpdate, {
-            type:QueryTypes.UPDATE,
-            replacements:{
+            type: QueryTypes.UPDATE,
+            replacements: {
                 codigo_barras,
                 nome,
                 principio,
                 id_grupo,
                 id_sessao,
-                idProduto:id
+                idProduto: id
             }
         })
 
