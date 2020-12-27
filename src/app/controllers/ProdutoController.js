@@ -127,20 +127,14 @@ class ProdutoController {
         const { id, data } = req.query
 
         console.log(`Id passado: ${id}`)
-        return res.json({ success: "end point inativado" })
-
-        //     const sql = `
-
-        //   `
-
-        //     const produto = await db.query(sql, params)
-
-        //     if (!produto) {
-        //         return res.status(400).json({ error: "Produto não encontrado" })
-        //     }
-
-        //     return res.status(200).json(produto.rows)
-
+        const produto = await Produto.findByPk(id);
+        
+            if (!produto) {
+                    return res.status(400).json({ error: "Produto não encontrado" })
+                }
+            
+                return res.status(200).json(produto.rows)
+            
     }
 
     async topSellers(req, res) {
