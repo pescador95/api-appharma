@@ -133,8 +133,14 @@ class ProdutoController {
         e.qtd_estoque, 
         f.path,
         e.preco_venda as preco_original,
-        COALESCE(COALESCE(p1.preco_promocao, e.preco_promocao), e.preco_venda) AS preco_vigente,
-        COALESCE(COALESCE((1-p1.preco_promocao / e.preco_venda)*100, (1-e.preco_promocao / e.preco_venda)*100), 0) AS discount,
+        CASE
+          WHEN COALESCE(p1.preco_promocao, e.preco_promocao) > 0 then COALESCE(p1.preco_promocao, e.preco_promocao)
+          WHEN COALESCE(p1.preco_promocao, e.preco_promocao) <= 0 then e.preco_venda 
+        END AS preco_vigente,
+        CASE
+          WHEN COALESCE((1-p1.preco_promocao / e.preco_venda)*100, (1-e.preco_promocao / e.preco_venda)*100) < 100 THEN COALESCE((1-p1.preco_promocao / e.preco_venda)*100, (1-e.preco_promocao / e.preco_venda)*100)
+          ELSE 0 
+        END AS discount,
         e.id as id_estoque, 0 as qtd, p.principio
     FROM produtos p
     inner JOIN estoque e ON p.id = e.id_produto
