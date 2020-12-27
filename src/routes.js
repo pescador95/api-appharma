@@ -132,6 +132,7 @@ routes.put('/api/usuarios', validateUserUpdate, UserController.update)
 routes.post('/api/produtos', validateProdutoStore, ProdutoController.store)
 routes.post('/api/produtos/add', ProdutoController.addProdutoSync)
 routes.put('/api/produtos/:id',  ProdutoController.update)
+routes.put('/api/ret/produtos/:id',  ProdutoController.updateRetaguarda)
 
 routes.post('/api/files', upload.single('file'), FileController.store)
 

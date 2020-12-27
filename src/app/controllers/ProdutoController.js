@@ -297,7 +297,7 @@ class ProdutoController {
         }
 
         const { id } = req.params;
-        const { codigo_barras, nome, principio, id_grupo, id_sessao, codigo_produto } = req.body;
+        const { codigo_barras, nome, principio, id_grupo, id_sessao, codigo_produto, img_id, descricao } = req.body;
 
         const sqlUpdate = `update produtos set codigo_barras = :codigo_barras, nome = :nome, principio = :principio, id_grupo=:id_grupo, 
                                                  id_sessao=:id_sessao, updated_at=now() where id = :idProduto`
@@ -310,7 +310,34 @@ class ProdutoController {
                 principio,
                 id_grupo,
                 id_sessao,
-                idProduto: id
+                idProduto: id, 
+                img_id, 
+                descricao
+            }
+        })
+
+        if (!produto) {
+            return res.status(400).json({ error: "Não alterei produto" })
+        }
+        return res.status(200).json(produto)
+    }
+
+    async updateRetaguarda(req, res) {
+        if (!req.userAdmin) {
+            return res.status(401).json({ error: "permitido apenas para administradores" })
+        }
+
+        const { id } = req.params;
+        const { img_id, descricao } = req.body;
+
+        const sqlUpdate = `update produtos set img_id = :img_id, descricao = :descricao, updated_at=now() where id = :idProduto`
+
+        const produto = await Produto.sequelize.query(sqlUpdate, {
+            type: QueryTypes.UPDATE,
+            replacements: {
+                idProduto: id, 
+                img_id, 
+                descricao
             }
         })
 
