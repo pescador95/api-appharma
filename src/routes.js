@@ -62,6 +62,7 @@ routes.get('/api/produtos/search', ProdutoController.search)
 routes.get('/api/produtos/:barra', ProdutoController.index)
 routes.get('/api/promocoes',  PromocaoController.show)
 routes.get('/api/promocoes/best',  PromocaoController.bestSellers)
+routes.get('/api/promocoes/destaques', PromocaoController.destaques)
 
 
 routes.get('/api/usuarios/:cpf', UserController.index)

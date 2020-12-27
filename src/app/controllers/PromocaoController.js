@@ -91,6 +91,50 @@ class PromocaoController {
 
     }
 
+    async destaques(req, res){
+        const sql = `select * from (
+            select p.id, 
+                p.codigo_barras, 
+                p.nome, 
+                p.descricao,
+                e.qtd_estoque, 
+                f.path,
+                e.preco_venda as preco_original,
+                CASE
+                  WHEN COALESCE(p1.preco_promocao, e.preco_promocao) > 0 then COALESCE(p1.preco_promocao, e.preco_promocao)
+                  WHEN COALESCE(p1.preco_promocao, e.preco_promocao) <= 0 then e.preco_venda 
+                END AS preco_vigente,
+                CASE
+                  WHEN COALESCE((1-p1.preco_promocao / e.preco_venda)*100, (1-e.preco_promocao / e.preco_venda)*100) < 100 THEN COALESCE((1-p1.preco_promocao / e.preco_venda)*100, (1-e.preco_promocao / e.preco_venda)*100)
+                  ELSE 0 
+                END AS discount,
+                e.id as id_estoque, 0 as qtd, p.principio
+            FROM produtos p
+            inner JOIN estoque e ON p.id = e.id_produto
+            LEFT JOIN promocoes p1 ON p1.id_produto = p.id AND  data_inicio < now() AND data_fim > now()
+            left JOIN files f ON f.id = p.img_id
+            WHERE qtd_estoque > 0 ) tmp
+             where tmp.discount > 0 
+             order by tmp.discount desc`
+
+             try {
+                 const destaques = await Promocao.sequelize.query(sql, {
+                     type:QueryTypes.SELECT
+                 })
+                 if (!destaques){
+                     return res.status(400).json({error:"não encontrei destaques"})
+                 }
+                 return res.status(200).json(destaques)
+             } catch (e){
+                 console.log("não consegui pegar destaques: "+ e.message)
+                 return res.status(500).json({error:"nao peguei destaques."})
+             }
+
+
+    }
+
+
+
 
 
     async show(req, res) {
