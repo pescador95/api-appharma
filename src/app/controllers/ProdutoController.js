@@ -151,7 +151,7 @@ class ProdutoController {
             })
 
             if (!produto) {
-                return res.status(400).json({ error: "Produto não encontrado" })
+                return res.status(400).json({ error: "Produto não  encontrado" })
             }
 
             return res.status(200).json(produto.rows)
