@@ -59,7 +59,7 @@ class SyncController {
     async validaSync(req, res){
         const sql = ` select 
         case 
-          when (interval '5 minutes' + now()) > horario then 1
+          when (interval '2 minutes' + horario) < now() then 1
           else 0 
           end as desync from sincronizacao
         where id = 1
