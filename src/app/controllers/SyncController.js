@@ -1,5 +1,5 @@
 import Sync from '../models/Sincronizacao'
-const { Op } = require("sequelize");
+const { Op, QueryTypes} = require("sequelize");
 
 class SyncController {
 
@@ -54,6 +54,27 @@ class SyncController {
         } catch (e) {
             console.log(e.message)
         }
+    }
+
+    async validaSync(req, res){
+        const sql = ` select 
+        case 
+          when (interval '5 minutes' + now()) > horario then 1
+          else 0 
+          end as desync from sincronizacao
+        where id = 1
+        `
+
+        const resp = await Sync.sequelize.query(sql, {
+            type:QueryTypes.SELECT
+        })
+
+        if (!resp){
+            return res.status(400).json({error:"Não consegui validar marcacao"})
+        }
+
+        return res.status(200).json(resp)
+
     }
 
 }
