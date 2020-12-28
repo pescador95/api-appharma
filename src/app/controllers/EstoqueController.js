@@ -67,6 +67,8 @@ class EstoqueController {
                 return res.status(400).json({error:"Não encontrei estoque para esse produto"})
             }
 
+            console.log("Estou tentando fazer update do id:  "+estoque[0].id)
+
             const sqlUpdate = `update estoque set codigo_barras = :codigo_barras, qtd_estoque = :qtd_estoque, preco_venda = :preco_venda
                                             ,preco_promocao = :preco_promocao, fabricante=:fabricante, status = :status, updated_at = now()  where id = :id`
             const updateEstoque = await Estoque.sequelize.query(sqlUpdate, {
