@@ -41,6 +41,7 @@ class ReservaController {
     }
 
     async baixar(req, res) {
+
         if (!req.userAdmin){
             return res.json({error:"Você não é administrador."})
          }
@@ -67,6 +68,38 @@ class ReservaController {
         } catch (e) {
             console.log(e.message)
         }
+
+    }
+
+    async cancelar(req, res){
+
+        if (!req.userAdmin){
+            return res.json({error:"Você não é administrador."})
+         }
+        const { chave_venda } = req.params;
+        try {
+            const reserva = await Reserva.findAll({
+                where: {
+                    [Op.and]: [{ chave_venda }, { 'baixado': 'N' }],
+                }
+            })
+
+            if (reserva.length == 0) {
+                return res.status(400).json({ error: "Não encontrei essa reserva" })
+            }
+
+            await Reserva.update({ baixado: 'C' }, {
+                where: {
+                    [Op.and]: [{ chave_venda }, { 'baixado': 'N' }],
+                }
+            })
+
+            return res.status(200).json({ success: "Reserva cancelada com sucesso!" })
+
+        } catch (e) {
+            console.log(e.message)
+        }
+
 
     }
 
