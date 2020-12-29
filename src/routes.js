@@ -86,7 +86,7 @@ routes.post('/api/sync', SyncController.store);
 
 //BAIXAR RESERVA
 routes.put('/api/reserva/:chave_venda', ReservaController.baixar)
-routes.delete('/api/reserva/:chave_venda', ReservaController.cancelar)
+routes.put('/api/reserva/cancelar/:chave_venda', ReservaController.cancelar)
 
 
 //testar token
