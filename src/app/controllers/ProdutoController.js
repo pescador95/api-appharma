@@ -90,7 +90,7 @@ class ProdutoController {
                                         LEFT JOIN files f ON p.img_id = f.id                                                                                                    
                                     WHERE p.nome LIKE :search_name  and e.qtd_estoque > 0   `;
 
-        let searchName = `%${name}%`
+        let searchName = `%${name.toUpperCase()}%`
 
         try {
 
