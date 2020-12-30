@@ -12,9 +12,9 @@ export const update = async (req, res, next) => {
          uf: Yup.string(),
       })
 
-      if (!(await schema.isValid(req.body))) {
-         return res.status(400).json({ error: 'invalid params' })
-      }
+    //   if (!(await schema.isValid(req.body))) {
+    //      return res.status(400).json({ error: 'invalid params' })
+    //   }
 
       await schema.validate(req.body, { abortEarly: false })
 
@@ -22,7 +22,7 @@ export const update = async (req, res, next) => {
 
 
    } catch (err) {
-      return res.status(401).json({ error: "Parâmetros invalidos", messages: err.inner })
+      return res.status(400).json({ error: "Parâmetros invalidos", messages: err.inner })
 
    }
 

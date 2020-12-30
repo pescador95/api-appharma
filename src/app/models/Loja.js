@@ -6,10 +6,11 @@ class Loja extends Model {
          {
             cnpj:Sequelize.STRING,
             descricao:Sequelize.STRING,
+            whatsapp:Sequelize.STRING
          },
          {
             sequelize,
-            tableName: 'Lojas'
+            tableName: 'lojas'
          }
       )
       return this

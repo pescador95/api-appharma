@@ -17,6 +17,7 @@ import MensagemController from './app/controllers/MensagemController'
 import EstoqueController from './app/controllers/EstoqueController'
 import SyncController from './app/controllers/SyncController'
 import ReservaController from './app/controllers/ReservaController'
+import LojaController from './app/controllers/LojaController'
 
 
 import validateUserStore from './app/validators/UserStore'
@@ -30,6 +31,7 @@ import validateReserva from './app/validators/ReservaStore'
 import {store as vendaValidatorStore, update as vendaValidatorUpdate} from './app/validators/VendaValidator'
 import {update as addressValidatorUpdate, store as addressValidatorStore} from './app/validators/AddressUpdate'
 import validatePromo from './app/validators/PromoStoreValidator'
+import {validate as lojasValidator} from './app/validators/LojaValidate'
 
 
 import Auth from './app/middlewares/Auth'
@@ -150,6 +152,11 @@ routes.post('/api/venda/', VendaController.store )
 routes.put('/api/venda/', vendaValidatorUpdate, VendaController.update )
 routes.get('/api/venda/', VendaController.show )
 routes.get('/api/venda/:codvenda', VendaController.showItems)
+
+routes.post('/api/loja', lojasValidator, LojaController.store)
+routes.put('/api/loja/:id', lojasValidator, LojaController.update)
+routes.get('/api/loja', LojaController.show)
+routes.get('/api/loja/:id', LojaController.index)
 
 
 export default routes
