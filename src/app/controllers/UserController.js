@@ -16,13 +16,13 @@ class UserController {
          return res.status(400).json({ error: "Usuario não existe" })
       }
 
-      return res.status(200).json({ sucess: "Existe um usuario", user: { id: user.id, nome: user.name, enderecos: user.UserAddresses } })
+      return res.status(200).json({ sucess: "Existe um usuario", user: { id: user.id, nome: user.name, enderecos: user.UserAddresses, whatsapp } })
 
    }
 
    async store(req, res) {
 
-      const { cpf, name, password, confirmPassword } = req.body
+      const { cpf, name, password, confirmPassword, whatsapp } = req.body
 
       const exists = await User.findOne({ where: { cpf } })
 
@@ -31,7 +31,7 @@ class UserController {
       }
 
 
-      const { id, admin } = await User.create({ cpf, name, password, confirmPassword })
+      const { id, admin } = await User.create({ cpf, name, password, confirmPassword, whatsapp })
 
       const token = jwt.sign({ id, name, admin }, process.env.SECRET, {  })
 
@@ -47,7 +47,7 @@ class UserController {
 
    async update(req, res) {
 
-      const { email, password, oldpassword, name } = req.body
+      const { email, password, oldpassword, name, whatsapp } = req.body
       const id = req.userId
       const user = await User.findByPk(id)
 

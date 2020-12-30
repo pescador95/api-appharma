@@ -6,6 +6,7 @@ export default async (req, res, next) =>{
          cpf:Yup.string().required(),
          name:Yup.string().required(),
          email:Yup.string().email(),
+         whatsapp:Yup.string().min(11),
          password:Yup.string().min(6).required(),
          confirmPassword:Yup
                                           .string()
