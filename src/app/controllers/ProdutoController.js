@@ -67,7 +67,7 @@ class ProdutoController {
 
     async search(req, res) {
         const { name, page = 1 } = req.query
-
+        console.log("estamos entrando no search")
         const data = new Date();
         const sql = `
         SELECT p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, 
@@ -90,7 +90,7 @@ class ProdutoController {
                                         LEFT JOIN files f ON p.img_id = f.id                                                                                                    
                                     WHERE p.nome LIKE :search_name  and e.qtd_estoque > 0   `;
 
-        let searchName = `%${name.toUpperCase()}%`
+        let searchName = `%${name}%`
 
         try {
 
