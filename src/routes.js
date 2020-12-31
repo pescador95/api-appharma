@@ -47,6 +47,9 @@ routes.get('/api/ping', async (req, res)=>{
     res.json({ping:"Ping pong... Api funcionando, integração continua tambem!"})
 })
 
+
+routes.get('/api/loja/prazo', LojaController.prazoEntrega)
+
 //Testa ultima sincronização
 routes.get('/api/sync/:id', SyncController.show);
 
