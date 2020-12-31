@@ -6,7 +6,9 @@ class Loja extends Model {
          {
             cnpj:Sequelize.STRING,
             descricao:Sequelize.STRING,
-            whatsapp:Sequelize.STRING
+            whatsapp:Sequelize.STRING,
+            taxa_entrega:Sequelize.DECIMAL,
+            prazo_entrega:Sequelize.INTEGER
          },
          {
             sequelize,

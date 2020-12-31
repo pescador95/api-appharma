@@ -5,12 +5,10 @@ export const validate = async (req, res, next) => {
       const schema = Yup.object().shape({
          cnpj: Yup.string(),
          descricao: Yup.string(),
-         whatsapp: Yup.string().min(11)
+         whatsapp: Yup.string().min(11),
+         taxa_entrega: Yup.number(),
+         prazo_entrega: Yup.number()
       })
-
-    //   if (!(await schema.isValid(req.body))) {
-    //      return res.status(400).json({ error: 'invalid params: '+JSON.stringify(schema.isValid)  })
-    //   }
 
       await schema.validate(req.body, { abortEarly: false })
 
