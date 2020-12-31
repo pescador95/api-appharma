@@ -7,16 +7,13 @@ class UserController {
       const { cpf } = req.params;
 
       const user = await User.findOne({
-         where: { cpf },
-         // include:{
-         //    model: Address
-         // }
+         where: { cpf }
       })
       if (!user) {
          return res.status(400).json({ error: "Usuario não existe" })
       }
 
-      return res.status(200).json({ sucess: "Existe um usuario", user: { id: user.id, nome: user.name, enderecos: user.UserAddresses, whatsapp } })
+      return res.status(200).json({ sucess: "Existe um usuario", user: { id: user.id, nome: user.name, enderecos: user.UserAddresses, whatsapp: user.whatsapp } })
 
    }
 
