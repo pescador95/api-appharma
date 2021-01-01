@@ -10,10 +10,10 @@ class UserController {
          where: { cpf }
       })
       if (!user) {
-         return res.status(400).json({ error: "Usuario não existe" })
+         return res.status(200).json({ error: "Usuario não existe" })
       }
 
-      return res.status(200).json({ sucess: "Existe um usuario", user: { id: user.id, nome: user.name, enderecos: user.UserAddresses, whatsapp: user.whatsapp } })
+      return res.status(200).json({ success: "Existe um usuario", user: { id: user.id, nome: user.name, enderecos: user.UserAddresses, whatsapp: user.whatsapp } })
 
    }
 
