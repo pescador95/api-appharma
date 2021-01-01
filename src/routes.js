@@ -53,6 +53,9 @@ routes.get('/api/loja/prazo', LojaController.prazoEntrega)
 //Testa ultima sincronização
 routes.get('/api/sync/:id', SyncController.show);
 
+//Pega configurações da loja
+routes.get('/api/loja', LojaController.show)
+
 routes.post('/api/fcm', FcmController.store)
 
 routes.post('/api/sessions', validadeSessions, SessionController.create)
@@ -157,8 +160,7 @@ routes.get('/api/venda/', VendaController.show )
 routes.get('/api/venda/:codvenda', VendaController.showItems)
 
 routes.post('/api/loja', lojasValidator, LojaController.store)
-routes.put('/api/loja/:id', lojasValidator, LojaController.update)
-routes.get('/api/loja', LojaController.show)
+routes.put('/api/loja/:id', lojasValidator, LojaController.update);
 routes.get('/api/loja/:id', LojaController.index)
 
 
