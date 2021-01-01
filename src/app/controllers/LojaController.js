@@ -5,9 +5,6 @@ import { format, utcToZonedTime } from 'date-fns-tz'
 class LojaController {
 
     async show(req, res) {
-        if (!req.userAdmin) {
-            return res.json({ error: "Você não é administrador." })
-        }
 
         const lojas = await Loja.findAll();
 
