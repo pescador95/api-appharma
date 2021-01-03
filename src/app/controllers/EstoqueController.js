@@ -66,11 +66,18 @@ class EstoqueController {
                 }
             })
 
-            if (!estoque[0].id){
-                return res.status(400).json({error:"Não encontrei estoque para esse produto"})
+            if(typeof(estoque[0].id) === 'undefined'){
+
+                const addEstoque = await Estoque.create({ id_loja:idloja, id_produto:idproduto, codigo_barras, qtd_estoque, preco_venda, preco_promocao, status: 1, fabricante });
+                if (!addEstoque) {
+                    return res.status(400).json({ error: "Não pude criar esse estoque na atualização do produto: "+idproduto })
+                }
+                estoque[0].id = addEstoque.id
+                console.log("Não tinha estoque e eu criei um para o produto: "+idproduto)
+
             }
 
-            console.log("Estou tentando fazer update do id:  "+estoque[0].id)
+            console.log("Vou fazer o update do produto id::  "+estoque[0].id)
 
             const sqlUpdate = `update estoque set codigo_barras = :codigo_barras, qtd_estoque = :qtd_estoque, preco_venda = :preco_venda
                                             ,preco_promocao = :preco_promocao, fabricante=:fabricante, status = :status, updated_at = now()  where id = :id`
