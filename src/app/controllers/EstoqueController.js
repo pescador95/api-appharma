@@ -53,6 +53,8 @@ class EstoqueController {
         const { idloja, idproduto } = req.params;
         const { codigo_barras, qtd_estoque, preco_venda, preco_promocao, status, fabricante } = req.body
 
+        console.log(`Tentando atualizar: ${JSON.stringify(req.body)}`)
+
         try {
             const sql = "select id from estoque where id_loja = :idloja and id_produto = :idproduto";
 
