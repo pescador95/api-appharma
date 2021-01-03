@@ -5,6 +5,7 @@ class EstoqueController {
 
     async show(req, res) {
         const { idloja, idproduto } = req.params
+        console.log("Entrei para pegar idLoja: "+ idloja +" idproduto: "+ idproduto)
         try {
             const estoque = await Estoque.findAll({
                 where: {
