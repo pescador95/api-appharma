@@ -1,10 +1,9 @@
 import app from './app'
-import Atualizador from './app/services/Atualizador'
 const { resolve } = require('path');
 const https = require('https')
 const http = require('http')
 import fs from 'fs'
-const port = 3333;
+const port = process.env.APP_PORT;
 const io = require('socket.io')
 
 let existe = fs.existsSync(resolve(__dirname, 'config', 'privkey.pem'));
@@ -19,7 +18,7 @@ if (existe) {
    const server = https.createServer(options, app)
       .listen(port, () => {
          console.log(`enviroment: ${process.env.APP_ENV}`)
-         console.log(`estamos online na porta  ${port}`)
+         console.log(`estamos online na porta  ${process.env.APP_PORT}`)
       })
 
    const socket = io(server)

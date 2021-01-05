@@ -28,7 +28,7 @@ class App {
             "optionsSuccessStatus": 200
         }));
         this.server.use(express.json());
-        this.server.use('/files', express.static(resolve(__dirname, '..', 'tmp', 'uploads')))
+        this.server.use('/files', express.static(resolve(__dirname, '..', '..', '..', 'tmp', 'uploads')))
     }
 
     routes() {
