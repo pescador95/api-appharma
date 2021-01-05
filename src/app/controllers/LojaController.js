@@ -6,7 +6,15 @@ class LojaController {
 
     async show(req, res) {
 
-        const lojas = await Loja.findAll();
+        const sql = `
+        select l.id, cnpj, descricao, whatsapp, taxa_entrega, prazo_entrega, cor_primaria, cor_secundaria , f.path as logo
+        from lojas l 
+        left join files f on f.id = l.id_logo
+        `
+
+        const lojas = await Loja.sequelize.query(sql, {
+            type:QueryTypes.SELECT
+        })
 
         if (!lojas) {
             return res.status(400).json({ error: "nao encontrei lojas cadastradas" })
@@ -17,20 +25,31 @@ class LojaController {
     }
 
     async index(req, res) {
-        console.log("Entrei no index")
         if (!req.userAdmin) {
             return res.json({ error: "Você não é administrador." })
         }
 
         const { id } = req.params;
 
-        const loja = await Loja.findByPk(id);
+        const sql = `
+        select l.id, cnpj, descricao, whatsapp, taxa_entrega, prazo_entrega, cor_primaria, cor_secundaria, f.path as logo 
+        from lojas l 
+        left join files f on f.id = l.id_logo
+        where l.id = :id
+        `
 
-        if (!loja) {
-            return res.status(400).json({ error: "nao encontrei loja" })
+        const lojas = await Loja.sequelize.query(sql, {
+            type:QueryTypes.SELECT,
+            replacements:{
+                id
+            }
+        })
+
+        if (!lojas) {
+            return res.status(400).json({ error: "nao encontrei lojas cadastradas" })
         }
 
-        return res.status(200).json(loja)
+        return res.status(200).json(lojas)
 
     }
 
@@ -78,6 +97,10 @@ class LojaController {
         return res.status(200).json({prazo:format(hora, 'yyyy-MM-dd HH:mm:ss', { timeZone: 'America/Sao_Paulo' })})
 
 
+    }
+
+    async getColorsAndLogo(req, res){
+        
     }
 
 
