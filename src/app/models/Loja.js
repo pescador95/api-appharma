@@ -12,6 +12,7 @@ class Loja extends Model {
                 id_logo: Sequelize.INTEGER,
                 cor_primaria:Sequelize.STRING,
                 cor_secundaria:Sequelize.STRING,
+                API_URL:Sequelize.STRING
             },
             {
                 sequelize,
