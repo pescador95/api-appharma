@@ -47,16 +47,20 @@ class VendaController {
 
 
 
-        const sql = `select u.id as idcliente, v.codigo_venda, v.data_venda, v.cpf, u.name, ua.rua, ua.numero, ua.complemento, ua.bairro, ua.cep, v.tipo_venda, v.tipo_entrega, v.levar_pinpad, v.troco_para, v.status, COUNT(*) AS qtdItens, SUM(v.valor_liquido) AS total, u.whatsapp 
-                        FROM vendas v
-                           INNER JOIN users u ON v.id_user = u.id
-                           LEFT JOIN user_address ua ON v.id_endereco = ua.id
-                           
-                           WHERE v.status IN ('Pendente', 'Confirmado', 'Enviado') and (u.cpf = :cpf  or :cpf = '0') 
-                        
-                           GROUP BY u.id, v.codigo_venda, v.data_venda, v.cpf, u.name, ua.rua, ua.numero, ua.complemento, ua.bairro, ua.cep, v.tipo_venda, v.tipo_entrega, v.levar_pinpad, v.troco_para, v.status
-                           
-                           ORDER BY v.data_venda`
+        const sql = `select u.id as idcliente, v.codigo_venda, v.data_venda, v.cpf, u.name, ua.rua, ua.numero, ua.complemento, ua.bairro, ua.cep, v.tipo_venda, v.tipo_entrega, v.levar_pinpad, v.troco_para, v.status, COUNT(*) AS qtdItens,
+                                    case 
+                                    when tipo_entrega = 'Delivery' then SUM(v.valor_liquido) + (select taxa_entrega from lojas where id = 1)
+                                    else sum(v.valor_liquido) end AS total, u.whatsapp 
+                                FROM vendas v
+                                    INNER JOIN users u ON v.id_user = u.id
+                                    LEFT JOIN user_address ua ON v.id_endereco = ua.id
+                                    
+                                    
+                                    WHERE v.status IN ('Pendente', 'Confirmado', 'Enviado') and (u.cpf = :cpf  or :cpf = '0') 
+                                
+                                    GROUP BY u.id, v.codigo_venda, v.data_venda, v.cpf, u.name, ua.rua, ua.numero, ua.complemento, ua.bairro, ua.cep, v.tipo_venda, v.tipo_entrega, v.levar_pinpad, v.troco_para, v.status
+                                    
+                                    ORDER BY v.data_venda`
 
         try {
 
