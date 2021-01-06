@@ -10,8 +10,7 @@ export const validate = async (req, res, next) => {
          prazo_entrega: Yup.number(),
          id_logo:Yup.number(),
          cor_primaria:Yup.string(),
-         cor_secundaria:Yup.string(),
-         API_URL:Yup.string()
+         cor_secundaria:Yup.string()
       })
 
       await schema.validate(req.body, { abortEarly: false })
