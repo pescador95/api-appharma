@@ -330,14 +330,20 @@ class ProdutoController {
         const { id } = req.params;
         const { img_id, descricao } = req.body;
 
+        let temIdImg = img_id
+
+        if (typeof(img_id) !== 'undefined') {
+            temIdImg = null
+        }
+
         const sqlUpdate = `update produtos set img_id = :img_id, descricao = :descricao, updated_at=now() where id = :idProduto`
 
         const produto = await Produto.sequelize.query(sqlUpdate, {
             type: QueryTypes.UPDATE,
             replacements: {
                 idProduto: id, 
-                img_id, 
-                descricao
+                img_id: typeof(img_id) !== 'undefined' ? img_id : null, 
+                descricao: typeof(descricao) !== 'undefined' ? descricao : null
             }
         })
 
