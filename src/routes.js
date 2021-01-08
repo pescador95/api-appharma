@@ -32,6 +32,7 @@ import {store as vendaValidatorStore, update as vendaValidatorUpdate} from './ap
 import {update as addressValidatorUpdate, store as addressValidatorStore} from './app/validators/AddressUpdate'
 import validatePromo from './app/validators/PromoStoreValidator'
 import {validate as lojasValidator} from './app/validators/LojaValidate'
+import produtoPutValidator from './app/validators/ProdutoPutValidate'
 
 
 import Auth from './app/middlewares/Auth'
@@ -141,7 +142,7 @@ routes.put('/api/usuarios', validateUserUpdate, UserController.update)
 
 routes.post('/api/produtos', validateProdutoStore, ProdutoController.store)
 routes.post('/api/produtos/add', ProdutoController.addProdutoSync)
-routes.put('/api/produtos/:id',  ProdutoController.update)
+routes.put('/api/produtos/:id', produtoPutValidator, ProdutoController.update)
 // UPDATE NO RETAGUARDA
 routes.put('/api/ret/produtos/:id',  ProdutoController.updateRetaguarda)
 

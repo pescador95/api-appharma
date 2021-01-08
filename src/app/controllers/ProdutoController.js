@@ -328,29 +328,15 @@ class ProdutoController {
         }
 
         const { id } = req.params;
-        const { img_id, descricao } = req.body;
 
-        let temIdImg = img_id
+        const produto = await Produto.findOne({where:{id}})
 
-        if (typeof(img_id) !== 'undefined') {
-            temIdImg = null
-        }
+        const resp = await produto.update(req.body)
 
-        const sqlUpdate = `update produtos set img_id = :img_id, descricao = :descricao, updated_at=now() where id = :idProduto`
-
-        const produto = await Produto.sequelize.query(sqlUpdate, {
-            type: QueryTypes.UPDATE,
-            replacements: {
-                idProduto: id, 
-                img_id: typeof(img_id) !== 'undefined' ? img_id : null, 
-                descricao: typeof(descricao) !== 'undefined' ? descricao : null
-            }
-        })
-
-        if (!produto) {
+        if (!resp) {
             return res.status(400).json({ error: "Não alterei produto" })
         }
-        return res.status(200).json(produto)
+        return res.status(200).json(resp)
     }
 
 }

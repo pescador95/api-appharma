@@ -4,6 +4,7 @@ class Produto extends Model {
    static init(sequelize) {
       super.init(
          {
+            id_produto:Sequelize.VIRTUAL,
             codigo_barras:Sequelize.STRING,
             nome: Sequelize.STRING,
             descricao: Sequelize.STRING,
