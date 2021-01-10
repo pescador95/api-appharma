@@ -74,7 +74,7 @@ class ProdutoController {
         SELECT p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, 
         COALESCE(p1.preco_promocao, e.preco_venda) AS preco_vigente, COALESCE(p1.preco_promocao, e.preco_venda) AS preco,  e.preco_venda, 
         e.preco_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim, f.path AS image, f.path, p.principio, 
-        COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount, e.qtd_estoque, 0 as qtd, e.id as id_estoque
+        COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount, e.qtd_estoque, 0 as qtd, e.id as id_estoque, e.fabricante
               FROM produtos p  
                INNER JOin estoque e on p.id = e.id_produto
                left JOIN promocoes p1 ON p.id = p1.id_produto  and p1.data_inicio < :data  and p1.data_fim > :data    
@@ -142,7 +142,7 @@ class ProdutoController {
           WHEN COALESCE((1-p1.preco_promocao / e.preco_venda)*100, (1-e.preco_promocao / e.preco_venda)*100) < 100 THEN COALESCE((1-p1.preco_promocao / e.preco_venda)*100, (1-e.preco_promocao / e.preco_venda)*100)
           ELSE 0 
         END AS discount,
-        e.id as id_estoque, 0 as qtd, p.principio
+        e.id as id_estoque, 0 as qtd, p.principio, e.fabricante
     FROM produtos p
     inner JOIN estoque e ON p.id = e.id_produto
     LEFT JOIN promocoes p1 ON p1.id_produto = p.id AND  data_inicio < now() AND data_fim > now()
