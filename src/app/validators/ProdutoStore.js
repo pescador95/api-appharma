@@ -9,7 +9,8 @@ export default async (req, res, next) => {
          id_sessao:Yup.number(),
          principio: Yup.string(),
          codigo_produto: Yup.number(),
-         codigo_barras: Yup.string()
+         codigo_barras: Yup.string(),
+         registroms: Yup.string()
       })
 
 

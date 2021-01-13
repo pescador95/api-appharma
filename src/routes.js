@@ -18,6 +18,7 @@ import EstoqueController from './app/controllers/EstoqueController'
 import SyncController from './app/controllers/SyncController'
 import ReservaController from './app/controllers/ReservaController'
 import LojaController from './app/controllers/LojaController'
+import GraficoController from './app/controllers/GraficoController'
 
 
 import validateUserStore from './app/validators/UserStore'
@@ -89,6 +90,9 @@ routes.post('/api/reserva', validateReserva, ReservaController.store)
 
 
 routes.use(Auth)
+
+//Rotas para chamar graficos
+routes.get('/api/grafico/vendas', GraficoController.graficoVendas)
 
 //Criar novo tipo de marcação de sincronização
 routes.post('/api/sync', SyncController.store);
