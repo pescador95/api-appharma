@@ -88,6 +88,7 @@ routes.post('/api/verify/reserva', ReservaController.verifyCart)
 routes.get('/api/reserva/:id_produto', ReservaController.show ) 
 routes.post('/api/reserva', validateReserva, ReservaController.store)
 
+routes.get('/api/loja/:id', LojaController.index)
 
 routes.use(Auth)
 
@@ -166,7 +167,6 @@ routes.get('/api/venda/:codvenda', VendaController.showItems)
 
 routes.post('/api/loja', lojasValidator, LojaController.store)
 routes.put('/api/loja/:id', lojasValidator, LojaController.update);
-routes.get('/api/loja/:id', LojaController.index)
 
 
 export default routes
