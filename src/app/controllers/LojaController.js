@@ -25,9 +25,6 @@ class LojaController {
     }
 
     async index(req, res) {
-        if (!req.userAdmin) {
-            return res.json({ error: "Você não é administrador." })
-        }
 
         const { id } = req.params;
 
