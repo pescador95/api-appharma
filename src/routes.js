@@ -46,7 +46,7 @@ const upload = multer(multerConfig)
 routes.get('/api/sync/valida', SyncController.validaSync)
 routes.get('/api/ping', async (req, res)=>{
     
-    res.json({ping:"Ping pong... Api funcionando, integração continua tambem!"})
+    res.json({ping:"Ping pong...  Api astrofarma funcionando!"})
 })
 
 
