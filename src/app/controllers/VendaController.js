@@ -2,6 +2,7 @@ import Venda from '../models/Venda'
 import { Op, QueryTypes } from 'sequelize'
 import Usuario from '../models/User'
 import { v4 as uuidv4 } from 'uuid';
+import useRealtime from '../services/Realtime'
 
 class VendaController {
 
@@ -14,6 +15,7 @@ class VendaController {
         const userId = req.userId
         const usuario = await Usuario.findByPk(userId)
         const { cpf } = usuario;
+        const realtime = useRealtime()
 
 
         try {
@@ -24,6 +26,8 @@ class VendaController {
                     Venda.create({ status: 'Pendente', codigo_venda: uuid, id_user: userId, id_produto: id, codigo_barras, nome, valor_liquido: preco_vigente, cpf, created_at: now, updated_at: now, data_venda: now, tipo_venda, levar_pinpad, troco_para: auxtroco, tipo_entrega, id_endereco, valor_original: preco_original })
                 }
             })
+
+            realtime.confirmaVenda()
 
             return res.status(201).json({ sucesso: "Venda efetuada com sucesso", codigo_venda: uuid })
         } catch (e) {

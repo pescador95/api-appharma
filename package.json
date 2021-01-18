@@ -14,6 +14,7 @@
     "start": "node dist/server.js"
   },
   "dependencies": {
+    "@firebase/database": "^0.8.3",
     "@sucrase/jest-plugin": "^2.0.0",
     "@types/factory-girl": "^5.0.2",
     "@types/jest": "^26.0.3",

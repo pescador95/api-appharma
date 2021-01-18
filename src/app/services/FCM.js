@@ -4,7 +4,7 @@ import Fcm from '../models/Fcm'
 
 admin.initializeApp({
    credential: admin.credential.cert(serviceAccount),
-   databaseURL: "https://appharma-b57f0.firebaseio.com"
+   databaseURL: process.env.FIREBASE_URL
 });
 
 export const SendMessage = (message, registrationTokens) => {

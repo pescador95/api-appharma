@@ -39,13 +39,16 @@ import produtoPutValidator from './app/validators/ProdutoPutValidate'
 import Auth from './app/middlewares/Auth'
 import multerConfig from './config/multer'
 import multer from 'multer'
+
+import db from '../src/app/services/Realtime'
+
 const routes = new Router()
 const upload = multer(multerConfig)
 
 
 routes.get('/api/sync/valida', SyncController.validaSync)
 routes.get('/api/ping', async (req, res)=>{
-    
+ 
     res.json({ping:"Ping pong...  funcionando!"})
 })
 
