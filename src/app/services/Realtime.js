@@ -1,21 +1,15 @@
-import firebase from 'firebase-admin'
-import '@firebase/database'
+const firebase = require('firebase-admin')
+require('@firebase/database')
 // Initialize Firebase
 
-const RealtimeApi = {
-    confirmaVenda: async () => {
-        const db = firebase.database().ref();
-        let valor = await db.child('vendas').once('value')
+exports.confirmaVenda = async function () {
+    const db = firebase.database().ref();
+    let valor = await db.child('vendas').once('value')
 
-        let numero = valor.val().numero
-        numero += 1;
+    let numero = valor.val().numero
+    numero += 1;
 
-        await db.child('vendas').update({
-            numero
-        })
-
-    }
-
+    await db.child('vendas').update({
+        numero
+    })
 }
-
-export default () => RealtimeApi;
