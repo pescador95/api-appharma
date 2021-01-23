@@ -20,7 +20,7 @@ class Session {
 
       const token = jwt.sign({id, name, admin, superadmin}, process.env.SECRET, {})
 
-      res.json({session:{success:"created", id, name, admin},token:token})
+      res.json({session:{success:"created", id, name, admin, superadmin},token:token})
 
    }
 
