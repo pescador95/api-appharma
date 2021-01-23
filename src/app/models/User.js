@@ -11,7 +11,8 @@ class User extends Model {
          password_hash: Sequelize.STRING,
          admin: Sequelize.BOOLEAN,
          img_id:Sequelize.INTEGER,
-         whatsapp:Sequelize.STRING
+         whatsapp:Sequelize.STRING,
+         superadmin: Sequelize.BOOLEAN,
       },
       {
          sequelize

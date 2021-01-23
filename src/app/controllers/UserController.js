@@ -28,9 +28,9 @@ class UserController {
       }
 
 
-      const { id, admin } = await User.create({ cpf, name, password, confirmPassword, whatsapp })
+      const { id, admin, superadmin } = await User.create({ cpf, name, password, confirmPassword, whatsapp })
 
-      const token = jwt.sign({ id, name, admin }, process.env.SECRET, {  })
+      const token = jwt.sign({ id, name, admin, superadmin }, process.env.SECRET, {  })
 
       return res.status(201).json({
          id,

@@ -16,9 +16,9 @@ class Session {
       if(!(await user.checkPassword(password))){
          return res.status(401).json({error:"Usuário/Senha invalidos"})
       }
-      const {id, name, admin} = user;
+      const {id, name, admin, superadmin} = user;
 
-      const token = jwt.sign({id, name, admin}, process.env.SECRET, {})
+      const token = jwt.sign({id, name, admin, superadmin}, process.env.SECRET, {})
 
       res.json({session:{success:"created", id, name, admin},token:token})
 
