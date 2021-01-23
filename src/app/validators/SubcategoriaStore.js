@@ -4,7 +4,7 @@ export default async (req, res, next) => {
    try {
       const schema = Yup.object().shape({
          descricao:Yup.string().required(),
-         id_categoria:Yup.number(),
+         id_categoria:Yup.number().required(),
       })
 
       if (!(await schema.isValid(req.body))){

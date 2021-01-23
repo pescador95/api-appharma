@@ -40,8 +40,6 @@ import Auth from './app/middlewares/Auth'
 import multerConfig from './config/multer'
 import multer from 'multer'
 
-import db from '../src/app/services/Realtime'
-
 const routes = new Router()
 const upload = multer(multerConfig)
 
@@ -138,7 +136,11 @@ routes.get('/api/param/mensagens', MensagemController.show)
 routes.post('/api/categorias', validateCategorias, CategoriaController.store)
 routes.put('/api/categorias', CategoriaController.update)
 
+//SUBCATEGORIAS
 routes.post('/api/subcategorias', validateSubcategoriasStore, SubCategorias.store)
+
+
+//TIPO PRODUTO
 routes.post('/api/tipo-produto', validateCategorias, TipoController.store)
 
 //PROMOÇOES
@@ -170,6 +172,7 @@ routes.get('/api/venda/:codvenda', VendaController.showItems)
 
 routes.post('/api/loja', lojasValidator, LojaController.store)
 routes.put('/api/loja/:id', lojasValidator, LojaController.update);
+
 
 
 export default routes

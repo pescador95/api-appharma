@@ -14,6 +14,7 @@ class Produto extends Model {
             id_tipo:Sequelize.INTEGER,
             principio:Sequelize.STRING,
             registroms:Sequelize.STRING,
+            id_subcategoria:Sequelize.INTEGER,
          },
          {
             sequelize,
@@ -29,6 +30,7 @@ class Produto extends Model {
       this.belongsTo(models.File, {foreignKey:'img_id', as:'image'})
       this.belongsTo(models.Grupo, {foreignKey:'id_grupo', as:'grupo'})
       this.belongsTo(models.Sessao, {foreignKey:'id_sessao', as:'sessao'})
+      this.belongsTo(models.SubCategoria, {foreignKey:'id_subcategoria', as:'subcategoria'})
       this.belongsTo(models.Tipo, {foreignKey:'id_tipo', as:'tipo'})
    }
 

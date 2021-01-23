@@ -10,7 +10,8 @@ export default async (req, res, next) => {
          principio: Yup.string(),
          codigo_produto: Yup.number(),
          codigo_barras: Yup.string(),
-         registroms: Yup.string()
+         registroms: Yup.string(),
+         id_categoria: Yup.number()
       })
 
 
