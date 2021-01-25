@@ -9,9 +9,9 @@ class CategoriaController {
         return res.json({error:"Você não é administrador."})
      }
 
-      const { descricao } = req.body
+      const { descricao, id_img } = req.body
 
-      const categoria = await Categoria.create({ descricao })
+      const categoria = await Categoria.create({ descricao, id_img })
 
       if (!categoria) {
          return res.status(400).json({ error: "Ocorreu um erro ao inserir a categoria" })
@@ -19,7 +19,7 @@ class CategoriaController {
 
       const { id } = categoria
 
-      return res.json({ id, descricao })
+      return res.json({ id, descricao, id_img })
    }
 
    async update(req, res) {
