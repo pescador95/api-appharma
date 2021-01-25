@@ -79,7 +79,11 @@ routes.get('/api/promocoes/destaques', PromocaoController.destaques)
 
 routes.get('/api/usuarios/:cpf', UserController.index)
 routes.get('/api/clientes/:cpf', ClienteController.index)
+
+
+//CATEGORIAS
 routes.get('/api/categorias', CategoriaController.show)
+routes.get('/api/subcategorias/:id_categoria', SubCategorias.show)
 
 //grava no FCM_TOKEN quando aquele token entrou pela ultima vez
 routes.post('/api/lastacess', FcmController.utlimoAcesso)
@@ -90,6 +94,8 @@ routes.get('/api/reserva/:id_produto', ReservaController.show )
 routes.post('/api/reserva', validateReserva, ReservaController.store)
 
 routes.get('/api/loja/:id', LojaController.index)
+
+
 
 routes.use(Auth)
 
