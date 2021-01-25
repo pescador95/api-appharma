@@ -4,11 +4,8 @@ export default async (req, res, next) => {
    try {
       const schema = Yup.object().shape({
          descricao:Yup.string().required(),
+         id_img:Yup.number()
       })
-
-    //   if (!(await schema.isValid(req.body))){
-    //      return res.status(400).json({error:'invalid params'})
-    //   }
 
       await schema.validate(req.body, { abortEarly: false })
 
