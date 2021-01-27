@@ -138,9 +138,10 @@ routes.put('/api/param/mensagens/:id', MensagemController.update)
 routes.get('/api/param/mensagens/:id', MensagemController.index)
 routes.get('/api/param/mensagens', MensagemController.show)
 
-
+//CATEGOIRAS
 routes.post('/api/categorias', validateCategorias, CategoriaController.store)
 routes.put('/api/categorias', CategoriaController.update)
+routes.delete('/api/categorias/:id', CategoriaController.delete)
 
 //SUBCATEGORIAS
 routes.post('/api/subcategorias', validateSubcategoriasStore, SubCategorias.store)
