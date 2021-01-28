@@ -145,7 +145,8 @@ routes.delete('/api/categorias/:id', CategoriaController.delete)
 
 //SUBCATEGORIAS
 routes.post('/api/subcategorias', validateSubcategoriasStore, SubCategorias.store)
-
+routes.put('/api/subcategorias/:id',  SubCategorias.update)
+routes.delete('/api/subcategorias/:id',  SubCategorias.delete)
 
 //TIPO PRODUTO
 routes.post('/api/tipo-produto', validateCategorias, TipoController.store)
