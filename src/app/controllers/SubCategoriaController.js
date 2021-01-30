@@ -1,4 +1,6 @@
 import SubCategoria from '../models/SubCategoria'
+import {QueryTypes} from 'sequelize'
+
 
 class SubCategoriaController {
     async store(req, res) {
@@ -23,10 +25,19 @@ class SubCategoriaController {
 
         const { id_categoria } = req.params
 
-        const sub = await SubCategoria.findAll({ where: { id_categoria } })
+        const sql = `select s.id, c.id as id_categoria, c.descricao as categorias, s.descricao  from subcategorias as s
+                                left join categorias as c on c.id = s.id_categoria
+                            where id_categoria = :id`
+
+        const sub = await SubCategoria.sequelize.query(sql, {
+            type:QueryTypes.SELECT,
+            replacements:{
+                id:id_categoria
+            }
+        })
 
         if (!sub) {
-            return res.status(400).json({ error: "Ocorreu um erro ao inserir a subcategoria" })
+            return res.status(400).json({ error: "Não existe subcategorias." })
         }
 
         return res.json(sub)
