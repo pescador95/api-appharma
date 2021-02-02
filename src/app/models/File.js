@@ -14,7 +14,8 @@ class File extends Model {
          }
       },
          {
-            sequelize
+            sequelize,
+            initialAutoIncrement:1000
          })
 
       return this;
