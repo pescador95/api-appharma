@@ -1,4 +1,5 @@
 import File from '../models/File'
+import {QueryTypes} from 'sequelize'
 
 class FileController {
     async store(req, res) {
@@ -9,9 +10,26 @@ class FileController {
 
         console.log(`filename: ${path} original name: ${name}`)
 
-        try{
-            const imgId = await File.create({ name, path })
-            return res.json({ imgId })
+        try{  
+            
+            const slqId = 'select max(id) + 1 as id from files';
+
+            const filesId = await File.sequelize.query(slqId, {
+                type:QueryTypes.SELECT
+            })
+            
+            const sql = `insert into files (id, name, path, created_at, updated_at) values (:id, :name, :path, now(), now()) `;
+
+            const imgId = await File.sequelize.query(sql, {
+                type:QueryTypes.INSERT,
+                replacements:{
+                    id:filesId[0].id,
+                    path,
+                    name
+                }
+            })
+            // const imgId = await File.create({ name, path })
+            return res.json({  id:filesId[0].id })
 
         } catch(e){
             console.log(JSON.stringify(e))
