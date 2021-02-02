@@ -7,8 +7,18 @@ class FileController {
          }
         const { originalname: name, filename: path } = req.file
 
-        const imgId = await File.create({ name, path })
-        return res.json({ imgId })
+        console.log(`filename: ${path} original name: ${name}`)
+
+        try{
+            const imgId = await File.create({ name, path })
+            return res.json({ imgId })
+
+        } catch(e){
+            console.log(JSON.stringify(e))
+            return res.json({error:e.message})
+        }
+
+        
     }
 }
 
