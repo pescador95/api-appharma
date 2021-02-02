@@ -8,7 +8,6 @@ class FileController {
          }
         const { originalname: name, filename: path } = req.file
 
-        console.log(`filename: ${path} original name: ${name}`)
 
         try{  
             
@@ -29,7 +28,7 @@ class FileController {
                 }
             })
             // const imgId = await File.create({ name, path })
-            return res.json({  id:filesId[0].id })
+            return res.json({  id:filesId[0].id, URL:path })
 
         } catch(e){
             console.log(JSON.stringify(e))
