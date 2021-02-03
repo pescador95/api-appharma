@@ -364,13 +364,14 @@ class ProdutoController {
                                         LEFT JOIN files f ON p.img_id = f.id
                         where id_subcategoria = :id
                         order by nome 
-                        limit 30 offset 1 :offset`
+                        limit 30 offset  :offset`
                                 
         const produtos = await Produto.sequelize.query(qry, {
             type:QueryTypes.SELECT,
             replacements:{
                 id,
-                offset
+                offset,
+                data
             }
         })
 
