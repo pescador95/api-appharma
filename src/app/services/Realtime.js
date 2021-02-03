@@ -3,12 +3,12 @@ require('@firebase/database')
 
 exports.confirmaVenda = async function () {
 
-    try {
-        const user = await firebase.auth().signInWithEmailAndPassword('sistemas@approachmobile.company', '123456')
-        console.log("Peguei user: " + JSON.stringify(user))
-    } catch (error) {
-        console.log("pau.."+JSON.stringify(error))
-    }
+    // try {
+    //     const user = await firebase.auth().signInWithEmailAndPassword('sistemas@approachmobile.company', '123456')
+    //     console.log("Peguei user: " + JSON.stringify(user))
+    // } catch (error) {
+    //     console.log("pau.."+JSON.stringify(error))
+    // }
 
 
 
