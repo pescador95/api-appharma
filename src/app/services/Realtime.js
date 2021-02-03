@@ -1,6 +1,6 @@
 const firebase = require('firebase-admin')
 require('@firebase/database')
-require("firebase/auth");
+//const fb = require("firebase/app");
 
 // Initialize Firebase
 
