@@ -71,6 +71,10 @@ routes.get('/api/produtos/best-sellers', ProdutoController.topSellers)
 routes.get('/api/produtos/similars', ProdutoController.similars)
 routes.get('/api/produtos/search', ProdutoController.search)
 
+//PESQUISA PRODUTOS POR SUBCATEGORIA
+routes.get('/api/produtos/subcategorias', ProdutoController.produtosByCategoria)
+
+
 routes.get('/api/produtos/:barra', ProdutoController.index)
 routes.get('/api/promocoes',  PromocaoController.show)
 routes.get('/api/promocoes/best',  PromocaoController.bestSellers)
@@ -84,6 +88,7 @@ routes.get('/api/clientes/:cpf', ClienteController.index)
 //CATEGORIAS
 routes.get('/api/categorias', CategoriaController.show)
 routes.get('/api/subcategorias/:id_categoria', SubCategorias.show)
+
 
 //grava no FCM_TOKEN quando aquele token entrou pela ultima vez
 routes.post('/api/lastacess', FcmController.utlimoAcesso)

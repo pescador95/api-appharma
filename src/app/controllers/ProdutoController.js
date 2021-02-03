@@ -68,7 +68,6 @@ class ProdutoController {
 
     async search(req, res) {
         const { name, page = 1 } = req.query
-        console.log("estamos entrando no search")
         const data = new Date();
         const sql = `
         SELECT p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, 
@@ -338,6 +337,43 @@ class ProdutoController {
             return res.status(400).json({ error: "Não alterei produto" })
         }
         return res.status(200).json(resp)
+    }
+
+    async produtosByCategoria(req, res){
+        const {id, page=1} = req.query;
+        const qryTotal = `select count(*) as total from produtos where id_subcategoria = :id`
+
+        const count = await Produto.sequelize.query(qryTotal, {
+            type:QueryTypes.SELECT,
+            replacements:{
+                id
+            }
+        })  
+
+        const paginas = Math.round(count[0].total / 30)
+        const offset = (page - 1) * 30
+
+        const qry = `select  p.id, p.nome, p.codigo_barras, p.descricao, p.principio 
+                                from produtos p
+                                left join files f on p.img_id = f.id
+                                where id_subcategoria = :id
+                                order by nome 
+                                limit 30 offset :offset`
+                                
+        const produtos = await Produto.sequelize.query(qry, {
+            type:QueryTypes.SELECT,
+            replacements:{
+                id,
+                offset
+            }
+        })
+
+        if(!produtos){
+            return res.status(200).json({error:"Não achei categoria"})
+        }
+        return res.status(200).json({
+            produtos, pagina:page, paginas
+        })
     }
 
 }
