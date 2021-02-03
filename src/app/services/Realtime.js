@@ -1,17 +1,13 @@
 const firebase = require('firebase-admin')
 require('@firebase/database')
-//const fb = require("firebase/app");
-
-// Initialize Firebase
 
 exports.confirmaVenda = async function () {
 
-    try{
+    try {
         const user = await firebase.auth().signInWithEmailAndPassword('sistemas@approachmobile.company', '123456')
-        console.log(JSON.stringify(user))
-
+        console.log("Peguei user: " + JSON.stringify(user))
     } catch (error) {
-        console.log(JSON.stringify(error))
+        console.log("pau.."+JSON.stringify(error))
     }
 
 
