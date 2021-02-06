@@ -65,7 +65,7 @@ class EstoqueController {
                     idproduto
                 }
             })
-            console.log("Vou entrar no undefined")
+            console.log("Vou entrar no undefined" + JSON.stringify(estoque))
 
             if(typeof(estoque[0].id) === 'undefined'){
 
