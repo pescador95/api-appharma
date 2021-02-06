@@ -354,17 +354,19 @@ class ProdutoController {
         const paginas = Math.round(count[0].total / 30)
         const offset = (page - 1) * 30
 
-        const qry = `select p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, 
-                                COALESCE(p1.preco_promocao, e.preco_venda) AS preco_vigente, COALESCE(p1.preco_promocao, e.preco_venda) AS preco,  e.preco_venda, 
-                                e.preco_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim, f.path AS image, f.path, p.principio, 
-                                COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount, e.qtd_estoque, 0 as qtd, e.id as id_estoque, e.fabricante
-                                    FROM produtos p  
-                                    INNER JOin estoque e on p.id = e.id_produto
+        const qry = `select ps.id_subcategoria, p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, 
+                                        COALESCE(p1.preco_promocao, e.preco_venda) AS preco_vigente, COALESCE(p1.preco_promocao, e.preco_venda) AS preco,  e.preco_venda, 
+                                        e.preco_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim, f.path AS image, f.path, p.principio, 
+                                        COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount, e.qtd_estoque, 0 as qtd, e.id as id_estoque, e.fabricante
+                                from produto_subcategorias ps 
+                                    inner join produtos p on p.id = ps.id_produto
+                                    inner join subcategorias s on s.id = ps.id_subcategoria
+                                    INNER join estoque e on p.id = e.id_produto
                                     left JOIN promocoes p1 ON p.id = p1.id_produto and p1.data_inicio < :data  and p1.data_fim > :data    
-                                        LEFT JOIN files f ON p.img_id = f.id
-                        where id_subcategoria = :id and e.qtd_estoque > 0
-                        order by nome 
-                        limit 30 offset  :offset`
+                                    LEFT JOIN files f ON p.img_id = f.id
+                                where ps.id_subcategoria = :id
+                                order by nome 
+                                limit 30 offset :offset`
                                 
         const produtos = await Produto.sequelize.query(qry, {
             type:QueryTypes.SELECT,

@@ -19,6 +19,7 @@ import SyncController from './app/controllers/SyncController'
 import ReservaController from './app/controllers/ReservaController'
 import LojaController from './app/controllers/LojaController'
 import GraficoController from './app/controllers/GraficoController'
+import ProdSubController from './app/controllers/ProdSubController'
 
 
 import validateUserStore from './app/validators/UserStore'
@@ -29,6 +30,7 @@ import validadeSessions from './app/validators/SessionStore'
 import validateSubcategoriasStore from './app/validators/SubcategoriaStore'
 import validateCategorias from './app/validators/CategoriasStore'
 import validateReserva from './app/validators/ReservaStore'
+import validateProdSub from './app/validators/ProdutoSubcategoriaValidator'
 import {store as vendaValidatorStore, update as vendaValidatorUpdate} from './app/validators/VendaValidator'
 import {update as addressValidatorUpdate, store as addressValidatorStore} from './app/validators/AddressUpdate'
 import validatePromo from './app/validators/PromoStoreValidator'
@@ -153,6 +155,9 @@ routes.delete('/api/categorias/:id', CategoriaController.delete)
 routes.post('/api/subcategorias', validateSubcategoriasStore, SubCategorias.store)
 routes.put('/api/subcategorias/:id',  SubCategorias.update)
 routes.delete('/api/subcategorias/:id',  SubCategorias.delete)
+
+//PRODUTO SUBCATEGORIA
+routes.post('/api/produtosubcategoria', validateProdSub, ProdSubController.store)
 
 //TIPO PRODUTO
 routes.post('/api/tipo-produto', validateCategorias, TipoController.store)
