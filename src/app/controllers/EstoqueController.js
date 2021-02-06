@@ -73,13 +73,15 @@ class EstoqueController {
                 console.log("entrei no sem estoque")
             }
 
-            if(typeof(estoque) === 'undefined' || estoque.length == 0){
-
+            if(typeof(estoque) === 'undefined' || estoque.length <= 0){
+                console.log('Entrei no if... ')
 
                 const addEstoque = await Estoque.create({ id_loja:idloja, id_produto:idproduto, codigo_barras, qtd_estoque, preco_venda, preco_promocao, status: 1, fabricante });
                 if (!addEstoque) {
                     return res.status(400).json({ error: "Não pude criar esse estoque na atualização do produto: "+idproduto })
                 }
+
+                console.log("Criei o estoque... ")
                 estoque[0].id = addEstoque.id
                 console.log("Não tinha estoque e eu criei um para o produto: "+idproduto)
 
