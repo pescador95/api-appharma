@@ -67,13 +67,13 @@ class EstoqueController {
             })
             console.log("Vou entrar no undefined" + JSON.stringify(estoque))
 
-            console.log(`Esté é o estoque: ${estoque}`)
+            console.log(`Esté é o estoque: ${estoque.length}`)
 
             if(!estoque){
                 console.log("entrei no sem estoque")
             }
 
-            if(typeof(estoque) === 'undefined'){
+            if(typeof(estoque) === 'undefined' || estoque.length == 0){
 
 
                 const addEstoque = await Estoque.create({ id_loja:idloja, id_produto:idproduto, codigo_barras, qtd_estoque, preco_venda, preco_promocao, status: 1, fabricante });
