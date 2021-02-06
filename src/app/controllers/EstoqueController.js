@@ -68,6 +68,8 @@ class EstoqueController {
 
             if(typeof(estoque[0].id) === 'undefined'){
 
+                console.log("Entrei no undefined...")
+
                 const addEstoque = await Estoque.create({ id_loja:idloja, id_produto:idproduto, codigo_barras, qtd_estoque, preco_venda, preco_promocao, status: 1, fabricante });
                 if (!addEstoque) {
                     return res.status(400).json({ error: "Não pude criar esse estoque na atualização do produto: "+idproduto })
