@@ -342,7 +342,7 @@ class ProdutoController {
     async produtosByCategoria(req, res){
         const {id, page=1} = req.query;
         const data = new Date();
-        const qryTotal = `select count(*) as total from produtos where id_subcategoria = :id`
+        const qryTotal = `select count(*) as total from produto_subcategorias where id_subcategoria = :id`
 
         const count = await Produto.sequelize.query(qryTotal, {
             type:QueryTypes.SELECT,
