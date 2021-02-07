@@ -77,6 +77,7 @@ routes.get('/api/produtos/search', ProdutoController.search)
 routes.get('/api/produtos/subcategorias', ProdutoController.produtosByCategoria)
 
 
+
 routes.get('/api/produtos/:barra', ProdutoController.index)
 routes.get('/api/promocoes',  PromocaoController.show)
 routes.get('/api/promocoes/best',  PromocaoController.bestSellers)
@@ -105,6 +106,9 @@ routes.get('/api/loja/:id', LojaController.index)
 
 
 routes.use(Auth)
+
+//PESQUISA SUBCATEGORIAS DO PRODUTO
+routes.get('/api/prod/sub', SubCategorias.ProdutoSubcategorias)
 
 //Rotas para chamar graficos
 routes.get('/api/grafico/vendas', GraficoController.graficoVendas)
@@ -158,6 +162,7 @@ routes.delete('/api/subcategorias/:id',  SubCategorias.delete)
 
 //PRODUTO SUBCATEGORIA
 routes.post('/api/produtosubcategoria', validateProdSub, ProdSubController.store)
+routes.delete('/api/produtosubcategoria', validateProdSub, ProdSubController.delete)
 
 //TIPO PRODUTO
 routes.post('/api/tipo-produto', validateCategorias, TipoController.store)
