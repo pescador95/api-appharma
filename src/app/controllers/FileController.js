@@ -28,7 +28,7 @@ class FileController {
                 }
             })
             // const imgId = await File.create({ name, path })
-            return res.json({  id:filesId[0].id, URL:path })
+            return res.json({  imgId:filesId[0].id, URL:path })
 
         } catch(e){
             console.log(JSON.stringify(e))
