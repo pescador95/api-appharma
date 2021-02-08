@@ -91,9 +91,9 @@ class SubCategoriaController {
 
     async ProdutoSubcategorias(req, res){
         
-        console.log("vou pegar com o body: "+JSON.stringify(req.body))
         const {id_produto, tipo} = req.body;
-
+        
+        console.log("entrei para pegar subcategorias do produto")
 
         let sql = `SELECT distinct sub.id as id, sub.descricao as content
         from subcategorias sub
@@ -105,6 +105,8 @@ class SubCategoriaController {
             } else {
                 sql = sql + " where id_produto = :id_produto"
             }
+
+            console.log("esse é  o SQL: "+ sql)
     
             const resp = await SubCategoria.sequelize.query(sql, {
                 type: QueryTypes.SELECT,
