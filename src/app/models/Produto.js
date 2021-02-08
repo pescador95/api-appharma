@@ -13,8 +13,7 @@ class Produto extends Model {
             id_sessao:Sequelize.INTEGER,
             id_tipo:Sequelize.INTEGER,
             principio:Sequelize.STRING,
-            registroms:Sequelize.STRING,
-            id_subcategoria:Sequelize.INTEGER,
+            registroms:Sequelize.STRING
          },
          {
             sequelize,
