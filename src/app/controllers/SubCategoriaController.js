@@ -91,16 +91,16 @@ class SubCategoriaController {
 
     async ProdutoSubcategorias(req, res){
         
-        const {id_produto, tipo} = req.body;
+        const {id_produto, tipo} = req.body
         
-        console.log("entrei para pegar subcategorias do produto")
+        console.log("entrei para pegar subcategorias do produto" + JSON.stringify(req.body))
 
         let sql = `SELECT distinct sub.id as id, sub.descricao as content
         from subcategorias sub
         left join produto_subcategorias ps on ps.id_subcategoria = sub.id
         `
         try {
-            console.log()
+            console.log("esse é o tipo: "+tipo)
             if (tipo == 'free') {
                 sql = sql + " where id_produto <> :id_produto" 
             } else {
