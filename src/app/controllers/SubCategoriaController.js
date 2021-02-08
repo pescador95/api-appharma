@@ -100,12 +100,10 @@ class SubCategoriaController {
         `
         try {
             if (tipo === 'free') {
-                sql = sql + " where id_produto <> :id" 
+                sql = sql + " where id_produto is null or id_produto <> :id " 
             } else {
                 sql = sql + " where id_produto = :id"
             }
-
-            console.log("esse é  o SQL: "+ sql)
     
             const resp = await SubCategoria.sequelize.query(sql, {
                 type: QueryTypes.SELECT,
@@ -113,8 +111,6 @@ class SubCategoriaController {
                     id
                 }
             })
-
-            console.log(JSON.stringify(resp))
     
             if (!resp) {
                 return res.status(200).json({error:"Não encontrei subcategorias"})
