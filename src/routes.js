@@ -104,11 +104,11 @@ routes.post('/api/reserva', validateReserva, ReservaController.store)
 routes.get('/api/loja/:id', LojaController.index)
 
 
+routes.use(Auth)
 
 //PESQUISA SUBCATEGORIAS DO PRODUTO
 routes.get('/api/prod/sub', SubCategorias.ProdutoSubcategorias)
 
-routes.use(Auth)
 
 //Rotas para chamar graficos
 routes.get('/api/grafico/vendas', GraficoController.graficoVendas)
