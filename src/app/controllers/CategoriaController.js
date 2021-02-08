@@ -9,6 +9,7 @@ class CategoriaController {
             return res.json({ error: "Você não é administrador." })
         }
 
+        console.log("Vou inserir a categorai..")
         const { descricao, id_img } = req.body
 
         const categoria = await Categoria.create({ descricao, id_img })
