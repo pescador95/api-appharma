@@ -93,15 +93,14 @@ class SubCategoriaController {
         
         const {id_produto, tipo} = req.query
         
-        console.log("entrei para pegar subcategorias do produto" + JSON.stringify(req.body))
+        console.log("entrei para pegar subcategorias do produto" + id_produto)
 
         let sql = `SELECT distinct sub.id as id, sub.descricao as content
         from subcategorias sub
         left join produto_subcategorias ps on ps.id_subcategoria = sub.id
         `
         try {
-            console.log("esse é o tipo: "+tipo)
-            if (tipo == 'free') {
+            if (tipo === 'free') {
                 sql = sql + " where id_produto <> :id_produto" 
             } else {
                 sql = sql + " where id_produto = :id_produto"
@@ -115,6 +114,8 @@ class SubCategoriaController {
                     id_produto
                 }
             })
+
+            console.log(JSON.stringify(resp))
     
             if (!resp) {
                 return res.status(200).json({error:"Não encontrei subcategorias"})
