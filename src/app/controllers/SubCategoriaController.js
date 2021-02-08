@@ -91,7 +91,7 @@ class SubCategoriaController {
 
     async ProdutoSubcategorias(req, res){
         
-        const {id_produto, tipo} = req.body
+        const {id_produto, tipo} = req.query
         
         console.log("entrei para pegar subcategorias do produto" + JSON.stringify(req.body))
 
