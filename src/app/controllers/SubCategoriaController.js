@@ -100,7 +100,8 @@ class SubCategoriaController {
         left join produto_subcategorias ps on ps.id_subcategoria = sub.id
         `
         try {
-            if (tipo === 'free') {
+            console.log()
+            if (tipo == 'free') {
                 sql = sql + " where id_produto <> :id_produto" 
             } else {
                 sql = sql + " where id_produto = :id_produto"
