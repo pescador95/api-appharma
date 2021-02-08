@@ -91,9 +91,8 @@ class SubCategoriaController {
 
     async ProdutoSubcategorias(req, res){
         
-        const {id_produto, tipo} = req.query
+        const {id, tipo} = req.query
         
-        console.log("entrei para pegar subcategorias do produto" + id_produto)
 
         let sql = `SELECT distinct sub.id as id, sub.descricao as content
         from subcategorias sub
@@ -101,9 +100,9 @@ class SubCategoriaController {
         `
         try {
             if (tipo === 'free') {
-                sql = sql + " where id_produto <> :id_produto" 
+                sql = sql + " where id_produto <> :id" 
             } else {
-                sql = sql + " where id_produto = :id_produto"
+                sql = sql + " where id_produto = :id"
             }
 
             console.log("esse é  o SQL: "+ sql)
@@ -111,7 +110,7 @@ class SubCategoriaController {
             const resp = await SubCategoria.sequelize.query(sql, {
                 type: QueryTypes.SELECT,
                 replacements:{
-                    id_produto
+                    id
                 }
             })
 
