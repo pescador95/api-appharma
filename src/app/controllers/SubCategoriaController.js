@@ -89,43 +89,7 @@ class SubCategoriaController {
 
     }
 
-    async ProdutoSubcategorias(req, res){
-        
-        const {id, tipo} = req.query
-        
 
-        let sql = `SELECT distinct sub.id as id, sub.descricao as content
-        from subcategorias sub
-        left join produto_subcategorias ps on ps.id_subcategoria = sub.id
-        `
-        try {
-            if (tipo === 'free') {
-                sql = sql + " where id_produto is null or id_produto <> :id " 
-            } else {
-                sql = sql + " where id_produto = :id"
-            }
-    
-            const resp = await SubCategoria.sequelize.query(sql, {
-                type: QueryTypes.SELECT,
-                replacements:{
-                    id
-                }
-            })
-    
-            if (!resp) {
-                return res.status(200).json({error:"Não encontrei subcategorias"})
-            }
-
-            return res.status(200).json(resp)
-
-        } catch (e){
-            console.log(JSON.stringify(e))
-            return res.status(500).json({error:e})
-        }
-
-
-
-    }
 }
 
 export default new SubCategoriaController()

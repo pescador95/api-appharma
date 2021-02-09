@@ -107,7 +107,7 @@ routes.get('/api/loja/:id', LojaController.index)
 routes.use(Auth)
 
 //PESQUISA SUBCATEGORIAS DO PRODUTO
-routes.get('/api/prod/sub', SubCategorias.ProdutoSubcategorias)
+routes.get('/api/prod/sub', ProdSubController.ProdutoSubcategorias)
 
 
 //Rotas para chamar graficos
