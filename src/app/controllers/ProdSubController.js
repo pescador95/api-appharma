@@ -86,7 +86,7 @@ class ProdSubController {
                 sql = sql + " where id_produto = :id"
             }
 
-            sql = sql + " ands sub.id_categoria = :categoria"
+            sql = sql + " and sub.id_categoria = :categoria"
     
             const resp = await SubCategoria.sequelize.query(sql, {
                 type: QueryTypes.SELECT,
