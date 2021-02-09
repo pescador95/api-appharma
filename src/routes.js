@@ -162,7 +162,7 @@ routes.delete('/api/subcategorias/:id',  SubCategorias.delete)
 
 //PRODUTO SUBCATEGORIA
 routes.post('/api/produtosubcategoria', validateProdSub, ProdSubController.store)
-routes.delete('/api/produtosubcategoria', validateProdSub, ProdSubController.delete)
+routes.delete('/api/produtosubcategoria/:id_produto/:id_subcategoria', ProdSubController.delete)
 
 //TIPO PRODUTO
 routes.post('/api/tipo-produto', validateCategorias, TipoController.store)

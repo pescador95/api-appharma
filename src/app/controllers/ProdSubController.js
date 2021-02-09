@@ -44,7 +44,7 @@ class ProdSubController {
         if (!req.userAdmin) {
             return res.status(401).json({ error: "permitido apenas para administradores" })
         }
-        const {id_subcategoria, id_produto} = req.body 
+        const {id_subcategoria, id_produto} = req.params 
 
         try{
 
