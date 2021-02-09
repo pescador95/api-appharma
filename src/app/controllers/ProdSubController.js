@@ -87,6 +87,8 @@ class ProdSubController {
             }
 
             sql = sql + " and sub.id_categoria = :categoria"
+
+            console.log(sql)
     
             const resp = await SubCategoria.sequelize.query(sql, {
                 type: QueryTypes.SELECT,
