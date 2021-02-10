@@ -81,12 +81,12 @@ class ProdSubController {
         `
         try {
             if (tipo === 'free') {
-                sql = sql + " where (ps.id_produto <> :id or ps.id_produto is null) " 
+                sql = sql + " where ps.id_produto is null " 
             } else {
                 sql = sql + " where id_produto = :id "
             }
 
-            sql = sql + " and sub.id_categoria = :categoria"
+            // sql = sql + " and sub.id_categoria = :categoria"
 
             console.log(sql)
     
@@ -94,7 +94,7 @@ class ProdSubController {
                 type: QueryTypes.SELECT,
                 replacements:{
                     id,
-                    categoria
+                //    categoria
                 }
             })
     
