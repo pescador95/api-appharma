@@ -75,7 +75,7 @@ class ProdSubController {
         const {id, tipo, categoria} = req.query
         
 
-        let sql = `SELECT distinct sub.id as id, sub.descricao as content
+        let sql = `SELECT distinct sub.id as id, sub.descricao as content, sub.id_categoria
         from subcategorias sub
         left join produto_subcategorias ps on ps.id_subcategoria = sub.id
         `
