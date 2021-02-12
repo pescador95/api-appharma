@@ -86,7 +86,7 @@ class ProdSubController {
                 sql = sql + " where id_produto = :id "
             }
 
-            // sql = sql + " and sub.id_categoria = :categoria"
+            sql = sql + " order by sub.descricao "
 
             console.log(sql)
     
