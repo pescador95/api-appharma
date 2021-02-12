@@ -72,7 +72,7 @@ class ProdSubController {
     }
     async ProdutoSubcategorias(req, res){
         
-        const {id, tipo, categoria} = req.query
+        const {id, tipo} = req.query
         
 
         let sql = `SELECT distinct sub.id as id, sub.descricao as content, sub.id_categoria
@@ -81,7 +81,7 @@ class ProdSubController {
         `
         try {
             if (tipo === 'free') {
-                sql = sql + " where ps.id_produto is null " 
+                sql = sql + " where ps.id_produto <> :id or ps.id is null " 
             } else {
                 sql = sql + " where id_produto = :id "
             }
