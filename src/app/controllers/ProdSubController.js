@@ -81,7 +81,8 @@ class ProdSubController {
         `
         try {
             if (tipo === 'free') {
-                sql = sql + " where ps.id is null or ps.id_produto <> :id " 
+                sql = sql + ` where id_subcategoria not in ( select id_subcategoria from produto_subcategorias where id_produto = :id)
+                                    or ps.id is null `
             } else {
                 sql = sql + " where id_produto = :id "
             }
