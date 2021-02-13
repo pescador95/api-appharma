@@ -16,11 +16,17 @@ class ProdutoController {
                         p.nome, 
                         p.descricao,
                         e.qtd_estoque, 
-                        f.path,
+                        case 
+                            when p.classe_terapeutica = 1 and p.id_grupo in (3, 13)  then (select path from files where id = 1042)
+                            when p.classe_terapeutica = 2 and p.id_grupo in (3, 13)  then (select path from files where id = 1041)
+                            when p.classe_terapeutica = 1 and p.id_grupo = 2  then (select path from files where id = 1043)
+                            when p.classe_terapeutica = 2 and p.id_grupo = 2  then (select path from files where id = 1044)
+                            else f.path
+                        end as path,
                         COALESCE(p1.preco_promocao, e.preco_venda) AS preco,
                         COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount,
                         e.id as id_estoque,
-                        e.fabricante
+                        e.fabricante, p.id_principio, p.classe_terapeutica
                     FROM produtos p
                     inner JOIN estoque e ON p.id = e.id_produto
                     LEFT JOIN promocoes p1 ON p1.id_produto = p.id AND  data_inicio < :data AND data_fim > :data
@@ -72,7 +78,14 @@ class ProdutoController {
         const sql = `
         SELECT p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, 
         COALESCE(p1.preco_promocao, e.preco_venda) AS preco_vigente, COALESCE(p1.preco_promocao, e.preco_venda) AS preco,  e.preco_venda, 
-        e.preco_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim, f.path AS image, f.path, p.principio, 
+        e.preco_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim, f.path AS image, 
+                        case 
+                            when p.classe_terapeutica = 1 and p.id_grupo in (3, 13)  then (select path from files where id = 1042)
+                            when p.classe_terapeutica = 2 and p.id_grupo in (3, 13)  then (select path from files where id = 1041)
+                            when p.classe_terapeutica = 1 and p.id_grupo = 2  then (select path from files where id = 1043)
+                            when p.classe_terapeutica = 2 and p.id_grupo = 2  then (select path from files where id = 1044)
+                            else f.path
+                        end as path, p.principio, 
         COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount, e.qtd_estoque, 0 as qtd, e.id as id_estoque, e.fabricante
               FROM produtos p  
                INNER JOin estoque e on p.id = e.id_produto
@@ -131,7 +144,13 @@ class ProdutoController {
         p.nome, 
         p.descricao,
         e.qtd_estoque, 
-        f.path,
+        case 
+            when p.classe_terapeutica = 1 and p.id_grupo in (3, 13)  then (select path from files where id = 1042)
+            when p.classe_terapeutica = 2 and p.id_grupo in (3, 13)  then (select path from files where id = 1041)
+            when p.classe_terapeutica = 1 and p.id_grupo = 2  then (select path from files where id = 1043)
+            when p.classe_terapeutica = 2 and p.id_grupo = 2  then (select path from files where id = 1044)
+            else f.path
+        end as path,
         e.preco_venda as preco_original,
         CASE
           WHEN COALESCE(p1.preco_promocao, e.preco_promocao) > 0 then COALESCE(p1.preco_promocao, e.preco_promocao)
@@ -268,10 +287,10 @@ class ProdutoController {
         if (!req.userAdmin) {
             return res.status(401).json({ error: "permitido apenas para administradores" })
         }
-        const { codigo_produto, codigo_barras, nome, id_grupo, id_sessao, principio } = req.body;
+        const { codigo_produto, codigo_barras, nome, id_grupo, id_sessao, principio, id_principio, classe_terapeutica } = req.body;
 
-        const sql = `insert into produtos (id, codigo_barras, nome, principio, id_grupo, id_sessao, created_at, updated_at) 
-                                           values (:idProduto, :codigoBarras, :nome, :principio, :id_grupo, :id_sessao, now(), now()) `;
+        const sql = `insert into produtos (id, codigo_barras, nome, principio, id_grupo, id_sessao, id_principio, classe_terapeutica created_at, updated_at) 
+                                           values (:idProduto, :codigoBarras, :nome, :principio, :id_grupo, :id_sessao, :id_principio, :classe_terapeutica, now(), now()) `;
         const prod = await Produto.sequelize.query(sql, {
             type: QueryTypes.INSERT,
             replacements: {
@@ -280,7 +299,9 @@ class ProdutoController {
                 nome,
                 principio,
                 id_grupo,
-                id_sessao
+                id_sessao,
+                id_principio,
+                classe_terapeutica
             }
         })
 
@@ -297,9 +318,10 @@ class ProdutoController {
         }
 
         const { id } = req.params;
-        const { codigo_barras, nome, principio, id_grupo, id_sessao, codigo_produto, img_id, descricao } = req.body;
+        const { codigo_barras, nome, principio, id_grupo, id_sessao, img_id, descricao, id_principio, classe_terapeutica } = req.body;
 
         const sqlUpdate = `update produtos set codigo_barras = :codigo_barras, nome = :nome, principio = :principio, id_grupo=:id_grupo, 
+                               classe_terapeutica = :classe_terapeutica, id_principio = :id_principio
                                                  id_sessao=:id_sessao, updated_at=now() where id = :idProduto`
 
         const produto = await Produto.sequelize.query(sqlUpdate, {
@@ -312,7 +334,9 @@ class ProdutoController {
                 id_sessao,
                 idProduto: id, 
                 img_id, 
-                descricao
+                descricao,
+                id_principio,
+                classe_terapeutica
             }
         })
 
@@ -356,7 +380,22 @@ class ProdutoController {
 
         const qry = `select ps.id_subcategoria, p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, 
                                         COALESCE(p1.preco_promocao, e.preco_venda) AS preco_vigente, COALESCE(p1.preco_promocao, e.preco_venda) AS preco,  e.preco_venda, 
-                                        e.preco_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim, f.path AS image, f.path, p.principio, 
+                                        e.preco_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim,  
+                                        case 
+                                            when p.classe_terapeutica = 1 and p.id_grupo in (3, 13)  then (select path from files where id = 1042)
+                                            when p.classe_terapeutica = 2 and p.id_grupo in (3, 13)  then (select path from files where id = 1041)
+                                            when p.classe_terapeutica = 1 and p.id_grupo = 2  then (select path from files where id = 1043)
+                                            when p.classe_terapeutica = 2 and p.id_grupo = 2  then (select path from files where id = 1044)
+                                            else f.path
+                                        end as path,
+                                        case 
+                                            when p.classe_terapeutica = 1 and p.id_grupo in (3, 13)  then (select path from files where id = 1042)
+                                            when p.classe_terapeutica = 2 and p.id_grupo in (3, 13)  then (select path from files where id = 1041)
+                                            when p.classe_terapeutica = 1 and p.id_grupo = 2  then (select path from files where id = 1043)
+                                            when p.classe_terapeutica = 2 and p.id_grupo = 2  then (select path from files where id = 1044)
+                                            else f.path
+                                        end as image,
+                                        , p.principio, 
                                         COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount, e.qtd_estoque, 0 as qtd, e.id as id_estoque, e.fabricante
                                 from produto_subcategorias ps 
                                     inner join produtos p on p.id = ps.id_produto
