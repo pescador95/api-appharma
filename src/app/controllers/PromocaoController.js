@@ -66,7 +66,14 @@ class PromocaoController {
             SELECT p.id, p.nome, p.descricao, e.preco_venda,
               COALESCE(pr.preco_promocao, e.preco_promocao) AS preco_promocao, e.qtd_estoque, 
               (1 - COALESCE(pr.preco_promocao, e.preco_promocao) /  e.preco_venda) * 100 AS percent,
-              e.qtd_estoque, f.path AS image
+              e.qtd_estoque, 
+                case 
+                    when p.classe_terapeutica = 1 and p.id_grupo in (3, 13)  then (select path from files where id = 1042)
+                    when p.classe_terapeutica = 2 and p.id_grupo in (3, 13)  then (select path from files where id = 1041)
+                    when p.classe_terapeutica = 1 and p.id_grupo = 2  then (select path from files where id = 1043)
+                    when p.classe_terapeutica = 2 and p.id_grupo = 2  then (select path from files where id = 1044)
+                    else f.path
+                end AS image
               FROM produtos p
               INNER JOIN estoque e ON p.id = e.id_produto
               left JOIN promocoes pr ON pr.id_produto = p.id AND pr.data_inicio < NOW() AND pr.data_fim > NOW()
@@ -75,7 +82,7 @@ class PromocaoController {
               )tmp 
               WHERE tmp.preco_promocao > 0  
               ORDER BY percent desc
-             LIMIT 20 -- OFFSET :page`
+             LIMIT 20 OFFSET :page`
         const listaProdutos = await Produto.sequelize.query(sql, {
             type: QueryTypes.SELECT,
             replacements: {
