@@ -12,7 +12,7 @@ export default async (req, res, next) => {
          codigo_barras: Yup.string(),
          registroms: Yup.string(),
          id_principio: Yup.number(),
-         classe_terapeutica: Yup.string()
+         classe_terapeutica: Yup.number()
       })
 
 
