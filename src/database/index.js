@@ -20,8 +20,9 @@ import Loja from '../app/models/Loja'
 import Sync from '../app/models/Sincronizacao'
 import Reserva from '../app/models/Reserva'
 import ProdutoSubcategorias from '../app/models/ProdutoSubcategorias'
+import Principio from '../app/models/PrincipioAtivo'
 
-const models = [User, File, Produto, Grupo, Sessao, Promocao, Cliente, Venda, Estoque, Tipo, Categoria, SubCategoria, UserAddress, Fcm, Mensagem, Loja, Sync, Reserva, ProdutoSubcategorias  ];
+const models = [User, File, Produto, Grupo, Sessao, Promocao, Cliente, Venda, Estoque, Tipo, Categoria, SubCategoria, UserAddress, Fcm, Mensagem, Loja, Sync, Reserva, ProdutoSubcategorias, Principio  ];
 
 class Database {
   constructor() {

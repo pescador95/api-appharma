@@ -5,7 +5,8 @@ export default async (req, res, next) => {
       const schema = Yup.object().shape({
          descricao:Yup.string(),
          img_id:Yup.number(),
-         id_categoria:Yup.number()
+         id_categoria:Yup.number(),
+         classe_terapeutica:Yup.number()
          })
 
 

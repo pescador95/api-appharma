@@ -20,6 +20,7 @@ import ReservaController from './app/controllers/ReservaController'
 import LojaController from './app/controllers/LojaController'
 import GraficoController from './app/controllers/GraficoController'
 import ProdSubController from './app/controllers/ProdSubController'
+import PrincipioController from './app/controllers/PrincipioAtivoController'
 
 
 import validateUserStore from './app/validators/UserStore'
@@ -196,6 +197,12 @@ routes.get('/api/venda/:codvenda', VendaController.showItems)
 
 routes.post('/api/loja', lojasValidator, LojaController.store)
 routes.put('/api/loja/:id', lojasValidator, LojaController.update);
+
+// PRINCIPIO ATIVO
+
+routes.post('/api/principioativo', PrincipioController.store )
+routes.get('/api/principioativo', PrincipioController.show )
+routes.put('/api/principioativo/:id', PrincipioController.update )
 
 
 
