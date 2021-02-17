@@ -48,7 +48,8 @@ class CategoriaController {
                     attributes: ['name', 'path', 'url']
                 }
             ],
-            attributes: ['id', 'descricao']
+            attributes: ['id', 'descricao'],
+            order: ['descricao']
         })
 
         if (!categorias) {
