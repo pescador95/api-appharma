@@ -395,7 +395,7 @@ class ProdutoController {
                                             when p.classe_terapeutica = 2 and p.id_grupo = 2  then (select path from files where id = 1044)
                                             else f.path
                                         end as image,
-                                        , p.principio, 
+                                        p.principio, 
                                         COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount, e.qtd_estoque, 0 as qtd, e.id as id_estoque, e.fabricante
                                 from produto_subcategorias ps 
                                     inner join produtos p on p.id = ps.id_produto
