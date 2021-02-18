@@ -67,7 +67,7 @@ routes.post('/api/fcm', FcmController.store)
 routes.post('/api/sessions', validadeSessions, SessionController.create)
 routes.post('/api/usuarios', validateUserStore, UserController.store)
 
-
+//ROTAS DE PRODUTOS
 routes.get('/api/produtos', ProdutoController.show)
 routes.get('/api/produtos/consulta', ProdutoController.selectProduct);
 routes.get('/api/produtos/best-sellers', ProdutoController.topSellers)
@@ -178,9 +178,11 @@ routes.put('/api/promocoes/:codigo', PromocaoController.update)
 
 routes.put('/api/usuarios', validateUserUpdate, UserController.update)
 
+//ROTAS PARA PRODUTOS
 routes.post('/api/produtos', validateProdutoStore, ProdutoController.store)
 routes.post('/api/produtos/add', ProdutoController.addProdutoSync)
 routes.put('/api/produtos/:id', produtoPutValidator, ProdutoController.update)
+
 // UPDATE NO RETAGUARDA
 routes.put('/api/ret/produtos/:id',  ProdutoController.updateRetaguarda)
 

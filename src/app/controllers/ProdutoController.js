@@ -287,10 +287,10 @@ class ProdutoController {
         if (!req.userAdmin) {
             return res.status(401).json({ error: "permitido apenas para administradores" })
         }
-        const { codigo_produto, codigo_barras, nome, id_grupo, id_sessao, principio, id_principio } = req.body;
+        const { codigo_produto, codigo_barras, nome, id_grupo, id_sessao, principio, id_principio, classe_terapeutica } = req.body;
 
-        const sql = `insert into produtos (id, codigo_barras, nome, principio, id_grupo, id_sessao, id_principio, created_at, updated_at) 
-                                           values (:idProduto, :codigoBarras, :nome, :principio, :id_grupo, :id_sessao, :id_principio, now(), now()) `;
+        const sql = `insert into produtos (id, codigo_barras, nome, principio, id_grupo, id_sessao, id_principio, classe_terapeutica, created_at, updated_at) 
+                                           values (:idProduto, :codigoBarras, :nome, :principio, :id_grupo, :id_sessao, :id_principio, :classe_terapeutica, now(), now()) `;
         const prod = await Produto.sequelize.query(sql, {
             type: QueryTypes.INSERT,
             replacements: {
@@ -300,7 +300,8 @@ class ProdutoController {
                 principio,
                 id_grupo,
                 id_sessao,
-                id_principio
+                id_principio,
+                classe_terapeutica
             }
         })
 
@@ -320,8 +321,7 @@ class ProdutoController {
         const { codigo_barras, nome, principio, id_grupo, id_sessao, img_id, descricao, id_principio } = req.body;
 
         const sqlUpdate = `update produtos set codigo_barras = :codigo_barras, nome = :nome, principio = :principio, id_grupo=:id_grupo, 
-                                id_principio = :id_principio,
-                                                 id_sessao=:id_sessao, updated_at=now() where id = :idProduto`
+                                id_principio = :id_principio, id_sessao=:id_sessao, updated_at=now() where id = :idProduto`
 
         const produto = await Produto.sequelize.query(sqlUpdate, {
             type: QueryTypes.UPDATE,
