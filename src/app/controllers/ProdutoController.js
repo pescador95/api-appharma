@@ -318,10 +318,10 @@ class ProdutoController {
         }
 
         const { id } = req.params;
-        const { codigo_barras, nome, principio, id_grupo, id_sessao, img_id, descricao, id_principio, classe_terapeutica } = req.body;
+        const { codigo_barras, nome, principio, id_grupo, id_sessao, img_id, descricao, id_principio } = req.body;
 
         const sqlUpdate = `update produtos set codigo_barras = :codigo_barras, nome = :nome, principio = :principio, id_grupo=:id_grupo, 
-                               classe_terapeutica = :classe_terapeutica, id_principio = :id_principio,
+                                id_principio = :id_principio,
                                                  id_sessao=:id_sessao, updated_at=now() where id = :idProduto`
 
         const produto = await Produto.sequelize.query(sqlUpdate, {
@@ -335,8 +335,7 @@ class ProdutoController {
                 idProduto: id,
                 img_id,
                 descricao,
-                id_principio,
-                classe_terapeutica
+                id_principio
             }
         })
 
