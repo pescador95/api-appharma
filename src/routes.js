@@ -104,6 +104,9 @@ routes.post('/api/reserva', validateReserva, ReservaController.store)
 
 routes.get('/api/loja/:id', LojaController.index)
 
+//MENSAGENS RDC
+routes.get('/api/mensagemrdc/:idProduto', ProdutoController.mensagensRdc)
+
 
 routes.use(Auth)
 

@@ -170,9 +170,9 @@ class ProdutoController {
         try {
 
             const produto = await Produto.sequelize.query(qry, {
-                type:QueryTypes.SELECT,
-                replacements:{
-                    codigo:id
+                type: QueryTypes.SELECT,
+                replacements: {
+                    codigo: id
                 }
             })
 
@@ -332,8 +332,8 @@ class ProdutoController {
                 principio,
                 id_grupo,
                 id_sessao,
-                idProduto: id, 
-                img_id, 
+                idProduto: id,
+                img_id,
                 descricao,
                 id_principio,
                 classe_terapeutica
@@ -353,7 +353,7 @@ class ProdutoController {
 
         const { id } = req.params;
 
-        const produto = await Produto.findOne({where:{id}})
+        const produto = await Produto.findOne({ where: { id } })
 
         const resp = await produto.update(req.body)
 
@@ -363,17 +363,17 @@ class ProdutoController {
         return res.status(200).json(resp)
     }
 
-    async produtosByCategoria(req, res){
-        const {id, page=1} = req.query;
+    async produtosByCategoria(req, res) {
+        const { id, page = 1 } = req.query;
         const data = new Date();
         const qryTotal = `select count(*) as total from produto_subcategorias where id_subcategoria = :id`
 
         const count = await Produto.sequelize.query(qryTotal, {
-            type:QueryTypes.SELECT,
-            replacements:{
+            type: QueryTypes.SELECT,
+            replacements: {
                 id
             }
-        })  
+        })
 
         const paginas = Math.round(count[0].total / 30)
         const offset = (page - 1) * 30
@@ -406,22 +406,53 @@ class ProdutoController {
                                 where ps.id_subcategoria = :id
                                 order by nome 
                                 limit 30 offset :offset`
-                                
+
         const produtos = await Produto.sequelize.query(qry, {
-            type:QueryTypes.SELECT,
-            replacements:{
+            type: QueryTypes.SELECT,
+            replacements: {
                 id,
                 offset,
                 data
             }
         })
 
-        if(!produtos){
-            return res.status(200).json({error:"Não achei categoria"})
+        if (!produtos) {
+            return res.status(200).json({ error: "Não achei categoria" })
         }
         return res.status(200).json({
-            produtos, pagina:page, paginas
+            produtos, pagina: page, paginas
         })
+    }
+
+    async mensagensRdc(req, res) {
+        const sql = `select pa.id, pa.mensagem from produtos p 
+        inner join produtos_mensagem pm on pm.id_produto = p.id 
+        inner join principio_anvisa pa on pa.id = pm.id_mensagem
+        where p.id = :id order by pa.id`
+
+        const { idProduto } = req.params
+
+
+        try {
+
+            const mensagens = await Produto.sequelize.query(sql, {
+                type: QueryTypes.SELECT,
+                replacements:{
+                    id:idProduto
+                }
+            })
+
+            if (!mensagens) {
+                return res.status(200).json({success:'ok'})
+            }
+
+            return res.status(200).json(mensagens)
+
+        } catch (e){
+            console.log(JSON.stringify(e))
+            return res.status(500).json({error:e.message})
+        }
+
     }
 
 }
