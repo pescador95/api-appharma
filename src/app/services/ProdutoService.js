@@ -1,5 +1,6 @@
 import Produto from '../models/Produto'
 import File from '../models/File'
+import {QueryTypes} from 'sequelize'
 
 class ProdutoService {
     async ProdutoExiste({ idProduto, codigoBarras, body} ) {
@@ -49,7 +50,6 @@ class ProdutoService {
         }
         return produto
     }
-
 
 }
 

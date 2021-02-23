@@ -15,14 +15,7 @@ class ProdutoController {
                         p.codigo_barras, 
                         p.nome, 
                         p.descricao,
-                        e.qtd_estoque, 
-                        case 
-                            when p.classe_terapeutica = 1 and p.id_grupo in (3, 13)  then (select path from files where id = 1042)
-                            when p.classe_terapeutica = 2 and p.id_grupo in (3, 13)  then (select path from files where id = 1041)
-                            when p.classe_terapeutica = 1 and p.id_grupo = 2  then (select path from files where id = 1043)
-                            when p.classe_terapeutica = 2 and p.id_grupo = 2  then (select path from files where id = 1044)
-                            else f.path
-                        end as path,
+                        e.qtd_estoque, f.path,
                         COALESCE(p1.preco_promocao, e.preco_venda) AS preco,
                         COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount,
                         e.id as id_estoque,
@@ -79,13 +72,7 @@ class ProdutoController {
         SELECT p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, 
         COALESCE(p1.preco_promocao, e.preco_venda) AS preco_vigente, COALESCE(p1.preco_promocao, e.preco_venda) AS preco,  e.preco_venda, 
         e.preco_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim, f.path AS image, 
-                        case 
-                            when p.classe_terapeutica = 1 and p.id_grupo in (3, 13)  then (select path from files where id = 1042)
-                            when p.classe_terapeutica = 2 and p.id_grupo in (3, 13)  then (select path from files where id = 1041)
-                            when p.classe_terapeutica = 1 and p.id_grupo = 2  then (select path from files where id = 1043)
-                            when p.classe_terapeutica = 2 and p.id_grupo = 2  then (select path from files where id = 1044)
-                            else f.path
-                        end as path, p.principio, 
+                        f.path as path, p.principio, 
         COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount, e.qtd_estoque, 0 as qtd, e.id as id_estoque, e.fabricante
               FROM produtos p  
                INNER JOin estoque e on p.id = e.id_produto
@@ -143,14 +130,8 @@ class ProdutoController {
         p.codigo_barras, 
         p.nome, 
         p.descricao,
-        e.qtd_estoque, 
-        case 
-            when p.classe_terapeutica = 1 and p.id_grupo in (3, 13)  then (select path from files where id = 1042)
-            when p.classe_terapeutica = 2 and p.id_grupo in (3, 13)  then (select path from files where id = 1041)
-            when p.classe_terapeutica = 1 and p.id_grupo = 2  then (select path from files where id = 1043)
-            when p.classe_terapeutica = 2 and p.id_grupo = 2  then (select path from files where id = 1044)
-            else f.path
-        end as path,
+        e.qtd_estoque, f.path
+        as path,
         e.preco_venda as preco_original,
         CASE
           WHEN COALESCE(p1.preco_promocao, e.preco_promocao) > 0 then COALESCE(p1.preco_promocao, e.preco_promocao)
@@ -379,20 +360,8 @@ class ProdutoController {
         const qry = `select ps.id_subcategoria, p.id, p.codigo_barras, p.nome, p.descricao, p.id_tipo as tipo, 
                                         COALESCE(p1.preco_promocao, e.preco_venda) AS preco_vigente, COALESCE(p1.preco_promocao, e.preco_venda) AS preco,  e.preco_venda, 
                                         e.preco_venda as preco_original, p1.preco_promocao, p1.data_inicio, p1.data_fim,  
-                                        case 
-                                            when p.classe_terapeutica = 1 and p.id_grupo in (3, 13)  then (select path from files where id = 1042)
-                                            when p.classe_terapeutica = 2 and p.id_grupo in (3, 13)  then (select path from files where id = 1041)
-                                            when p.classe_terapeutica = 1 and p.id_grupo = 2  then (select path from files where id = 1043)
-                                            when p.classe_terapeutica = 2 and p.id_grupo = 2  then (select path from files where id = 1044)
-                                            else f.path
-                                        end as path,
-                                        case 
-                                            when p.classe_terapeutica = 1 and p.id_grupo in (3, 13)  then (select path from files where id = 1042)
-                                            when p.classe_terapeutica = 2 and p.id_grupo in (3, 13)  then (select path from files where id = 1041)
-                                            when p.classe_terapeutica = 1 and p.id_grupo = 2  then (select path from files where id = 1043)
-                                            when p.classe_terapeutica = 2 and p.id_grupo = 2  then (select path from files where id = 1044)
-                                            else f.path
-                                        end as image,
+                                        f.path,
+                                        f.path as image,
                                         p.principio, 
                                         COALESCE((1-p1.preco_promocao / e.preco_venda)*100, 0) AS discount, e.qtd_estoque, 0 as qtd, e.id as id_estoque, e.fabricante
                                 from produto_subcategorias ps 
