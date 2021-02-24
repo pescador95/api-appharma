@@ -370,7 +370,7 @@ class ProdutoController {
                                     INNER join estoque e on p.id = e.id_produto
                                     left JOIN promocoes p1 ON p.id = p1.id_produto and p1.data_inicio < :data  and p1.data_fim > :data    
                                     LEFT JOIN files f ON p.img_id = f.id
-                                where ps.id_subcategoria = :id
+                                where ps.id_subcategoria = :id and e.qtd_estoque > 0
                                 order by nome 
                                 limit 30 offset :offset`
 
