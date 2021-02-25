@@ -68,6 +68,8 @@ class FcmController {
             }
             const { titulo, corpo, tipo_msg } = mgm;
 
+            console.log(`eu recebi: ${JSON.stringify(mgm)}`)
+
             const agora = new Date().toLocaleString('pt-br')
 
             const message = {
