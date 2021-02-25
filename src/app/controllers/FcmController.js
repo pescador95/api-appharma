@@ -41,7 +41,7 @@ class FcmController {
             return res.json({ error: "Você não tem permissão." })
         }
 
-        const { iduser, idmsg } = req.params
+        const { iduser, idmsg, idvenda } = req.params
 
         const { mensagem, title } = req.body
 
@@ -67,18 +67,13 @@ class FcmController {
                 return res.status(400).json({ error: 'mensagem não existe' })
             }
             const { titulo, corpo, tipo_msg } = mgm;
-
-            console.log(`eu recebi: ${JSON.stringify(mgm)}`)
-            
+         
             let tipoMsg = tipo_msg.toString();
             
-            console.log(`Eu estou com o tipo msg: ${tipoMsg}`)
-
-
             const agora = new Date().toLocaleString('pt-br')
 
             const message = {
-                data: { tipo: tipoMsg, time: agora.toString(), corpo },
+                data: { tipo: tipoMsg, idvenda, time: agora.toString(), corpo },
                 tokens: registrationTokens,
                 notification: {
                     body: corpo,

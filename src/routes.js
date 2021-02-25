@@ -146,7 +146,7 @@ routes.get('/api/estoque/:idloja/:idproduto', EstoqueController.show);
 
 routes.post('/api/sendmessage/all', FcmController.sendMessage);
 
-routes.post('/api/sendmessage/:iduser/:idmsg', FcmController.sendMessage);
+routes.post('/api/sendmessage/:iduser/:idmsg/:idvenda', FcmController.sendMessage);
 routes.put('/api/fcm', FcmController.update)
 
 routes.post('/api/param/mensagens', MensagemController.store)
