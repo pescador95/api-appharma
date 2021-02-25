@@ -66,12 +66,12 @@ class FcmController {
             if (!mgm) {
                 return res.status(400).json({ error: 'mensagem não existe' })
             }
-            const { titulo, corpo, tipo_mgm } = mgm;
+            const { titulo, corpo, tipo_msg } = mgm;
 
             const agora = new Date().toLocaleString('pt-br')
 
             const message = {
-                data: { tipo: toString(tipo_mgm), time: agora.toString(), corpo },
+                data: { tipo: toString(tipo_msg), time: agora.toString(), corpo },
                 tokens: registrationTokens,
                 notification: {
                     body: corpo,
