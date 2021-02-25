@@ -69,12 +69,16 @@ class FcmController {
             const { titulo, corpo, tipo_msg } = mgm;
 
             console.log(`eu recebi: ${JSON.stringify(mgm)}`)
-            console.log(`Eu estou com o tipo msg: ${tipo_msg}`)
+            
+            let tipoMsg = toString(tipo_msg);
+            
+            console.log(`Eu estou com o tipo msg: ${tipoMsg}`)
+
 
             const agora = new Date().toLocaleString('pt-br')
 
             const message = {
-                data: { tipo: tipo_msg, time: agora.toString(), corpo },
+                data: { tipo: tipoMsg, time: agora.toString(), corpo },
                 tokens: registrationTokens,
                 notification: {
                     body: corpo,
