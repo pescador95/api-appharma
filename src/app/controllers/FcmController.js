@@ -70,7 +70,7 @@ class FcmController {
 
             console.log(`eu recebi: ${JSON.stringify(mgm)}`)
             
-            let tipoMsg = toString(tipo_msg);
+            let tipoMsg = tipo_msg.toString();
             
             console.log(`Eu estou com o tipo msg: ${tipoMsg}`)
 
