@@ -140,7 +140,7 @@ class VendaController {
         const sql = `select id, codigo_venda, status, tipo_entrega from vendas 
                         where id_user = :id_user 
                         order by data_venda desc
-                        limit 10`
+                        limit 5`
         try{
 
             const resp = await Venda.sequelize.query(sql, {
