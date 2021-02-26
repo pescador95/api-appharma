@@ -45,6 +45,12 @@ class FcmController {
 
         const { mensagem, title, delivery } = req.body
 
+        let deli = false;
+
+        if (delivery) {
+            deli = delivery
+        }
+
 
         const tokensAux = await GetTokens(iduser,)
 
@@ -71,7 +77,7 @@ class FcmController {
             const agora = new Date().toLocaleString('pt-br')
 
             const message = {
-                data: { tipo: tipoMsg, idvenda, delivery:delivery.toString(), time: agora.toString(), corpo },
+                data: { tipo: tipoMsg, idvenda, delivery:deli, time: agora.toString(), corpo },
                 tokens: registrationTokens,
                 notification: {
                     body: corpo,
