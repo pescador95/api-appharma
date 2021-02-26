@@ -21,6 +21,7 @@ import LojaController from './app/controllers/LojaController'
 import GraficoController from './app/controllers/GraficoController'
 import ProdSubController from './app/controllers/ProdSubController'
 import PrincipioController from './app/controllers/PrincipioAtivoController'
+import AppController from './app/controllers/AppController'
 
 
 import validateUserStore from './app/validators/UserStore'
@@ -37,6 +38,7 @@ import {update as addressValidatorUpdate, store as addressValidatorStore} from '
 import validatePromo from './app/validators/PromoStoreValidator'
 import {validate as lojasValidator} from './app/validators/LojaValidate'
 import produtoPutValidator from './app/validators/ProdutoPutValidate'
+import validateVersionStore from './app/validators/AppVersionStore'
 
 
 import Auth from './app/middlewares/Auth'
@@ -106,6 +108,8 @@ routes.get('/api/loja/:id', LojaController.index)
 
 //MENSAGENS RDC
 routes.get('/api/mensagemrdc/:idProduto', ProdutoController.mensagensRdc)
+
+routes.get('/api/app/version', AppController.show)
 
 
 routes.use(Auth)
@@ -209,6 +213,9 @@ routes.put('/api/loja/:id', lojasValidator, LojaController.update);
 routes.post('/api/principioativo', PrincipioController.store )
 routes.get('/api/principioativo', PrincipioController.show )
 routes.put('/api/principioativo/:id', PrincipioController.update )
+
+// CRIA NOVA VERSÃO DO APP
+routes.post('/api/app/version', validateVersionStore, AppController.store)
 
 
 

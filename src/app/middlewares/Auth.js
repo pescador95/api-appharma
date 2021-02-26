@@ -18,6 +18,7 @@ export default async (req, res, next) => {
       req.userId = payload.id
       req.userName = payload.name
       req.userAdmin = payload.admin
+      req.superAdmin = payload.superadmin
       next()
 
    } catch (error) {
