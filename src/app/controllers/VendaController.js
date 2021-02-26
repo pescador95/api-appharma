@@ -137,7 +137,7 @@ class VendaController {
     async showStatus(req, res){
         const {id} = req.query
         console.log("Vou pegar status")
-        const sql = `select id, codigo_venda, status, tipo_entrega from vendas 
+        const sql = `select id, codigo_venda, status, tipo_entrega, data_venda from vendas 
                         where id_user = :id_user 
                         order by data_venda desc
                         limit 5`
