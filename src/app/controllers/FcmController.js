@@ -71,7 +71,7 @@ class FcmController {
             const agora = new Date().toLocaleString('pt-br')
 
             const message = {
-                data: { tipo: tipoMsg, idvenda, delivery, time: agora.toString(), corpo },
+                data: { tipo: tipoMsg, idvenda, delivery:delivery.toString(), time: agora.toString(), corpo },
                 tokens: registrationTokens,
                 notification: {
                     body: corpo,

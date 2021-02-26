@@ -199,6 +199,7 @@ routes.post('/api/venda/', VendaController.store )
 routes.put('/api/venda/', vendaValidatorUpdate, VendaController.update )
 routes.get('/api/venda/', VendaController.show )
 routes.get('/api/venda/:codvenda', VendaController.showItems)
+routes.get('/api/status', VendaController.showStatus)
 
 routes.post('/api/loja', lojasValidator, LojaController.store)
 routes.put('/api/loja/:id', lojasValidator, LojaController.update);

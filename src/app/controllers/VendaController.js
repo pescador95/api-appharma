@@ -134,6 +134,34 @@ class VendaController {
         }
     }
 
+    async showStatus(req, res){
+        const {id} = req.query
+        console.log("Vou pegar status")
+        const sql = `select id, codigo_venda, status, tipo_entrega from vendas 
+                        where id_user = :id_user 
+                        order by data_venda desc
+                        limit 10`
+        try{
+
+            const resp = await Venda.sequelize.query(sql, {
+                type: QueryTypes.SELECT,
+                replacements:{
+                    id_user:id
+                }
+            })
+
+            if (!resp){
+                return res.status(200).json({success:"Ainda não existem pedidos!"})
+            }
+
+            return res.status(200).json(resp)
+
+        } catch (e){
+            console.log(JSON.stringify(e))
+            return res.status(500).json({error:"erro ao tentar pegar o status"})
+        }
+    }
+
 
 }
 
