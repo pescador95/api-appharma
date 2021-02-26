@@ -45,10 +45,10 @@ class FcmController {
 
         const { mensagem, title, delivery } = req.body
 
-        let deli = false;
+        let deli = 'false';
 
         if (delivery) {
-            deli = delivery
+            deli = delivery.toString()
         }
 
 
