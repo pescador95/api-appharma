@@ -43,12 +43,10 @@ class FcmController {
 
         const { iduser, idmsg, idvenda } = req.params
 
-        const { mensagem, title } = req.body
+        const { mensagem, title, delivery } = req.body
 
 
         const tokensAux = await GetTokens(iduser,)
-
-        console.log("Tokens depois do gettokens: " + JSON.stringify(tokensAux))
 
         if (!tokensAux) {
             return res.status(400).json({ error: "Não existem tokens para esse usuario" })
@@ -73,7 +71,7 @@ class FcmController {
             const agora = new Date().toLocaleString('pt-br')
 
             const message = {
-                data: { tipo: tipoMsg, idvenda, time: agora.toString(), corpo },
+                data: { tipo: tipoMsg, idvenda, delivery, time: agora.toString(), corpo },
                 tokens: registrationTokens,
                 notification: {
                     body: corpo,
