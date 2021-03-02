@@ -7,6 +7,7 @@ export default async (req, res, next) => {
          email: Yup.string().email(),
          oldPassword: Yup.string().min(6),
          whatsapp: Yup.string().min(6),
+         dt_nasc: Yup.date(),
          password: Yup.string()
             .min(6)
             .when('oldPassword', (old, field) =>

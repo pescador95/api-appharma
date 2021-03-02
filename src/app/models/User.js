@@ -12,6 +12,7 @@ class User extends Model {
          admin: Sequelize.BOOLEAN,
          img_id:Sequelize.INTEGER,
          whatsapp:Sequelize.STRING,
+         dt_nasc:Sequelize.DATE,
          superadmin: Sequelize.BOOLEAN,
       },
       {
